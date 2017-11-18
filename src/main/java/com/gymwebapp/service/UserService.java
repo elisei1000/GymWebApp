@@ -37,7 +37,7 @@ public class UserService {
         }
 
         if(userModel.getName().isEmpty()){
-            errors.add("Password is empty!");
+            errors.add("Name is empty!");
         }
 
         if (null != userModel.getEmail()) {

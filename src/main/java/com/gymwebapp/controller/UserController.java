@@ -29,7 +29,7 @@ public class UserController {
                     .body(Status.STATUS_OK);
         }
         return ResponseEntity
-                .status(HttpStatus.FORBIDDEN)
+                .status(HttpStatus.UNAUTHORIZED)
                 .body(errors);
     }
 
