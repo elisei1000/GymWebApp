@@ -1,5 +1,6 @@
 package com.gymwebapp;
 
+import com.gymwebapp.domain.Validator.UserValidator;
 import com.gymwebapp.repository.TestRepository;
 import com.gymwebapp.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,4 +29,7 @@ public class AppConfiguration {
     public TestRepository testRepository(){
         return new TestRepository();
     }
+
+    @Bean
+    public UserValidator userValidator(){return new UserValidator();}
 }

@@ -3,6 +3,7 @@ package com.gymwebapp.service;
 import com.gymwebapp.domain.Coach;
 import com.gymwebapp.domain.RepositoryException;
 import com.gymwebapp.domain.User;
+import com.gymwebapp.domain.Validator.UserValidator;
 import com.gymwebapp.model.UserModel;
 import com.gymwebapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,29 +25,15 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserValidator userValidator;
+
     @Transactional
     public <T extends User> List<String> addUser(T user){
         List<String> errors=new ArrayList<String>();
-
-        if(user.getUsername() == null || user.getUsername().isEmpty()){
-            errors.add("Username is empty!");
-        }
-
-        if(user.getPassword() == null || user.getPassword().isEmpty()){
-            errors.add("Password is empty!");
-        }
-
-        if(user.getName().isEmpty()){
-            errors.add("Name is empty!");
-        }
-
-        if (null != user.getEmail()) {
-            String regex = "^([_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*(\\.[a-zA-Z]{1,6}))?$";
-            Pattern pattern = Pattern.compile(regex);
-            Matcher matcher = pattern.matcher(user.getEmail());
-            if (!matcher.matches()) {
-                errors.add("Email is not valid!");
-            }
+        errors = userValidator.validate(user);
+        if(errors.size() != 0){
+            return errors;
         }
 
         if(!user.getUsername().isEmpty()) {
@@ -60,4 +47,9 @@ public class UserService {
     }
 
 
+    public List<String> checkIfExistUser(User user) {
+        List<String> errors = new ArrayList<>();
+        User dbUser = userRepository.get(user.getId());
+        return errors;
+    }
 }

@@ -1,5 +1,7 @@
 package com.gymwebapp.controller;
 
+import com.gymwebapp.domain.Client;
+import com.gymwebapp.domain.Coach;
 import com.gymwebapp.model.UserModel;
 import com.gymwebapp.service.UserService;
 import com.gymwebapp.util.Data;
@@ -23,7 +25,8 @@ public class UserController {
 
     @PostMapping(value = "/login")
     public Data login(@RequestBody UserModel user) {
-        List<String> errors = userService.checkIfExistUser(user);
+        List<String> errors = userService.checkIfExistUser(new Client(user.getUsername(), user.getPassword(),
+                user.getEmail(), user.getName(), user.getBirthDay()));
 
         if(errors.size()==0){
             return new Data(Status.STATUS_OK,errors);
@@ -34,8 +37,8 @@ public class UserController {
 
     @PostMapping(value = "/register")
     public Data add(@RequestBody UserModel user) {
-
-        List<String> errors = userService.addUser(user);
+        List<String> errors = userService.addUser(new Client(user.getUsername(), user.getPassword(), user.getEmail(),
+                user.getName(), user.getBirthDay()));
 
         if(errors.size()==0){
             return new Data(Status.STATUS_OK,errors);

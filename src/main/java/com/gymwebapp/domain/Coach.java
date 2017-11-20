@@ -20,9 +20,4 @@ public class Coach extends User {
 
     }
 
-
-    static private Coach empty(){
-        return new Coach();
-    }
-
 }
