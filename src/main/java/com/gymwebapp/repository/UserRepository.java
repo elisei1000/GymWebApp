@@ -21,7 +21,10 @@ public class UserRepository implements CrudRepository<User, String> {
 
     @Override
     public void add(User entity) throws RepositoryException {
-
+        if(entityManager.find(User.class, entity.getId()) != null){
+            throw new RepositoryException("User exists in db");
+        }
+        entityManager.persist(entity);
     }
 
     @Override

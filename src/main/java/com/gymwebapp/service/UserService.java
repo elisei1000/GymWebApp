@@ -1,6 +1,7 @@
 package com.gymwebapp.service;
 
 import com.gymwebapp.domain.Coach;
+import com.gymwebapp.domain.RepositoryException;
 import com.gymwebapp.domain.User;
 import com.gymwebapp.model.UserModel;
 import com.gymwebapp.repository.UserRepository;
@@ -24,62 +25,39 @@ public class UserService {
     private UserRepository userRepository;
 
     @Transactional
-    public List<String> addUser(UserModel userModel){
+    public <T extends User> List<String> addUser(T user){
         List<String> errors=new ArrayList<String>();
 
-        User user= new Coach(userModel.getUsername(),Integer.toString(userModel.getPassword().hashCode()),userModel.getEmail(),userModel.getName(),userModel.getBirthDay());
-
-        if(userModel.getUsername().isEmpty()){
+        if(user.getUsername() == null || user.getUsername().isEmpty()){
             errors.add("Username is empty!");
         }
 
-        if(userModel.getPassword().isEmpty()){
+        if(user.getPassword() == null || user.getPassword().isEmpty()){
             errors.add("Password is empty!");
         }
 
-        if(userModel.getName().isEmpty()){
+        if(user.getName().isEmpty()){
             errors.add("Name is empty!");
         }
 
-        if (null != userModel.getEmail()) {
+        if (null != user.getEmail()) {
             String regex = "^([_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*(\\.[a-zA-Z]{1,6}))?$";
             Pattern pattern = Pattern.compile(regex);
-            Matcher matcher = pattern.matcher(userModel.getEmail());
+            Matcher matcher = pattern.matcher(user.getEmail());
             if (!matcher.matches()) {
                 errors.add("Email is not valid!");
             }
         }
 
-//        if(!userModel.getUsername().isEmpty()) {
-//            if (!this.userRepository.checkIfUsernameExists(user)) {
-//                userRepository.add(user);
-//            } else {
-//                errors.add("Username already exists!");
-//            }
-//        }
-
+        if(!user.getUsername().isEmpty()) {
+            try{
+                userRepository.add(user);
+            } catch (RepositoryException e) {
+                errors.add("Username already exists!");
+            }
+        }
         return errors;
     }
 
-    @Transactional
-    public List<String> checkIfExistUser(UserModel userModel){
-        List<String> errors=new ArrayList<String>();
 
-        User user=new Coach(userModel.getUsername(),Integer.toString(userModel.getPassword().hashCode()),userModel.getEmail(),userModel.getName(),userModel.getBirthDay());
-
-        if(userModel.getUsername().isEmpty()){
-            errors.add("Username is empty!");
-        }
-
-        if(userModel.getPassword().isEmpty()){
-            errors.add("Password is empty!");
-        }
-//        if(errors.size()==0) {
-//            if (!this.userRepository.checkIfUserExists(user)) {
-//                errors.add("Username or password incorrect!");
-//            }
-//        }
-
-        return errors;
-    }
 }

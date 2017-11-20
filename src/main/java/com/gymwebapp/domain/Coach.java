@@ -16,4 +16,13 @@ public class Coach extends User {
         super(username, password, email, name, birthDay);
     }
 
+    public Coach(){
+
+    }
+
+
+    static private Coach empty(){
+        return new Coach();
+    }
+
 }

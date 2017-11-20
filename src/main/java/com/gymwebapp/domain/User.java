@@ -91,4 +91,6 @@ public abstract class User implements HasId<String>{
     public void setBirthDay(Date birthDay) {
         this.birthDay = birthDay;
     }
+
+
 }
