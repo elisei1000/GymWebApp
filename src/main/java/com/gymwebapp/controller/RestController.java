@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.print.attribute.standard.Media;
 import java.util.List;
 
 /**
@@ -29,7 +30,7 @@ public class RestController {
     }
 
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE)
     public List<Test> getAll(){
         return testService.getAll();
     }

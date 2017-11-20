@@ -8,15 +8,11 @@ import java.util.Date;
  */
 @Entity
 @Table(name="User")
-public class User {
+public class User implements HasId<String>{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
-    private Integer id;
-
-    @Column(name="username", unique = true)
-    private String username;
+    @Column(name="username")
+    private String id;
 
     @Column(name="password")
     private String password;
@@ -33,43 +29,34 @@ public class User {
     public User(){
     }
 
-    public User(Integer id,String username, String password){
-        this.id=id;
-        this.username = username;
+    public User(String username, String password){
+        this.id = username;
         this.password = password;
     }
 
     public User(String username, String password, String email, String name, Date birthDay) {
-        this.username = username;
+        this.id = username;
         this.password = password;
         this.email = email;
         this.name = name;
         this.birthDay = birthDay;
     }
 
-    public User(Integer id,String username, String password, String email, String name, Date birthDay) {
-        this.id=id;
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.name = name;
-        this.birthDay = birthDay;
-    }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
     public String getUsername() {
-        return username;
+        return id;
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.id = username;
     }
 
     public String getPassword() {
