@@ -1,5 +1,6 @@
 package com.gymwebapp.service;
 
+import com.gymwebapp.domain.Coach;
 import com.gymwebapp.domain.User;
 import com.gymwebapp.model.UserModel;
 import com.gymwebapp.repository.UserRepository;
@@ -26,7 +27,7 @@ public class UserService {
     public List<String> addUser(UserModel userModel){
         List<String> errors=new ArrayList<String>();
 
-        User user=new User(userModel.getUsername(),Integer.toString(userModel.getPassword().hashCode()),userModel.getEmail(),userModel.getName(),userModel.getBirthDay());
+        User user= new Coach(userModel.getUsername(),Integer.toString(userModel.getPassword().hashCode()),userModel.getEmail(),userModel.getName(),userModel.getBirthDay());
 
         if(userModel.getUsername().isEmpty()){
             errors.add("Username is empty!");
@@ -49,13 +50,13 @@ public class UserService {
             }
         }
 
-        if(!userModel.getUsername().isEmpty()) {
-            if (!this.userRepository.checkIfUsernameExists(user)) {
-                userRepository.add(user);
-            } else {
-                errors.add("Username already exists!");
-            }
-        }
+//        if(!userModel.getUsername().isEmpty()) {
+//            if (!this.userRepository.checkIfUsernameExists(user)) {
+//                userRepository.add(user);
+//            } else {
+//                errors.add("Username already exists!");
+//            }
+//        }
 
         return errors;
     }
@@ -64,7 +65,7 @@ public class UserService {
     public List<String> checkIfExistUser(UserModel userModel){
         List<String> errors=new ArrayList<String>();
 
-        User user=new User(userModel.getUsername(),Integer.toString(userModel.getPassword().hashCode()),userModel.getEmail(),userModel.getName(),userModel.getBirthDay());
+        User user=new Coach(userModel.getUsername(),Integer.toString(userModel.getPassword().hashCode()),userModel.getEmail(),userModel.getName(),userModel.getBirthDay());
 
         if(userModel.getUsername().isEmpty()){
             errors.add("Username is empty!");
@@ -73,11 +74,11 @@ public class UserService {
         if(userModel.getPassword().isEmpty()){
             errors.add("Password is empty!");
         }
-        if(errors.size()==0) {
-            if (!this.userRepository.checkIfUserExists(user)) {
-                errors.add("Username or password incorrect!");
-            }
-        }
+//        if(errors.size()==0) {
+//            if (!this.userRepository.checkIfUserExists(user)) {
+//                errors.add("Username or password incorrect!");
+//            }
+//        }
 
         return errors;
     }
