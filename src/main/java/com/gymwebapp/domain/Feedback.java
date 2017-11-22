@@ -6,12 +6,12 @@ import java.util.Date;
 @Entity
 @Table(name="Feedback")
 @Inheritance(strategy= InheritanceType.JOINED)
-public class Feedback {
+public class Feedback implements HasId<Integer> {
 
     @Id
     @GeneratedValue
     @Column(name = "feedback_id")
-    private int id;
+    private Integer id;
 
     @Column(name = "starsCount")
     private int starsCount;
@@ -25,6 +25,7 @@ public class Feedback {
     @Column(name = "date")
     private Date date;
 
+    @OneToOne
     private Client author;
 
     public Feedback(){
@@ -41,11 +42,11 @@ public class Feedback {
     }
 
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

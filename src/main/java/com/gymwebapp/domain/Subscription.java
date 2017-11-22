@@ -1,17 +1,15 @@
 package com.gymwebapp.domain;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name="Subscription")
-public class Subscription {
+public class Subscription implements HasId<Integer>{
 
     @Id
+    @GeneratedValue
     @Column(name="id")
     private int id;
 
@@ -31,11 +29,11 @@ public class Subscription {
         this.startDate = startDate;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

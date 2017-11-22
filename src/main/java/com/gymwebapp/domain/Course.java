@@ -33,14 +33,20 @@ public class Course {
     @Column(name = "maxPlaces")
     private int maxPlaces;
 
-    @Column(name = "teacher")
+    @ManyToOne
     private Coach teacher;
 
-    @ManyToMany(mappedBy = "courses")
+    @ManyToMany
+    @JoinTable(
+            name = "Course_participations"
+            , joinColumns = { @JoinColumn(name = "course_id") }
+            , inverseJoinColumns = { @JoinColumn(name = "username") }
+    )
     private List<Client> clients;
 
-    //private List<Feedback> feedbacks;
 
+    @OneToMany(mappedBy = "course")
+    private List<CourseFeedback> feedbacks;
     public Course(){
 
     }
@@ -140,7 +146,7 @@ public class Course {
         this.clients = clients;
     }
 
-//
+
 //    public List<Feedback> getFeedbacks() {
 //        return feedbacks;
 //    }
