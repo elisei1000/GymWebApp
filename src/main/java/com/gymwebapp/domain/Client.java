@@ -15,8 +15,7 @@ public class Client extends User {
 
     private Subscription subscription;
 
-    @OneToMany(mappedBy = "client")
-    private List<Feedback> feedbacks;
+//    private List<Feedback> feedbacks;
 
     @ManyToMany
     @JoinTable(
@@ -30,7 +29,7 @@ public class Client extends User {
         super(username, password, email, name, birthDay);
         this.subscription = subscription;
         this.courses = new ArrayList<>();
-        this.feedbacks = new ArrayList<>();
+//        this.feedbacks = new ArrayList<>();
     }
 
     public Client(){
@@ -49,7 +48,7 @@ public class Client extends User {
         this.subscription = subscription;
     }
 
-    public List<Feedback> getFeedbacks(){return this.feedbacks;}
+//    public List<Feedback> getFeedbacks(){return this.feedbacks;}
 
-    public void setFeedbacks(List<Feedback> feedbacks){this.feedbacks = feedbacks;}
+//    public void setFeedbacks(List<Feedback> feedbacks){this.feedbacks = feedbacks;}
 }

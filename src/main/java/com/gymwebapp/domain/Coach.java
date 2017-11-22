@@ -14,21 +14,20 @@ import java.util.List;
 @Table(name="Coach", uniqueConstraints = @UniqueConstraint(columnNames = {"username"}))
 public class Coach extends User {
 
-    @OneToMany(mappedBy = "Coach")
-    private List<CoachFeedback> feedbacks;
+//    private List<Feedback> feedbacks;
 
     public Coach(String username, String password, String email, String name, Date birthDay) {
         super(username, password, email, name, birthDay);
-        this.feedbacks = new ArrayList<>();
+//        this.feedbacks = new ArrayList<>();
     }
 
     public Coach(){
 
     }
 
-    public List<CoachFeedback> getFeedbacks(){return this.feedbacks;}
+//    public List<Feedback> getFeedbacks(){return this.feedbacks;}
 
-    public void setFeedbacks(List<CoachFeedback> feedbacks){this.feedbacks = feedbacks;}
+//    public void setFeedbacks(List<Feedback> feedbacks){this.feedbacks = feedbacks;}
 
 
 }

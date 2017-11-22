@@ -8,14 +8,23 @@ import java.util.Date;
 @Inheritance(strategy= InheritanceType.JOINED)
 public class Feedback {
 
+    @Id
+    @GeneratedValue
+    @Column(name = "feedback_id")
     private int id;
+
+    @Column(name = "starsCount")
     private int starsCount;
+
+    @Column(name = "summary")
     private String summary;
+
+    @Column(name = "details")
     private String details;
+
+    @Column(name = "date")
     private Date date;
 
-    @ManyToOne
-    @JoinColumn(name = "username", nullable = false)
     private Client author;
 
     public Feedback(){

@@ -5,11 +5,10 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name="Feedback", uniqueConstraints = @UniqueConstraint(columnNames = {"id"}))
+@Table(name="Feedback", uniqueConstraints = @UniqueConstraint(columnNames = {"feedback_id"}))
 public class CoachFeedback extends Feedback {
 
-    @ManyToOne
-    @JoinColumn(name = "username", nullable = false)
+
     private Coach coach;
 
     public CoachFeedback() {

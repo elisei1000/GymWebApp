@@ -2,16 +2,16 @@ package com.gymwebapp.domain;
 
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
-@Table(name="Feedback", uniqueConstraints = @UniqueConstraint(columnNames = {"id"}))
-public class CourseFeedback {
+@Table(name="Feedback", uniqueConstraints = @UniqueConstraint(columnNames = {"feedback_id"}))
+public class CourseFeedback extends Feedback{
 
-    @ManyToOne
-    @JoinColumn(name = "course_id", nullable = false)
     private Course course;
 
-    public CourseFeedback(Course course) {
+    public CourseFeedback(int id, int starsCount, String summary, String details, Date date, Client author, Course course) {
+        super(id, starsCount, summary, details, date, author);
         this.course = course;
     }
 
