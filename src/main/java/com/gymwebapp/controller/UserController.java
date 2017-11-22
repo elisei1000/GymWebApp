@@ -2,6 +2,7 @@ package com.gymwebapp.controller;
 
 import com.gymwebapp.domain.Client;
 import com.gymwebapp.domain.Coach;
+import com.gymwebapp.domain.Subscription;
 import com.gymwebapp.model.UserModel;
 import com.gymwebapp.service.UserService;
 import com.gymwebapp.util.Data;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,7 +28,7 @@ public class UserController {
     @PostMapping(value = "/login")
     public Data login(@RequestBody UserModel user) {
         List<String> errors = userService.checkIfExistUser(new Client(user.getUsername(), user.getPassword(),
-                user.getEmail(), user.getName(), user.getBirthDay()));
+                user.getEmail(), user.getName(), user.getBirthDay(), new Subscription(0, new Date(), new Date())));
 
         if(errors.size()==0){
             return new Data(Status.STATUS_OK,errors);
@@ -38,7 +40,7 @@ public class UserController {
     @PostMapping(value = "/register")
     public Data add(@RequestBody UserModel user) {
         List<String> errors = userService.addUser(new Client(user.getUsername(), user.getPassword(), user.getEmail(),
-                user.getName(), user.getBirthDay()));
+                user.getName(), user.getBirthDay(), new Subscription(0, new Date(), new Date())));
 
         if(errors.size()==0){
             return new Data(Status.STATUS_OK,errors);
