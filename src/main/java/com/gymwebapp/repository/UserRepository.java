@@ -7,22 +7,14 @@ import com.gymwebapp.domain.User;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 import java.util.List;
 
 /**
  * Created by david on 18.11.2017.
  */
 
-
-/*
-   AR TREBUI SA FIE DENUMIT IN CONTINUARE
-   USERRepository, pt ca o sa avem un singur UserRepo
- */
-
-
 @org.springframework.stereotype.Repository
-public class ClientRepository implements CrudRepository<User, String> {
+public class UserRepository implements CrudRepository<User, String> {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -38,14 +30,21 @@ public class ClientRepository implements CrudRepository<User, String> {
     }
 
     public boolean checkIfUserExists(User user){
+        Query q  = entityManager.createQuery("select c from User c where c.id = :username and c.password = :password");
+        q.setParameter("username",user.getUsername());
+        q.setParameter("password",user.getPassword());
+        List<Client> users = q.getResultList();
 
-        return (entityManager.find(User.class, user.getId()) != null);
+        if(users==null || users.size()==0){
+            return false;
+        }
+        return true;
     }
 
     public boolean checkIfUsernameExists(User user){
-        TypedQuery<User> q  = entityManager.createQuery("select c from User c where c.id = :username", User.class);
+        Query q  = entityManager.createQuery("select c from User c where c.id = :username");
         q.setParameter("username",user.getUsername());
-        List<User> users = q.getResultList();
+        List<Client> users = q.getResultList();
 
         if(users==null || users.size()==0){
               return false;
@@ -72,30 +71,16 @@ public class ClientRepository implements CrudRepository<User, String> {
 
     @Override
     public long size() {
-        TypedQuery<User> q = entityManager.createQuery("select u from User u", User.class);
-        List<User> users = q.getResultList();
-
-        return users.size();
+        return 0;
     }
 
     @Override
-    public User get(String s) throws RepositoryException{
-        if(entityManager.find(User.class, s) == null)
-        {
-            throw new RepositoryException("User doesn't exist in db");
-        }
+    public User get(String s) {
         return entityManager.find(User.class, s);
     }
 
     @Override
-    public List<User> getAll()throws RepositoryException {
-        TypedQuery<User> q = entityManager.createQuery("select u from User u", User.class);
-        List<User> users = q.getResultList();
-
-        if(users == null)
-            throw new RepositoryException("No users");
-
-        return users;
-
+    public List<User> getAll() {
+        return null;
     }
 }

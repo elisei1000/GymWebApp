@@ -3,7 +3,7 @@ package com.gymwebapp.service;
 import com.gymwebapp.domain.RepositoryException;
 import com.gymwebapp.domain.User;
 import com.gymwebapp.domain.Validator.UserValidator;
-import com.gymwebapp.repository.ClientRepository;
+import com.gymwebapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,17 +16,17 @@ import java.util.List;
  */
 
 @Service
-public class ClientService {
+public class UserService {
 
     @Autowired
-    private ClientRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
     private UserValidator userValidator;
 
     @Transactional
-    public <T extends User> List<String> addUser(User user){
-        List<String> errors=new ArrayList<String>();
+    public <T extends User> List<String> addUser(T user){
+        List<String> errors;
         errors = userValidator.validate(user);
         if(errors.size() != 0){
             return errors;
@@ -45,7 +45,13 @@ public class ClientService {
     @Transactional
     public List<String> checkIfExistUser(User user) {
         List<String> errors = new ArrayList<>();
-        errors = userValidator.validate(user);
+        if(user.getUsername() == null || user.getUsername().isEmpty()){
+            errors.add("Username is empty!");
+        }
+
+        if(user.getPassword() == null || user.getPassword().isEmpty()){
+            errors.add("Password is empty!");
+        }
 
         if(errors.size()!=0){
             return errors;
@@ -56,4 +62,5 @@ public class ClientService {
         }
         return errors;
     }
+
 }
