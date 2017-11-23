@@ -52,7 +52,4 @@ public class Client extends User {
         this.subscription = subscription;
     }
 
-//   public List<Feedback> getFeedbacks(){return this.feedbacks;}
-//
-//    public void setFeedbacks(List<Feedback> feedbacks){this.feedbacks = feedbacks;}
 }

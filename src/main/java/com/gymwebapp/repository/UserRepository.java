@@ -1,6 +1,7 @@
 package com.gymwebapp.repository;
 
 import com.gymwebapp.domain.Client;
+import com.gymwebapp.domain.Coach;
 import com.gymwebapp.domain.RepositoryException;
 import com.gymwebapp.domain.User;
 
@@ -68,5 +69,15 @@ public class UserRepository implements CrudRepository<User, String> {
         if(dbUser == null || !dbUser.getPassword().equals(user.getPassword()))
             return false;
         return true;
+    }
+
+    public List<Client> getAllClients(){
+        TypedQuery<Client> q = entityManager.createQuery("select c from Client c", Client.class);
+        return q.getResultList();
+    }
+
+    public List<Coach> getAllCoaches(){
+        TypedQuery<Coach> q = entityManager.createQuery("select c from Coach c", Coach.class);
+        return q.getResultList();
     }
 }

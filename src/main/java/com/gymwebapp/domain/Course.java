@@ -64,11 +64,6 @@ public class Course implements HasId<Integer>{
         this.feedbacks = new ArrayList<>();
     }
 
-//    public void addFeedback(CourseFeedback feedback)
-//    {
-//        feedbacks.add(feedback);
-//    }
-
     public void addClient(Client client)
     {
         clients.add(client);
