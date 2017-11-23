@@ -14,7 +14,7 @@ import java.util.List;
  */
 
 @org.springframework.stereotype.Repository
-public class ClientRepository implements CrudRepository<User, String> {
+public class UserRepository implements CrudRepository<User, String> {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -76,7 +76,7 @@ public class ClientRepository implements CrudRepository<User, String> {
 
     @Override
     public User get(String s) {
-        return null;
+        return entityManager.find(User.class, s);
     }
 
     @Override
