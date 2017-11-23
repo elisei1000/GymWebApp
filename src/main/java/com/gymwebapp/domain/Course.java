@@ -8,12 +8,12 @@ import java.util.List;
 
 @Entity
 @Table(name = "Course")
-public class Course {
+public class Course implements HasId<Integer>{
 
     @Id
     @GeneratedValue
     @Column(name = "course_id")
-    private int course_id;
+    private Integer id;
 
     @Column(name="difiicultyLevel")
     private int difficultyLevel;
@@ -52,7 +52,7 @@ public class Course {
     }
 
     public Course(int course_id, int difficultyLevel, int startHour, int endHour, Date startDate, Date endDate, int maxPlaces, Coach teacher) {
-        this.course_id = course_id;
+        this.id = course_id;
         this.difficultyLevel = difficultyLevel;
         this.startHour = startHour;
         this.endHour = endHour;
@@ -74,12 +74,12 @@ public class Course {
         clients.add(client);
     }
 
-    public int getCourse_id() {
-        return course_id;
+    public Integer getId() {
+        return id;
     }
 
-    public void setCourse_id(int course_id) {
-        this.course_id = course_id;
+    public void setId(Integer course_id) {
+        this.id = course_id;
     }
 
     public int getDifficultyLevel() {
@@ -147,11 +147,11 @@ public class Course {
     }
 
 
-//    public List<Feedback> getFeedbacks() {
-//        return feedbacks;
-//    }
-//
-//    public void setFeedbacks(List<Feedback> feedbacks) {
-//        this.feedbacks = feedbacks;
-//    }
+    public List<CourseFeedback> getFeedbacks() {
+        return feedbacks;
+    }
+
+    public void setFeedbacks(List<CourseFeedback> feedbacks) {
+        this.feedbacks = feedbacks;
+    }
 }

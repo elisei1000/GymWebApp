@@ -7,6 +7,8 @@ import com.gymwebapp.domain.User;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,65 +24,49 @@ public class UserRepository implements CrudRepository<User, String> {
 
     @Override
     public void add(User entity) throws RepositoryException {
-        if(this.checkIfUsernameExists(entity)){
+        User user = get(entity.getUsername());
+        if(user != null)
             throw new RepositoryException("Username already exists!");
-        }else {
-            entityManager.persist(entity);
-        }
+        entityManager.persist(entity);
     }
-
-    public boolean checkIfUserExists(User user){
-        Query q  = entityManager.createQuery("select c from User c where c.id = :username and c.password = :password");
-        q.setParameter("username",user.getUsername());
-        q.setParameter("password",user.getPassword());
-        List<Client> users = q.getResultList();
-
-        if(users==null || users.size()==0){
-            return false;
-        }
-        return true;
-    }
-
-    public boolean checkIfUsernameExists(User user){
-        Query q  = entityManager.createQuery("select c from User c where c.id = :username");
-        q.setParameter("username",user.getUsername());
-        List<Client> users = q.getResultList();
-
-        if(users==null || users.size()==0){
-              return false;
-        }
-         return true;
-        }
 
     @Override
     public void update(User entity) throws RepositoryException {
-        if(entityManager.find(User.class, entity.getId()) == null)
-        {
+        User user = get(entity.getUsername());
+        if(user == null)
             throw new RepositoryException("User doesn't exist");
-        }
-        entityManager.merge(entityManager.find(User.class, entity.getId()));
+        entityManager.merge(entity);
     }
 
     @Override
     public void remove(String s) throws RepositoryException {
-        if(entityManager.find(User.class, s) == null){
+        User user = get(s);
+        if(user == null)
             throw new RepositoryException("User doesn't exist in db");
-        }
-        entityManager.remove(entityManager.find(User.class, s));
+        entityManager.remove(user);
     }
 
     @Override
     public long size() {
-        return 0;
+        TypedQuery<User> q = entityManager.createQuery("select u from User u", User.class);
+        return q.getResultList().size();
     }
 
     @Override
-    public User get(String s) {
+    public User get(String s){
         return entityManager.find(User.class, s);
     }
 
     @Override
-    public List<User> getAll() {
-        return null;
+    public List<User> getAll(){
+        TypedQuery<User> q = entityManager.createQuery("select u from User u", User.class);
+        return q.getResultList();
+    }
+
+    public Boolean checkUserPassword(User user){
+        User dbUser = get(user.getUsername());
+        if(dbUser == null || !dbUser.getPassword().equals(user.getPassword()))
+            return false;
+        return true;
     }
 }
