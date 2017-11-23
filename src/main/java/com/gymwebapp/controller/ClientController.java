@@ -1,34 +1,30 @@
 package com.gymwebapp.controller;
 
 import com.gymwebapp.domain.Client;
-import com.gymwebapp.domain.Coach;
-import com.gymwebapp.domain.Subscription;
 import com.gymwebapp.model.UserModel;
-import com.gymwebapp.service.UserService;
+import com.gymwebapp.service.ClientService;
 import com.gymwebapp.util.Data;
 import com.gymwebapp.util.Status;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.Date;
 import java.util.List;
 
 /**
  * Created by david on 18.11.2017.
  */
 @org.springframework.web.bind.annotation.RestController
-public class UserController {
+public class ClientController {
 
     @Autowired
-    private UserService userService;
+    private ClientService userService;
 
     @PostMapping(value = "/login")
     public Data login(@RequestBody UserModel user) {
-        List<String> errors = userService.checkIfExistUser(new Client(user.getUsername(), user.getPassword(),
-                user.getEmail(), user.getName(), user.getBirthDay(), new Subscription(0, new Date(), new Date())));
+        Client client=new Client(user.getUsername(), user.getPassword(),
+                user.getEmail(), user.getName(), user.getBirthDay());
+        List<String> errors = userService.checkIfExistUser(client);
 
         if(errors.size()==0){
             return new Data(Status.STATUS_OK,errors);
@@ -40,7 +36,7 @@ public class UserController {
     @PostMapping(value = "/register")
     public Data add(@RequestBody UserModel user) {
         List<String> errors = userService.addUser(new Client(user.getUsername(), user.getPassword(), user.getEmail(),
-                user.getName(), user.getBirthDay(), new Subscription(0, new Date(), new Date())));
+                user.getName(), user.getBirthDay()));
 
         if(errors.size()==0){
             return new Data(Status.STATUS_OK,errors);

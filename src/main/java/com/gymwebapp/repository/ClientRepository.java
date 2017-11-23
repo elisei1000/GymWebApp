@@ -1,5 +1,6 @@
 package com.gymwebapp.repository;
 
+import com.gymwebapp.domain.Client;
 import com.gymwebapp.domain.RepositoryException;
 import com.gymwebapp.domain.User;
 
@@ -13,7 +14,7 @@ import java.util.List;
  */
 
 @org.springframework.stereotype.Repository
-public class UserRepository implements CrudRepository<User, String> {
+public class ClientRepository implements CrudRepository<User, String> {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -21,11 +22,35 @@ public class UserRepository implements CrudRepository<User, String> {
 
     @Override
     public void add(User entity) throws RepositoryException {
-        if(entityManager.find(User.class, entity.getId()) != null){
-            throw new RepositoryException("User exists in db");
+        if(this.checkIfUsernameExists(entity)){
+            throw new RepositoryException("Username already exists!");
+        }else {
+            entityManager.persist(entity);
         }
-        entityManager.persist(entity);
     }
+
+    public boolean checkIfUserExists(User user){
+        Query q  = entityManager.createQuery("select c from User c where c.id = :username and c.password = :password");
+        q.setParameter("username",user.getUsername());
+        q.setParameter("password",user.getPassword());
+        List<Client> users = q.getResultList();
+
+        if(users==null || users.size()==0){
+            return false;
+        }
+        return true;
+    }
+
+    public boolean checkIfUsernameExists(User user){
+        Query q  = entityManager.createQuery("select c from User c where c.id = :username");
+        q.setParameter("username",user.getUsername());
+        List<Client> users = q.getResultList();
+
+        if(users==null || users.size()==0){
+              return false;
+        }
+         return true;
+        }
 
     @Override
     public void update(User entity) throws RepositoryException {

@@ -23,7 +23,7 @@ public class UserValidator implements Validator<User> {
             errors.add("Password is empty!");
         }
 
-        if(user.getName().isEmpty()){
+        if(user.getName()!= null && user.getName().isEmpty()){
             errors.add("Name is empty!");
         }
 

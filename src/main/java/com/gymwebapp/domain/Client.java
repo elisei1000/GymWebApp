@@ -23,6 +23,12 @@ public class Client extends User {
     )
     private List<Course> courses;
 
+    public Client(String username, String password, String email, String name, Date birthDay) {
+        super(username, password, email, name, birthDay);
+        this.courses = new ArrayList<>();
+
+    }
+
     public Client(String username, String password, String email, String name, Date birthDay, Subscription subscription) {
         super(username, password, email, name, birthDay);
         this.subscription = subscription;
