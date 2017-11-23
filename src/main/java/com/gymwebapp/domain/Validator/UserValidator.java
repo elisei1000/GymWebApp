@@ -3,6 +3,7 @@ package com.gymwebapp.domain.Validator;
 import com.gymwebapp.domain.User;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,11 +24,20 @@ public class UserValidator implements Validator<User> {
             errors.add("Password is empty!");
         }
 
-        if(user.getName().isEmpty()){
+        if(user.getName() == null || user.getName().isEmpty()){
             errors.add("Name is empty!");
         }
 
-        if (null != user.getEmail()) {
+        if(user.getBirthDay() == null || user.getBirthDay().getTime() == 0
+                || user.getBirthDay().getTime() >= new Date().getTime()
+                ) {
+            errors.add("BirthDay is invalid!");
+        }
+
+        if(user.getEmail()== null || user.getEmail().isEmpty()){
+            errors.add("Email is empty!");
+        }
+        else {
             String regex = "^([_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*(\\.[a-zA-Z]{1,6}))?$";
             Pattern pattern = Pattern.compile(regex);
             Matcher matcher = pattern.matcher(user.getEmail());
@@ -35,6 +45,7 @@ public class UserValidator implements Validator<User> {
                 errors.add("Email is not valid!");
             }
         }
+
         return errors;
     }
 }

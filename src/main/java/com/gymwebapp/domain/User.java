@@ -9,7 +9,7 @@ import java.util.Date;
 @Entity
 @Table(name="User")
 @Inheritance(strategy=InheritanceType.JOINED)
-public abstract class User implements HasId<String>{
+public class User implements HasId<String>{
 
     @Id
     @Column(name="username")

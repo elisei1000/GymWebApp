@@ -27,11 +27,9 @@ public class TestRepository {
 
     }
 
-
     public void add(Test test){
         entityManager.persist(test);
     }
-
 
 
     public List<Test> getAll(){

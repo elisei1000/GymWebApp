@@ -1,22 +1,26 @@
 package com.gymwebapp.controller;
 
 import com.gymwebapp.domain.Client;
-import com.gymwebapp.domain.Coach;
+import com.gymwebapp.domain.User;
 import com.gymwebapp.model.UserModel;
 import com.gymwebapp.service.UserService;
-import com.gymwebapp.util.Data;
+import com.gymwebapp.util.Response;
 import com.gymwebapp.util.Status;
+import org.hibernate.SessionFactory;
+import org.springframework.data.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by david on 18.11.2017.
  */
+@CrossOrigin
 @org.springframework.web.bind.annotation.RestController
 public class UserController {
 
@@ -24,26 +28,28 @@ public class UserController {
     private UserService userService;
 
     @PostMapping(value = "/login")
-    public Data login(@RequestBody UserModel user) {
-        List<String> errors = userService.checkIfExistUser(new Client(user.getUsername(), user.getPassword(),
-                user.getEmail(), user.getName(), user.getBirthDay()));
+    public Response login(@RequestBody UserModel userModel) {
+        User user = new User(userModel.getUsername(), userModel.getPassword(),
+                userModel.getEmail(), userModel.getName(), userModel.getBirthDay());
+        List<String> errors = userService.checkIfExistUser(user);
 
         if(errors.size()==0){
-            return new Data(Status.STATUS_OK,errors);
+            return new Response(Status.STATUS_OK, errors);
         }else{
-            return new Data(Status.STATUS_NOT_LOGGED_IN,errors);
+            return new Response(Status.STATUS_FAILED, errors);
         }
     }
 
     @PostMapping(value = "/register")
-    public Data add(@RequestBody UserModel user) {
-        List<String> errors = userService.addUser(new Client(user.getUsername(), user.getPassword(), user.getEmail(),
-                user.getName(), user.getBirthDay()));
+    public Response add(@RequestBody UserModel userModel) {
+        Client client = new Client(userModel.getUsername(), userModel.getPassword(), userModel.getEmail(),
+                userModel.getName(), userModel.getBirthDay());
+        List<String> errors = userService.addUser(client);
 
         if(errors.size()==0){
-            return new Data(Status.STATUS_OK,errors);
+            return new Response(Status.STATUS_OK, errors);
         }else{
-            return new Data(Status.STATUS_FAILED,errors);
+            return new Response(Status.STATUS_FAILED, errors);
         }
     }
 }

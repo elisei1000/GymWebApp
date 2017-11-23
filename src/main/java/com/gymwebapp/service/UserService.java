@@ -1,10 +1,8 @@
 package com.gymwebapp.service;
 
-import com.gymwebapp.domain.Coach;
 import com.gymwebapp.domain.RepositoryException;
 import com.gymwebapp.domain.User;
 import com.gymwebapp.domain.Validator.UserValidator;
-import com.gymwebapp.model.UserModel;
 import com.gymwebapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,8 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by david on 18.11.2017.
@@ -30,7 +26,7 @@ public class UserService {
 
     @Transactional
     public <T extends User> List<String> addUser(T user){
-        List<String> errors=new ArrayList<String>();
+        List<String> errors;
         errors = userValidator.validate(user);
         if(errors.size() != 0){
             return errors;
@@ -46,10 +42,25 @@ public class UserService {
         return errors;
     }
 
-
+    @Transactional
     public List<String> checkIfExistUser(User user) {
         List<String> errors = new ArrayList<>();
-        User dbUser = userRepository.get(user.getId());
+        if(user.getUsername() == null || user.getUsername().isEmpty()){
+            errors.add("Username is empty!");
+        }
+
+        if(user.getPassword() == null || user.getPassword().isEmpty()){
+            errors.add("Password is empty!");
+        }
+
+        if(errors.size()!=0){
+            return errors;
+        }
+
+        if(!userRepository.checkIfUserExists(user)){
+            errors.add("Username or password is incorrect!");
+        }
         return errors;
     }
+
 }
