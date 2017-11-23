@@ -61,7 +61,7 @@ public class Course implements HasId<Integer>{
         this.maxPlaces = maxPlaces;
         this.teacher = teacher;
         this.clients = new ArrayList<>();
-        //this.feedbacks = new ArrayList<>();
+        this.feedbacks = new ArrayList<>();
     }
 
 //    public void addFeedback(CourseFeedback feedback)
