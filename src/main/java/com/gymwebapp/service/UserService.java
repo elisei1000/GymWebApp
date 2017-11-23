@@ -57,7 +57,7 @@ public class UserService {
             return errors;
         }
 
-        if(!userRepository.checkIfUserExists(user)){
+        if(!userRepository.checkUserPassword(user)){
             errors.add("Username or password is incorrect!");
         }
         return errors;

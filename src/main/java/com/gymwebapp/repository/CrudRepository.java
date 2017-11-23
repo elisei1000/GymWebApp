@@ -14,5 +14,5 @@ public interface CrudRepository<E extends HasId<ID>, ID> {
     void remove(ID id) throws RepositoryException;
     long size();
     E get(ID id);
-    List<E> getAll();
+    List<E> getAll() throws RepositoryException;
 }
