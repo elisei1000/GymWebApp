@@ -1,0 +1,129 @@
+/* Styles Switcher */
+
+#style-switcher {
+    background: #fff none repeat scroll 0 0;
+    border-radius: 0 0 3px;
+    box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.2);
+    right: 0;
+    position: fixed;
+    top: 300px;
+    width: 190px;
+    z-index: 9999;
+}
+
+#style-switcher div {
+    padding: 0px 10px;
+}
+
+#style-switcher h4 {
+    color: #333;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    margin-bottom: 0;
+    margin-right: 0;
+    margin-top: 0;
+    padding: 10px 0;
+    text-align: center;
+    text-transform: uppercase;    
+    font-weight: bold;
+}
+
+#style-switcher h4 a {
+    background: #ECECEC none repeat scroll 0 0;
+    display: block;
+    height: 50px;
+    position: absolute;
+    left: -50px;
+    top: 0;
+    width: 50px;
+}
+
+#style-switcher h4 a i {
+    color: #fff;
+    font-size: 26px;
+    left: 14px;
+    position: absolute;
+    top: 12px;
+}
+
+.colors {
+    padding-left: 15px;
+}
+
+.colors {
+    list-style: none;
+    margin: 0px 0px 10px 0px;
+    overflow: hidden;
+}
+
+.colors li {
+    float: left;
+}
+
+.colors li a {
+    border-radius: 100px;
+    cursor: pointer;
+    display: block;
+    height: 35px;
+    margin: 6px;
+    width: 35px;
+}
+
+.layout-style select {
+    width: 100%;
+    padding: 5px;
+    border: none;
+    margin: 0 0 0 -5px;
+    color: #fff;
+    cursor: pointer;
+}
+
+#reset {
+    margin: 0 0 15px 2px;
+}
+
+#reset a {
+    color: #fff;
+    font-size: 12px;
+}
+
+.style1 {
+    background: #ff0a78;
+}
+
+.style2 {
+    background: #0092ff;
+}
+
+.style3 {
+    background: #7712d5;
+}
+
+.style4 {
+    background: #FF5301;
+}
+
+.style5 {
+    background: #FF3751;
+}
+
+.style6 {
+    background: #00bb58;
+}
+
+.colors li a.active {
+    box-shadow: 0 0 0px 2px #fff;
+}
+
+.icon-2x {
+    color: #fff;
+    font-size: 22px;
+    line-height: 30px;
+}
+
+@media only screen and (max-width: 992px) {
+    #style-switcher {
+        /*display: none;*/
+        top: 50%;
+    }
+}
