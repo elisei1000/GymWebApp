@@ -8,12 +8,12 @@ import java.util.List;
 
 @Entity
 @Table(name = "Course")
-public class Course implements HasId<Integer> {
+public class Course implements HasId<Integer>{
 
     @Id
     @GeneratedValue
     @Column(name = "course_id")
-    private Integer course_id;
+    private Integer id;
 
     @Column(name="difiicultyLevel")
     private int difficultyLevel;
@@ -52,7 +52,7 @@ public class Course implements HasId<Integer> {
     }
 
     public Course(int course_id, int difficultyLevel, int startHour, int endHour, Date startDate, Date endDate, int maxPlaces, Coach teacher) {
-        this.course_id = course_id;
+        this.id = course_id;
         this.difficultyLevel = difficultyLevel;
         this.startHour = startHour;
         this.endHour = endHour;
@@ -61,17 +61,25 @@ public class Course implements HasId<Integer> {
         this.maxPlaces = maxPlaces;
         this.teacher = teacher;
         this.clients = new ArrayList<>();
-        //this.feedbacks = new ArrayList<>();
+        this.feedbacks = new ArrayList<>();
     }
 
-    @Override
+//    public void addFeedback(CourseFeedback feedback)
+//    {
+//        feedbacks.add(feedback);
+//    }
+
+    public void addClient(Client client)
+    {
+        clients.add(client);
+    }
+
     public Integer getId() {
-        return course_id;
+        return id;
     }
 
-    @Override
-    public void setId(Integer integer) {
-        this.course_id = integer;
+    public void setId(Integer course_id) {
+        this.id = course_id;
     }
 
     public int getDifficultyLevel() {
@@ -138,4 +146,12 @@ public class Course implements HasId<Integer> {
         this.clients = clients;
     }
 
+
+    public List<CourseFeedback> getFeedbacks() {
+        return feedbacks;
+    }
+
+    public void setFeedbacks(List<CourseFeedback> feedbacks) {
+        this.feedbacks = feedbacks;
+    }
 }

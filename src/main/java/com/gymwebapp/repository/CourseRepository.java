@@ -15,66 +15,44 @@ public class CourseRepository implements CrudRepository<Course, Integer>{
     private EntityManager entityManager;
 
 
-    public boolean checkIfCourseExists(Course course) {
-
-        return (entityManager.find(Course.class, course.getId()) != null);
-    }
-
-    public boolean checkIfIdExists(Integer id){
-        return (entityManager.find(Course.class, id) != null);
-    }
-
     @Override
     public void add(Course entity) throws RepositoryException {
-        if(this.checkIfCourseExists(entity))
-        {
+        Course course = get(entity.getId());
+        if(course != null)
             throw new RepositoryException("Course already exists");
-        }
-
         entityManager.persist(entity);
     }
 
     @Override
     public void update(Course entity) throws RepositoryException {
-        if(!this.checkIfCourseExists(entity))
-        {
+        Course course = get(entity.getId());
+        if(course == null)
             throw new RepositoryException("Course doesn't exist");
-        }
-
-        entityManager.merge(entityManager.find(Course.class, entity.getId()));
+        entityManager.merge(entity);
     }
 
     @Override
     public void remove(Integer integer) throws RepositoryException {
-        if(!this.checkIfIdExists(integer))
-        {
+        Course course = get(integer);
+        if(course == null)
             throw new RepositoryException("Course doesn't exist");
-        }
-
-        entityManager.remove(entityManager.find(Course.class, integer));
+        entityManager.remove(course);
     }
 
     @Override
     public long size() {
         TypedQuery<Course> q = entityManager.createQuery("select c from Course c", Course.class);
-        List<Course> courses = q.getResultList();
-
-        return courses.size();
+        return q.getResultList().size();
     }
 
     @Override
-    public Course get(Integer integer) throws RepositoryException {
+    public Course get(Integer integer) {
         return entityManager.find(Course.class, integer);
     }
 
     @Override
     public List<Course> getAll() throws RepositoryException {
         TypedQuery<Course> q = entityManager.createQuery("select c from Course c", Course.class);
-        List<Course> courses = q.getResultList();
-
-        if(courses==null)
-            throw new RepositoryException("No courses");
-
-        return courses;
+        return q.getResultList();
     }
 }

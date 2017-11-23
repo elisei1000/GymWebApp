@@ -13,6 +13,6 @@ public interface CrudRepository<E extends HasId<ID>, ID> {
     void update(E entity) throws RepositoryException;
     void remove(ID id) throws RepositoryException;
     long size();
-    E get(ID id) throws RepositoryException;
+    E get(ID id);
     List<E> getAll() throws RepositoryException;
 }
