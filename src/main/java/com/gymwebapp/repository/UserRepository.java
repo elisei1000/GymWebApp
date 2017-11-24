@@ -66,7 +66,7 @@ public class UserRepository implements CrudRepository<User, String> {
 
     public Boolean checkUserPassword(User user){
         User dbUser = get(user.getUsername());
-        if(dbUser == null || !dbUser.getPassword().equals(user.getPassword()))
+        if(dbUser == null || dbUser.getPassword() ==null || !dbUser.getPassword().equals(user.getPassword()))
             return false;
         return true;
     }

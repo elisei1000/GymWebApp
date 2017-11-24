@@ -8,6 +8,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
+@org.springframework.stereotype.Repository
 public class FeedBackRepository implements CrudRepository<Feedback, Integer> {
 
     @PersistenceContext
@@ -19,7 +20,9 @@ public class FeedBackRepository implements CrudRepository<Feedback, Integer> {
     }
 
     public boolean checkIfIdExists(Integer id){
-        return (entityManager.find(Feedback.class, id) != null);
+
+        Feedback feedback = entityManager.find(Feedback.class, id);
+        return feedback.getId()!=null;
     }
 
     @Override
@@ -27,7 +30,6 @@ public class FeedBackRepository implements CrudRepository<Feedback, Integer> {
         if(checkIfFeedBackExists(entity)){
             throw new RepositoryException("Feedback already exists");
         }
-
         entityManager.persist(entity);
     }
 
@@ -55,24 +57,13 @@ public class FeedBackRepository implements CrudRepository<Feedback, Integer> {
     }
 
     @Override
-    public Feedback get(Integer integer) throws RepositoryException {
-        if(!checkIfIdExists(integer))
-        {
-            throw new RepositoryException("Feedback doesn't exist");
-        }
-
+    public Feedback get(Integer integer) {
         return entityManager.find(Feedback.class, integer);
     }
 
     @Override
-    public List<Feedback> getAll() throws RepositoryException {
+    public List<Feedback> getAll() {
         TypedQuery<Feedback> q = entityManager.createQuery("select f from Feedback f", Feedback.class);
-        List<Feedback> feedbacks = q.getResultList();
-
-        if(feedbacks==null){
-            throw new RepositoryException("No feedbacks");
-        }
-
-        return feedbacks;
+        return q.getResultList();
     }
 }
