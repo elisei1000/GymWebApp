@@ -92,5 +92,14 @@ public class User implements HasId<String>{
         this.birthDay = birthDay;
     }
 
-
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", name='" + name + '\'' +
+                ", birthDay=" + birthDay +
+                '}';
+    }
 }

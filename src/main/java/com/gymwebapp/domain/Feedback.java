@@ -90,5 +90,15 @@ public class Feedback implements HasId<Integer> {
         this.author = author;
     }
 
-
+    @Override
+    public String toString() {
+        return "Feedback{" +
+                "id=" + id +
+                ", starsCount=" + starsCount +
+                ", summary='" + summary + '\'' +
+                ", details='" + details + '\'' +
+                ", date=" + date +
+                ", author=" + author +
+                '}';
+    }
 }

@@ -51,8 +51,9 @@ public class CourseRepository implements CrudRepository<Course, Integer>{
     }
 
     @Override
-    public List<Course> getAll() throws RepositoryException {
+    public List<Course> getAll() {
         TypedQuery<Course> q = entityManager.createQuery("select c from Course c", Course.class);
         return q.getResultList();
     }
+
 }
