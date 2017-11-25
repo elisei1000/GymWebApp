@@ -50,7 +50,7 @@ function init(){
         return ;
     }
 
-    callServer(APIS.API_HAS_PERMISSION, HTTP_METHODS.GET, {});
+    callServer(APIS.API_HAS_PERMISSION, HTTP_METHODS.GET, {page: PAGE_COURSES});
     callServer(APIS.API_GET_COURSES, HTTP_METHODS.GET, {}, loadCourses)
 };
 

@@ -20,7 +20,7 @@ import java.util.List;
 public class UserRepository implements CrudRepository<User, String> {
 
     @PersistenceContext
-    private EntityManager entityManager;
+    EntityManager entityManager;
 
 
     @Override

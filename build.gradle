@@ -44,4 +44,5 @@ dependencies {
 	compile "com.fasterxml.jackson.core:jackson-databind:2.5.0"
 	compile 'mysql:mysql-connector-java'
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+	testCompile('com.h2database:h2')
 }
