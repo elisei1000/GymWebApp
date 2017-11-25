@@ -1,5 +1,6 @@
 package com.gymwebapp.repository;
 
+import com.gymwebapp.domain.Coach;
 import com.gymwebapp.domain.Course;
 import com.gymwebapp.domain.RepositoryException;
 
@@ -17,9 +18,7 @@ public class CourseRepository implements CrudRepository<Course, Integer>{
 
     @Override
     public void add(Course entity) throws RepositoryException {
-        Course course = get(entity.getId());
-        if(course != null)
-            throw new RepositoryException("Course already exists");
+
         entityManager.persist(entity);
     }
 
@@ -53,6 +52,12 @@ public class CourseRepository implements CrudRepository<Course, Integer>{
     @Override
     public List<Course> getAll() {
         TypedQuery<Course> q = entityManager.createQuery("select c from Course c", Course.class);
+        return q.getResultList();
+    }
+
+    public List<Course> getAllCoursesForCoach(Coach coach){
+        TypedQuery<Course> q = entityManager.createQuery("select c from Course c where c.teacher= ?1", Course.class);
+        q.setParameter(1, coach);
         return q.getResultList();
     }
 

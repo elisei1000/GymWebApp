@@ -1,9 +1,6 @@
 package com.gymwebapp.repository;
 
-import com.gymwebapp.domain.Client;
-import com.gymwebapp.domain.RepositoryException;
-import com.gymwebapp.domain.Subscription;
-import com.gymwebapp.domain.User;
+import com.gymwebapp.domain.*;
 import junit.framework.TestResult;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.Date;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 /**
@@ -86,6 +84,122 @@ public class UserRepositoryTest{
         }
     }
 
+    @Test
+    public void testAddNewCoachClientWithTheSameUsernameShouldThrowException(){
+
+        Date date = new Date();
+        Subscription subscription = new Subscription(1,new Date(), new Date());
+        Client client = new Client("username", "password", "email", "Elisei",
+                date, subscription);
+        try {
+            userRepository.add(client);
+
+            Coach coach = new Coach("username", "pass", "coach@yahoo.com", "grigore", new Date());
+
+            try{
+                userRepository.add(coach);
+                assert(false);
+            }catch (RepositoryException e){
+                assert(true);
+            }
+
+        }catch (RepositoryException e){
+            assert(false);
+        }
+
+    }
+
+    @Test
+    public void testUpdateCoachShouldUpdate(){
+
+        Coach coach = new Coach("username", "password", "email", "name", new Date());
+
+        try{
+
+            userRepository.add(coach);
+            Coach coach1 = new Coach("username", "password1", "email1", "name1", new Date());
+
+            userRepository.update(coach1);
+
+            coach = (Coach) userRepository.get("username");
+            assertThat(coach.getPassword()).isEqualTo("password1");
+            assertThat(coach.getEmail()).isEqualTo("email1");
+            assertThat(coach.getName()).isEqualTo("name1");
+
+        }catch (RepositoryException e){
+            assert(false);
+        }
+
+    }
+
+    @Test
+    public void testUpadteClientNotFoundShouldThrowException(){
+        Client client=new Client("username", "password", "email", "Elisei",
+                new Date(), new Subscription(1, new Date(), new Date()));
+        try{
+
+            userRepository.update(client);
+            assert(false);
+        }catch (RepositoryException e){
+            assert(true);
+        }
+    }
+
+    @Test
+    public void testDeleteAdministratorExistsShouldDelete(){
+
+        Administrator administrator = new Administrator("administrator", "password"
+                , "email", "name", new Date());
+
+        try{
+
+            userRepository.add(administrator);
+            assertThat(userRepository.size()).isEqualTo(1);
+
+            userRepository.remove("administrator");
+            assertThat(userRepository.size()).isEqualTo(0);
+        }catch (RepositoryException e){
+            assert(false);
+        }
+    }
+
+    @Test
+    public void testDeleteAdministratorDontExistShouldThrowException(){
+        try {
+            userRepository.remove("aaa");
+            assert(false);
+        }catch (RepositoryException e){
+            assert(true);
+        }
+    }
+
+    @Test
+    public void testGetAllCoachesAndGetAllClientsAndAllAdministrators(){
+        try {
+            userRepository.add(new Client("a", "a", "b", "a", new Date()));
+            userRepository.add(new Client("b", "a", "b", "a", new Date()));
+            userRepository.add(new Client("c", "a", "b", "a", new Date()));
+
+            userRepository.add(new Coach("aa", "aa", "aa", "aa",new Date()));
+            userRepository.add(new Coach("ab", "aa", "aa", "aa",new Date()));
+            userRepository.add(new Coach("ac", "aa", "aa", "aa",new Date()));
+            userRepository.add(new Coach("ad", "aa", "aa", "aa",new Date()));
+
+            userRepository.add(new Administrator("administrator", "password", "email", "name", new Date()));
+            userRepository.add(new Administrator("administrator1", "password", "email", "name", new Date()));
+            userRepository.add(new Administrator("administrator2", "password", "email", "name", new Date()));
+
+
+            assertThat(userRepository.getAllCoaches().size()).isEqualTo(4);
+            assertThat(userRepository.getAllClients().size()).isEqualTo(3);
+            assertThat(userRepository.getAllAdministrators().size()).isEqualTo(3);
+
+            assertThat(userRepository.getAll().size()).isEqualTo(10);
+
+        }catch (RepositoryException e){
+            assert(false);
+        }
+    }
 
 
 }

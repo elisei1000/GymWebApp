@@ -1,9 +1,6 @@
 package com.gymwebapp.repository;
 
-import com.gymwebapp.domain.Client;
-import com.gymwebapp.domain.Coach;
-import com.gymwebapp.domain.RepositoryException;
-import com.gymwebapp.domain.User;
+import com.gymwebapp.domain.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -78,6 +75,11 @@ public class UserRepository implements CrudRepository<User, String> {
 
     public List<Coach> getAllCoaches(){
         TypedQuery<Coach> q = entityManager.createQuery("select c from Coach c", Coach.class);
+        return q.getResultList();
+    }
+
+    public List<Administrator> getAllAdministrators(){
+        TypedQuery<Administrator> q = entityManager.createQuery("select a from Administrator a", Administrator.class);
         return q.getResultList();
     }
 }

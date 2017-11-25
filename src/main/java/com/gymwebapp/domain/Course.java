@@ -11,7 +11,7 @@ import java.util.List;
 public class Course implements HasId<Integer>{
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "course_id")
     private Integer id;
 
@@ -33,6 +33,12 @@ public class Course implements HasId<Integer>{
     @Column(name = "maxPlaces")
     private int maxPlaces;
 
+    @Column(name="title")
+    private String title;
+
+    @Column(name="description")
+    private String description;
+
     @ManyToOne
     private Coach teacher;
 
@@ -51,8 +57,7 @@ public class Course implements HasId<Integer>{
 
     }
 
-    public Course(int course_id, int difficultyLevel, int startHour, int endHour, Date startDate, Date endDate, int maxPlaces, Coach teacher) {
-        this.id = course_id;
+    public Course(int difficultyLevel, int startHour, int endHour, Date startDate, Date endDate, int maxPlaces, Coach teacher) {
         this.difficultyLevel = difficultyLevel;
         this.startHour = startHour;
         this.endHour = endHour;
@@ -64,9 +69,49 @@ public class Course implements HasId<Integer>{
         this.feedbacks = new ArrayList<>();
     }
 
+    public Course(String title, String description, int difficultyLevel, int startHour, int endHour, Date startDate, Date endDate, int maxPlaces, Coach teacher) {
+        this.difficultyLevel = difficultyLevel;
+        this.startHour = startHour;
+        this.endHour = endHour;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.maxPlaces = maxPlaces;
+        this.teacher = teacher;
+        this.clients = new ArrayList<>();
+        this.feedbacks = new ArrayList<>();
+        this.title = title;
+        this.description = description;
+    }
+
+
+    public Course(int difficultyLevel, int startHour, int endHour, Date startDate, Date endDate, int maxPlaces){
+        this.difficultyLevel = difficultyLevel;
+        this.startHour = startHour;
+        this.endHour=endHour;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.maxPlaces = maxPlaces;
+    }
+
     public void addClient(Client client)
     {
         clients.add(client);
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "id=" + id +
+                ", difficultyLevel=" + difficultyLevel +
+                ", startHour=" + startHour +
+                ", endHour=" + endHour +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", maxPlaces=" + maxPlaces +
+                ", teacher=" + teacher +
+                ", clients=" + clients +
+                ", feedbacks=" + feedbacks +
+                '}';
     }
 
     public Integer getId() {

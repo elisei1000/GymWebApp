@@ -20,6 +20,17 @@ public class Coach extends User {
         this.feedbacks = new ArrayList<>();
     }
 
+    public Coach(String username, String password){
+        super(username, password);
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + "Coach{" +
+                "feedbacks=" + feedbacks +
+                '}';
+    }
+
     public Coach(){
 
     }
