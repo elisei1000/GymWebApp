@@ -1,7 +1,6 @@
 package com.gymwebapp.repository;
 
-import com.gymwebapp.domain.Feedback;
-import com.gymwebapp.domain.RepositoryException;
+import com.gymwebapp.domain.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -21,15 +20,19 @@ public class FeedBackRepository implements CrudRepository<Feedback, Integer> {
 
     public boolean checkIfIdExists(Integer id){
 
-        Feedback feedback = entityManager.find(Feedback.class, id);
-        return feedback.getId()!=null;
+        try {
+            Feedback feedback = get(id);
+            if (feedback.getId() == null || feedback == null)
+                return false;
+            return true;
+        }
+        catch (NullPointerException e){
+            return false;
+        }
     }
 
     @Override
     public void add(Feedback entity) throws RepositoryException {
-        if(checkIfFeedBackExists(entity)){
-            throw new RepositoryException("Feedback already exists");
-        }
         entityManager.persist(entity);
     }
 
@@ -38,7 +41,6 @@ public class FeedBackRepository implements CrudRepository<Feedback, Integer> {
         if(!checkIfFeedBackExists(entity)){
             throw new RepositoryException("Feedback doesn't exist");
         }
-
         entityManager.merge(entity);
     }
 
@@ -64,6 +66,22 @@ public class FeedBackRepository implements CrudRepository<Feedback, Integer> {
     @Override
     public List<Feedback> getAll() {
         TypedQuery<Feedback> q = entityManager.createQuery("select f from Feedback f", Feedback.class);
+        return q.getResultList();
+    }
+
+    public List<Feedback> getAllClientFeedbacks(Client client){
+        TypedQuery<Feedback> q = entityManager.createQuery("select f from Feedback f where f.author=?1", Feedback.class);
+        q.setParameter(1, client);
+        return q.getResultList();
+    }
+
+    public List<CourseFeedback> getAllCourseFeedbacks(){
+        TypedQuery<CourseFeedback> q = entityManager.createQuery("select f from CourseFeedback f", CourseFeedback.class);
+        return q.getResultList();
+    }
+
+    public List<CoachFeedback> getAllCoachFeedbacks(){
+        TypedQuery<CoachFeedback> q = entityManager.createQuery("select f from CoachFeedback f", CoachFeedback.class);
         return q.getResultList();
     }
 }

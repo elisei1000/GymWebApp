@@ -9,7 +9,7 @@ import java.util.Date;
 public class Feedback implements HasId<Integer> {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "feedback_id")
     private Integer id;
 
@@ -32,8 +32,7 @@ public class Feedback implements HasId<Integer> {
 
     }
 
-    public Feedback(int id, int starsCount, String summary, String details, Date date, Client author) {
-        this.id = id;
+    public Feedback( int starsCount, String summary, String details, Date date, Client author) {
         this.starsCount = starsCount;
         this.summary = summary;
         this.details = details;

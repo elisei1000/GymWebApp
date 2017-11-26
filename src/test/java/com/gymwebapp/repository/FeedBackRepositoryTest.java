@@ -1,89 +1,186 @@
 package com.gymwebapp.repository;
 
-import com.gymwebapp.domain.Client;
-import com.gymwebapp.domain.Feedback;
-import com.gymwebapp.domain.RepositoryException;
+
+import static java.lang.Math.toIntExact;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import com.gymwebapp.domain.*;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.junit.runner.RunWith;
+import org.junit.runner.Runner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
+
+@RunWith(SpringRunner.class)
+@DataJpaTest
 public class FeedBackRepositoryTest {
 
-    @InjectMocks
-    private FeedBackRepository victim;
+    @Autowired
+    private TestEntityManager testEntityManager;
 
-    @Mock
-    private EntityManager entityManager;
+    @Autowired
+    private FeedBackRepository feedBackRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private CourseRepository courseRepository;
 
     @Before
     public void setUp() throws Exception {
-        victim = new FeedBackRepository();
-        MockitoAnnotations.initMocks(this);
+
+        userRepository.add(new Client("client1","a","a","a", new Date()));
+        userRepository.add(new Client("client2","a","a","a", new Date()));
+        userRepository.add(new Client("client3","a","a","a", new Date()));
+
+
+        feedBackRepository.add(new Feedback(4,"a","a<",new Date(),(Client)userRepository.get("client1")));
+        feedBackRepository.add(new Feedback(3,"a","a<",new Date(),(Client) userRepository.get("client2")));
+        feedBackRepository.add(new Feedback(2,"a","a<",new Date(),(Client) userRepository.get("client3")));
+        feedBackRepository.add(new Feedback(5,"a","a<",new Date(),(Client) userRepository.get("client1")));
+        feedBackRepository.add(new Feedback(5,"a","a<",new Date(),(Client)userRepository.get("client1")));
+        feedBackRepository.add(new Feedback(4,"a","a<",new Date(),(Client)userRepository.get("client2")));
+        //  size = 6
+    }
+
+
+    @Test
+    public void testAddNewFeedbackExistingClientShouldAddClientInRepository(){
+
+        try {
+            feedBackRepository.add(new Feedback(4, "asda", "null", new Date(), (Client) userRepository.get("client1")));
+
+            assertThat(feedBackRepository.size()).isEqualTo(7);
+
+            List<Feedback> feedbacks = feedBackRepository.getAll();
+            Feedback feedback = feedbacks.get(feedbacks.size()-1);
+
+            assertThat(feedback.getAuthor()).isEqualTo(userRepository.get("client1"));
+            assertThat(feedback.getDetails()).isEqualTo("null");
+            assertThat(feedback.getSummary()).isEqualTo("asda");
+            assertThat(feedback.getStarsCount()).isEqualTo(4);
+
+        }catch (RepositoryException e){
+            assert(false);
+        }
     }
 
     @Test
-    public void testGetIntegerFoundReturnFeedback() throws Exception{
-        //given
-        Feedback feedback = new Feedback(1,2,"a","a",new Date(),new Client());
-        //when
-        when(entityManager.find(any(), any())).thenReturn(feedback);
-        //then
-        Feedback feedback1 = victim.get(1);
-        assertTrue(feedback1.getId()==1);
+    public void testUpdateFeedBackExistingShouldUpdate(){
+
+        try{
+
+            Feedback feedback = new Feedback(4, "aaaa", "Aaaa", new Date(), (Client) userRepository.get("client2"));
+            int id = feedBackRepository.getAll().get(0).getId();
+            feedback.setId(id);
+
+            feedBackRepository.update(feedback);
+            feedback = feedBackRepository.get(id);
+
+            assertThat(feedback.getStarsCount()).isEqualTo(4);
+            assertThat(feedback.getSummary()).isEqualTo("aaaa");
+            assertThat(feedback.getDetails()).isEqualTo("Aaaa");
+            assertThat(feedback.getAuthor()).isEqualTo(userRepository.get("client2"));
+
+        }catch (RepositoryException e){
+            assert(false);
+        }
     }
 
     @Test
-    public void testGetIntegerNotFoundThrowsRepositoryException() throws Exception{
-        //when
-        when(entityManager.find(any(), any())).thenReturn(null);
-        //then
-        Feedback feedback1 = victim.get(1);
-        assertTrue(feedback1==null);
+    public void testUpdateFeedBackNotExistingShouldThrowRepositoryException(){
+
+        try{
+
+            Feedback feedback = new Feedback(4, "aaaa", "Aaaa", new Date(), (Client) userRepository.get("client2"));
+            feedback.setId(30000);
+
+            feedBackRepository.update(feedback);
+            assert(false);
+
+        }catch (RepositoryException e){
+            assert(true);
+        }
     }
 
     @Test
-    public void testGetAllNoFeedbacksThrowRepositoryException() throws Exception{
-        //given
-        TypedQuery<Object> mock = mock(TypedQuery.class);
-        ArrayList<Object> feedbacks = new ArrayList<>();
-        //when
-        when(mock.getResultList()).thenReturn(feedbacks);
-        when(entityManager.createQuery(any(), any())).thenReturn(mock);
-        //then
+    public void testFeedbackDeleteExistingShouldDelete(){
 
-        List<Feedback> feedbackList = victim.getAll();
-        assertTrue(feedbackList.size()==0);
 
+        try{
+
+            assertThat(feedBackRepository.size()).isEqualTo(6);
+
+            int id = feedBackRepository.getAll().get(0).getId();
+            feedBackRepository.remove(id);
+
+            assertThat(feedBackRepository.size()).isEqualTo(5);
+        }catch (RepositoryException e){
+            assert(false);
+        }
 
     }
 
     @Test
-    public void testGetAllAtLeastOneFeedbackReturnsList() throws Exception{
-        //given
-        TypedQuery<Object> mock = mock(TypedQuery.class);
-        ArrayList<Object> feedbacks = new ArrayList<>();
-        feedbacks.add(new Feedback(1,1,"a","a",new Date(), new Client()));
-        feedbacks.add(new Feedback(2,3,"ba","ab",new Date(), new Client()));
-        //when
-        when(mock.getResultList()).thenReturn(feedbacks);
-        when(entityManager.createQuery(any(), any())).thenReturn(mock);
-        //then
-        List<Feedback> feedbackList = victim.getAll();
-        assertTrue(feedbackList.size() == 2);
+    public void testFeedBackDeleteNotExistingShouldThrowRepositoryException(){
+        try{
+
+            feedBackRepository.remove(213000);
+            assert(false);
+        }catch (RepositoryException e){
+            assert(true);
+        }
+    }
+
+    @Test
+    public void testGetAllClientFeedBacksShouldReturnList(){
+
+        List<Feedback> feedbacks = feedBackRepository.getAllClientFeedbacks((Client)userRepository.get("client1"));
+        assertThat(feedbacks.size()).isEqualTo(3);
+    }
+
+    @Test
+    public void testGetAllCourseFeedbacksShouldReturnList(){
+        try {
+            userRepository.add(new Coach("coach1", "pass"));
+            feedBackRepository.add(new CoachFeedback(5, "aa", "asda", new Date()
+                    , (Client) userRepository.get("client2")
+                    , (Coach)userRepository.get("coach1")));
+
+            List<CoachFeedback> courseFeedbacks = feedBackRepository.getAllCoachFeedbacks();
+            assertThat(courseFeedbacks.size()).isEqualTo(1);
+
+        }catch (RepositoryException e){
+            assert(false);
+        }
+    }
+
+    @Test
+    public void testGetAllCoachFeedbacksShouldReturnList(){
+
+        try {
+            userRepository.add(new Coach("coach1", "pass"));
+            courseRepository.add(new Course("a","a",4,4,4,new Date(), new Date(),10,(Coach)userRepository.get("coach1")));
+            List<Course> courseList = courseRepository.getAll();
+            int id = courseList.get(0).getId();
+            feedBackRepository.add(new CourseFeedback(4,"a","a",new Date(),(Client)userRepository.get("client1"), courseRepository.get(id) ));
+
+            List<CourseFeedback> courseFeedbackList = feedBackRepository.getAllCourseFeedbacks();
+            assertThat(courseFeedbackList.size()).isEqualTo(1);
+
+        }catch (RepositoryException e){
+            assert(false);
+        }
 
     }
 

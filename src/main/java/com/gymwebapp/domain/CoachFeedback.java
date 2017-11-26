@@ -16,8 +16,8 @@ public class CoachFeedback extends Feedback {
 
     }
 
-    public CoachFeedback(int id, int starsCount, String summary, String details, Date date, Client author, Coach coach) {
-        super(id, starsCount, summary, details, date, author);
+    public CoachFeedback( int starsCount, String summary, String details, Date date, Client author, Coach coach) {
+        super( starsCount, summary, details, date, author);
         this.coach = coach;
     }
 

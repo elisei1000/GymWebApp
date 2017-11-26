@@ -12,8 +12,8 @@ public class CourseFeedback extends Feedback{
     @JoinColumn(name="course_id", referencedColumnName = "course_id")
     private Course course;
 
-    public CourseFeedback(int id, int starsCount, String summary, String details, Date date, Client author, Course course) {
-        super(id, starsCount, summary, details, date, author);
+    public CourseFeedback(int starsCount, String summary, String details, Date date, Client author, Course course) {
+        super(starsCount, summary, details, date, author);
         this.course = course;
     }
 
