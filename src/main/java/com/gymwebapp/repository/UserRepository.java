@@ -4,9 +4,7 @@ import com.gymwebapp.domain.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,7 +31,10 @@ public class UserRepository implements CrudRepository<User, String> {
         User user = get(entity.getUsername());
         if(user == null)
             throw new RepositoryException("User doesn't exist");
-        entityManager.merge(entity);
+        user.setPassword(entity.getPassword());
+        user.setEmail(entity.getEmail());
+        user.setName(entity.getName());
+        user.setBirthDay(entity.getBirthDay());
     }
 
     @Override

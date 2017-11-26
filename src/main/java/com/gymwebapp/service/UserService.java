@@ -1,5 +1,6 @@
 package com.gymwebapp.service;
 
+import com.gymwebapp.domain.Coach;
 import com.gymwebapp.domain.RepositoryException;
 import com.gymwebapp.domain.User;
 import com.gymwebapp.domain.Validator.UserValidator;
@@ -61,6 +62,42 @@ public class UserService {
             errors.add("Username or password is incorrect!");
         }
         return errors;
+    }
+
+    @Transactional
+    public <T extends User> List<String> updateUser(T user) {
+        List<String> errors = userValidator.validate(user);
+        if (errors.size() != 0) {
+            return errors;
+        }
+        if (!user.getUsername().isEmpty()) {
+            try {
+                userRepository.update(user);
+            } catch (RepositoryException e) {
+                errors.add(e.getMessage());
+            }
+        } else
+            errors.add("Username is empty !");
+        return errors;
+    }
+
+    @Transactional
+    public <T extends User> List<String> removeUser(T user) {
+        List<String> errors = new ArrayList<>();
+        if (!user.getUsername().isEmpty()) {
+            try {
+                userRepository.remove(user.getUsername());
+            } catch (RepositoryException e) {
+                errors.add(e.getMessage());
+            }
+        } else
+            errors.add("Username is empty !");
+        return errors;
+    }
+
+    @Transactional
+    public List<Coach> getAllCoaches() {
+        return userRepository.getAllCoaches();
     }
 
 }
