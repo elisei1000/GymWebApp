@@ -289,10 +289,10 @@ window.onload = function() {
                 1000);
             return false;
         } else {
-            $('html,body').animate({
-                    scrollTop: $('[id="' + animate_val + '"]').offset().top - 50
-                },
-                1000);
+            // $('html,body').animate({
+            //         scrollTop: $('[id="' + animate_val + '"]').offset().top - 50
+            //     },
+            //     1000);
             return false;
         }
     }
