@@ -175,8 +175,8 @@ textarea {
 
 a {
     outline: none;
-    text-decoration: none;
-    color: #201f1f;
+    text-decoration: underline;
+    color: #FFFFFF;
     transition: all 0.3s ease-in-out;
     -webkit-transition: all 0.3s ease-in-out;
     -moz-transition: all 0.3s ease-in-out;
@@ -215,6 +215,10 @@ a:focus {
     font-family: Flaticon;
     font-size: 20px;
     font-style: normal;
+}
+
+.list-without-bullets {
+    list-style-type: none;
 }
 
 .flaticon-arm:before {
@@ -865,7 +869,7 @@ p {
 /* 2.5  Head Wrap*/
 
 .head_wrap{    
-    position: fixed;
+    position: absolute;
     width: 100%;
     z-index: 999;
 }
@@ -889,6 +893,13 @@ p {
     height: 100vh;
     background-image: url(../images/footerBg.jpg);
 }
+
+#mainBox{
+    display: cover;
+    height: 100vh;
+    background-color: #000;
+}
+
 .top-head ul {
     display: inline-block;
     padding-right: 15px;
