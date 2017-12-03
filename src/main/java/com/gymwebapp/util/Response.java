@@ -3,6 +3,7 @@ package com.gymwebapp.util;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.gymwebapp.domain.User;
 import org.springframework.data.util.Pair;
 
 import java.util.HashMap;

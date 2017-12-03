@@ -23,9 +23,10 @@ public class SubscriptionRepository implements CrudRepository<Subscription, Inte
 
     @Override
     public void update(Subscription entity) throws RepositoryException {
-        if(!checkIfSubscriptionExists(entity.getId()))
+        Subscription resultFind = entityManager.find(Subscription.class, entity.getId());
+        if(resultFind==null)
             throw new RepositoryException("Subscription doesn't exists");
-        entityManager.merge(entity);
+        resultFind.setEndDate(entity.getEndDate());
     }
 
     @Override
