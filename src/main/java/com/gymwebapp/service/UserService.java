@@ -112,5 +112,4 @@ public class UserService {
     public List<Coach> getAllCoaches() {
         return userRepository.getAllCoaches();
     }
-
 }

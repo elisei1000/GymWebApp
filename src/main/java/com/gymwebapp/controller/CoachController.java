@@ -1,7 +1,10 @@
 package com.gymwebapp.controller;
 
 import com.gymwebapp.domain.Coach;
+import com.gymwebapp.domain.CoachFeedback;
+import com.gymwebapp.model.FeedbackModel;
 import com.gymwebapp.model.UserModel;
+import com.gymwebapp.service.FeedBackService;
 import com.gymwebapp.service.UserService;
 import com.gymwebapp.util.Response;
 import com.gymwebapp.util.Status;
@@ -21,6 +24,9 @@ public class CoachController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private FeedBackService feedBackService;
 
     @PostMapping(value = "/coach")
     public Response add(@RequestBody UserModel userModel) {
@@ -64,5 +70,14 @@ public class CoachController {
         for (Coach c : coaches)
             c.setPassword(null);
         return new Response(Status.STATUS_OK, new ArrayList<>(), Pair.of("coaches", coaches));
+    }
+
+    @GetMapping(value = "/coach/{username}/feedback")
+    public Response getAllFeedBacks(@PathVariable String username) {
+        List<CoachFeedback> feedbacks = feedBackService.getAllCoachFeedBacks(username);
+        List<FeedbackModel> feedbackModels = new ArrayList<>();
+        for (CoachFeedback cf : feedbacks)
+            feedbackModels.add(new FeedbackModel(cf.getId(), cf.getStarsCount(), cf.getSummary(), cf.getDetails(), cf.getDate(), cf.getAuthor().getUsername()));
+        return new Response(Status.STATUS_OK, new ArrayList<>(), Pair.of("feedbacks", feedbackModels));
     }
 }
