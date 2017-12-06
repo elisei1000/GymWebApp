@@ -6,15 +6,11 @@ import com.gymwebapp.model.UserModel;
 import com.gymwebapp.service.UserService;
 import com.gymwebapp.util.Response;
 import com.gymwebapp.util.Status;
-import org.hibernate.SessionFactory;
-import org.springframework.data.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,7 +36,7 @@ public class UserController {
         }
     }
 
-    @PostMapping(value = "/register")
+    @PostMapping(value = "/user-register")
     public Response add(@RequestBody UserModel userModel) {
         Client client = new Client(userModel.getUsername(), userModel.getPassword(), userModel.getEmail(),
                 userModel.getName(), userModel.getBirthDay());
