@@ -20,7 +20,129 @@
     <link type="text/css" href="css/media.css?v=1.0" rel="stylesheet" />
     <link rel="stylesheet" href="css/switcher.css" type="text/css" />
     <link rel="stylesheet" href="css/switcher/style1.css" id="colors">
+    <style>
 
+        .course_thumbnail{
+            margin-top: 40px;
+            min-height: 200px;
+        }
+        .course_thumbnail >.content{
+            position: relative;
+            overflow: hidden;
+        }
+        .course_thumbnail >.content >.info{
+            position: absolute;
+            background-color: rgba(255, 140, 00, 0.8);
+            top: calc(100% - (40px));
+            width: 100%;
+            transition: top 0.2s ease-in-out, background-color 0.2s ease-in-out;
+            height: 100%;
+
+        }
+
+        .course_thumbnail >.content >.info:hover{
+            background-color: rgba(255, 140, 00, 1);
+            position: absolute;
+            top:  0;
+            bottom:0;
+        }
+
+        .course_thumbnail > .content >.info >.title{
+            font-size:1.5em;
+            line-height: 30px;
+            padding: 5px 10px 5px 10px;
+            text-transform: uppercase;
+            color: #ebebeb;
+            font-style: italic;
+            cursor: pointer;
+            font-family: 'Passion One', 'Arial', cursive;
+        }
+
+        .course_thumbnail .content .difficulty{
+            position: absolute;
+            top:5px;
+            right:5px;
+        }
+        .course_thumbnail .content .info .description{
+            position: absolute;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 5px;
+            height: calc(100% - 40px);
+        }
+
+        .course_thumbnail .content .info .description p{
+            max-height:100%;
+            text-align: justify;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 1em;
+
+        }
+
+
+        .popup{
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width:100%;
+            height:100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 1000000;
+            display: none;
+        }
+        .popup .popup-dialog{
+            position:relative;
+            top:0;
+            bottom:0;
+            left:0;
+            right:0;
+            width:70%;
+            min-width: 300px;
+            max-width: 700px;
+            height: 100%;
+            background-color: white;
+            margin: auto;
+            box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.4);
+        }
+
+
+        .popup .popup-content{
+
+        }
+
+        .popup-content .image{
+            background-image: url("images/box-2.jpg");
+            background-repeat: no-repeat;
+            background-position: center;
+            width: 100%;
+            padding: 20%;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .popup .close-button{
+            color: gray;
+            font-size: 1.25em;
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            font-family: Arial, "Times New Roman"   ;
+            line-height: 12px;
+            padding: 5px;
+            cursor:pointer;
+            z-index: 10000001;
+        }
+        .popup .close-button:hover{
+            color: rgba(50,50,50, 1);
+            font-weight: bold;
+        }
+
+
+
+    </style>
 </head>
 
 <body id="mainBox" class="creamBg" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" data-offset="150">
@@ -89,17 +211,33 @@
         <!-- Header Section Ends -->
     </div>
     <!-- Courses Section Begins -->
-    <div id="courses">
-        <div class="course_thumbnail">
-            <div class="image" ></div>
-            <div class="text" ></div>
-            <div class="difficulty"></div>
-        </div>
-    </div>
+        <section id="courses" class="courses pad-top-210">
+            <div class="container-fluid">
+                <div class="row no-margin">
+                    <div id="coursesGrid">
+
+                </div>
+            </div>
+
+        </section>
+
     <!-- Courses Section Ends -->
         
 
 
+    </div>
+
+    <div id="coursePopup" class="popup" role="dialog">
+        <div class="popup-dialog">
+
+            <!-- Modal content-->
+            <div class="popup-content">
+                <div class="close-button">&times;</div>
+                <div class="image" data-image-src="images/box-3.jpg"> </div>
+
+            </div>
+
+        </div>
     </div>
 
     <!-- Jquery Js -->

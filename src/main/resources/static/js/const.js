@@ -77,9 +77,17 @@ var HTTP_METHODS = {
 };
 
 
+var DIFFICULTY_LEVEL = {
+    1:"easy",
+    2:"medium",
+    3:"hard"
+};
+
+
 
 var OBJECT_KEYS = {
     COURSE : [
-        "id", "difficultyLevel", "startHour", "endHour", "startDate", "endDate", "maxPlaces"
+        "id", "difficultyLevel", "startHour", "endHour", "startDate", "endDate", "maxPlaces",
+        "title", "description"
     ],
 };
