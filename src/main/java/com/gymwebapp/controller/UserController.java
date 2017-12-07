@@ -7,9 +7,9 @@ import com.gymwebapp.service.UserService;
 import com.gymwebapp.util.Response;
 import com.gymwebapp.util.Status;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.data.util.Pair;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -43,15 +43,15 @@ public class UserController {
 //    }
 
 
-    @PostMapping(value = "/register")
+    @PostMapping(value = "/user-register")
     public Response add(@RequestBody UserModel userModel) {
         Client client = new Client(userModel.getUsername(), userModel.getPassword(), userModel.getEmail(),
                 userModel.getName(), userModel.getBirthDay());
         List<String> errors = userService.addUser(client);
 
-        if (errors.size() == 0) {
+        if(errors.size()==0){
             return new Response(Status.STATUS_OK, errors);
-        } else {
+        }else{
             return new Response(Status.STATUS_FAILED, errors);
         }
     }
