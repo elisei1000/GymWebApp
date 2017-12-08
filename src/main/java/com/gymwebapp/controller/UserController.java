@@ -29,18 +29,18 @@ public class UserController {
     @Autowired
     private SubscriptionService subscriptionService;
 
-//    @PostMapping(value = "/login")
-//    public Response login(@RequestBody UserModel userModel) {
-//        User user = new User(userModel.getUsername(), userModel.getPassword(),
-//                userModel.getEmail(), userModel.getName(), userModel.getBirthDay());
-//        List<String> errors = userService.checkIfExistUser(user);
-//
-//        if(errors.size()==0){
-//            return new Response(Status.STATUS_OK, errors);
-//        }else{
-//            return new Response(Status.STATUS_FAILED, errors);
-//        }
-//    }
+    @PostMapping(value = "/login")
+    public Response login(@RequestBody UserModel userModel) {
+        User user = new User(userModel.getUsername(), userModel.getPassword(),
+                userModel.getEmail(), userModel.getName(), userModel.getBirthDay());
+        List<String> errors = userService.checkIfExistUser(user);
+
+        if(errors.size()==0){
+            return new Response(Status.STATUS_OK, errors);
+        }else{
+            return new Response(Status.STATUS_FAILED, errors);
+        }
+    }
 
 
     @PostMapping(value = "/user-register")
@@ -75,7 +75,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/cuser/hasPermission", method = RequestMethod.GET)
-    public Response hasPermission(@RequestBody String page, Principal principal) {
+    public Response hasPermission(@RequestParam("page") String page, Principal principal) {
         User cuser = new User();
         Boolean isLogged = true;
         if (principal != null) {
