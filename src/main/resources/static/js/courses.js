@@ -96,8 +96,18 @@ function init(){
 
     initDialog();
 
-    callServer(APIS.API_HAS_PERMISSION, HTTP_METHODS.GET, {page: PAGE_COURSES});
-    callServer(APIS.API_GET_COURSES, HTTP_METHODS.GET, {}, loadCourses)
+    callServer(APIS.API_HAS_PERMISSION, HTTP_METHODS.GET, {page: PAGE_CLIENT_COURSES},
+        function() {
+            callServer(APIS.API_GET_COURSES, HTTP_METHODS.GET, {}, loadCourses)
+        },
+        redirectLogin,
+        function() {
+            callServer(APIS.API_HAS_PERMISSION, HTTP_METHODS.GET, {page:PAGE_COURSES},
+            function(){
+                callServer(APIS.API_GET_COURSES, HTTP_METHODS.GET, {}, loadCourses)
+            });
+        }
+    );
 };
 
 
