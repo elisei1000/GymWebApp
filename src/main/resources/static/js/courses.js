@@ -6,6 +6,7 @@ var courses = [];
 var coursesDiv;
 var courseDialog;
 var showDialog;
+var canAddFeedbacks = false;
 
 function courseClick(){
     showDialog();
@@ -94,18 +95,17 @@ function init(){
         return ;
     }
 
-    initDialog();
+
 
     callServer(APIS.API_HAS_PERMISSION, HTTP_METHODS.GET, {page: PAGE_CLIENT_COURSES},
         function() {
+            canAddFeedbacks = true;
+            initDialog();
             callServer(APIS.API_GET_COURSES, HTTP_METHODS.GET, {}, loadCourses)
         },
-        redirectLogin,
-        function() {
-            callServer(APIS.API_HAS_PERMISSION, HTTP_METHODS.GET, {page:PAGE_COURSES},
-            function(){
-                callServer(APIS.API_GET_COURSES, HTTP_METHODS.GET, {}, loadCourses)
-            });
+        function(){
+            initDialog();
+            callServer(APIS.API_GET_COURSES, HTTP_METHODS.GET, {}, loadCourses)
         }
     );
 };
