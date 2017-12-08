@@ -109,10 +109,11 @@
 
 
         .popup .popup-content{
-
+            overflow-y: auto;
+            height: 100%;
         }
 
-        .popup-content .image{
+        .popup-content .bannerImage{
             background-image: url("images/box-2.jpg");
             background-repeat: no-repeat;
             background-position: center;
@@ -141,6 +142,77 @@
             font-weight: bold;
         }
 
+        #coursePopup .title{
+            font-size:2em;
+            line-height: 40px;
+            padding: 5px 10px 5px 10px;
+            text-transform: uppercase;
+            color:  rgba(255, 140, 00, 1);;
+            font-style: italic;
+            font-family: 'Passion One', 'Arial', cursive;
+            float:left;
+        }
+
+        #coursePopup .difficulty{
+            line-height:40px;
+            float: right;
+            padding: 5px 10px 5px 10px;
+        }
+
+        #coursePopup .description{
+            padding: 5px;
+            clear:both;
+        }
+
+        #coursePopup .myFeedback{
+            padding: 5px;
+        }
+
+        #coursePopup .feedback{
+            padding: 15px;
+        }
+
+        #coursePopup .identity{
+            margin-bottom: 7px;
+        }
+
+        #coursePopup .feedback .image{
+            background-image: url("images/user.png");
+            background-position: center;
+            background-size:100% 100%;
+            width: 24px;
+            height:24px;
+            border-radius: 12px;
+            border: 1px solid gray;
+            padding: 0;
+            float: left;
+            margin-right: 7px;
+        }
+
+        #coursePopup hr{
+            margin: 10px auto;
+            width: 90%;
+        }
+
+        #coursePopup .feedback .username{
+            line-height: 24px;
+            font-size: 1.3em;
+        }
+
+        #coursePopup .content{
+            /*margin-left: 15px;*/
+        }
+
+        #coursePopup .summary{
+            font-weight: bold;
+            font-size: 1.0em;
+            margin-bottom: 5px;
+            clear:both;
+        }
+
+        #coursePopup .details{
+            font-size: 0.8em;
+        }
 
 
     </style>
@@ -234,8 +306,84 @@
             <!-- Modal content-->
             <div class="popup-content">
                 <div class="close-button">&times;</div>
-                <div class="image" data-image-src="images/box-3.jpg"> </div>
+                <div class="bannerImage" data-image-src="images/box-3.jpg"> </div>
+                <div >
+                    <div class="title"></div>
+                    <div class="difficulty"></div>
+                </div>
+                <div class="description"></div>
+                <div class="myFeedback">
+                    <form>
+                        <label for="summaryFeedback">Summary: </label> <input id="summaryFeedback" type="text" name="summary" placeholder="Summary">
+                        <br>
+                        <label for="detailsFeedback">Details: </label><input id="detailsFeedback" type="text" name="details" placeholder="Details">
+                        <br>
+                        <button>Adauga</button>
+                    </form>
 
+                </div>
+                <div class="feedbacks">
+                    <div class="feedback">
+                        <div class="identity">
+                            <div class="image"></div>
+                            <div class="username">Ghita</div>
+                        </div>
+                        <div class="content">
+                            <div class="stars"></div>
+                            <div class="summary">It is a good course</div>
+                            <div class="details">It is a good course. I have worked with my trainer
+                            since 2007. The results are clear: I am fitted.</div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="feedback">
+                        <div class="identity">
+                            <div class="image"></div>
+                            <div class="username">Ghita</div>
+                        </div>
+                        <div class="content">
+                            <div class="stars"></div>
+                            <div class="summary">It is a good course</div>
+                            <div class="details">It is a good course. I have worked with my trainer
+                                since 2007. The results are clear: I am fitted.</div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="feedback">
+                        <div class="identity">
+                            <div class="image"></div>
+                            <div class="username">Ghita</div>
+                        </div>
+                        <div class="content">
+                            <div class="stars"></div>
+                            <div class="summary">It is a good course</div>
+                            <div class="details">It is a good course. I have worked with my trainer
+                                since 2007. The results are clear: I am fitted.</div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+
+                    <div class="feedback">
+                        <div class="identity">
+                            <div class="image"></div>
+                            <div class="username">Ghita</div>
+                        </div>
+                        <div class="content">
+                            <div class="stars"></div>
+                            <div class="summary">It is a good course</div>
+                            <div class="details">It is a good course. I have worked with my trainer
+                                since 2007. The results are clear: I am fitted.</div>
+                        </div>
+                    </div>
+
+                    <hr>
+                </div>
             </div>
 
         </div>

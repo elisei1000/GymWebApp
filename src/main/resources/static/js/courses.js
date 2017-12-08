@@ -1,7 +1,7 @@
 /**
  * Created by elisei on 24.11.2017.
  */
-var courses = [];
+var courses = {};
 
 var coursesDiv;
 var courseDialog;
@@ -9,14 +9,28 @@ var showDialog;
 var canAddFeedbacks = false;
 
 function courseClick(){
+    var courseDiv = $(this).parent().parent().parent();
+    var courseId = courseDiv.data("courseId");
+
+    var course = courses[courseId];
+    courseDialog.content.title.text(course.title);
+    courseDialog.content.description.text(course.description);
+    courseDialog.content.difficulty.text(
+        "Difficulty: {0}".format(DIFFICULTY_LEVEL[course.difficultyLevel]));
+
+    var url = "url({0})".format($(this).parent().parent().find('img').attr('src'));
+    console.log(url);
+    courseDialog.content.image.css('backgroundImage',
+        url);
     showDialog();
 }
 
 function showCourses(){
-    for(var index in courses){
-        var course = courses[index];
+    for(var id in courses){
+        var course = courses[id];
 
         var courseThumb = $('<div ></div>');
+        courseThumb.data("courseId", course.id);
         courseThumb.addClass("course_thumbnail col-xs-6 col-sm-4 col-md-3 wow animated fadeInUp ");
 
         var content = $('<div></div>');
@@ -50,20 +64,24 @@ function showCourses(){
 }
 
 function loadCourses(data){
+    var course, index;
     if(!("courses" in data)){
         showError("Invalid data received from server!", "Course field not found in JSON!");
         return;
     }
 
-    for(var index in data.courses){
-        var course = data.courses[index];
+    for(index in data.courses){
+        course = data.courses[index];
         if(!validateObject(course, OBJECT_KEYS.COURSE)){
             showError("Invalid courses received!", "Invalid course: " + JSON.stringify(course));
             return;
         }
     }
-
-    courses = data.courses;
+    courses = {};
+    for(index in data.courses){
+        course = data.courses[index];
+        courses[course.id] = course;
+    }
     showCourses();
 }
 
@@ -85,7 +103,13 @@ function initDialog(){
     courseDialog.real = courseDialog.children(".popup-dialog");
     courseDialog.real.click(function(){return false;})
     courseDialog.content = courseDialog.real.children(".popup-content");
-    courseDialog.closeButton = courseDialog.content.children(".close");
+    courseDialog.content.image = courseDialog.content.children(".image");
+    courseDialog.content.closeButton = courseDialog.content.children(".close");
+    courseDialog.content.title = courseDialog.content.find(".title");
+    courseDialog.content.description = courseDialog.content.children(".description");
+    courseDialog.content.difficulty = courseDialog.content.find(".difficulty");
+    courseDialog.content.myFeedback = courseDialog.content.children(".myFeedback");
+    courseDialog.content.feedbacks = courseDialog.content.children(".feedbacks");
 }
 
 function init(){

@@ -66,6 +66,7 @@ var STATUS_OK                 = 'STATUS_OK';
 var APIS = {
     API_HAS_PERMISSION:"/cuser/hasPermission",
     API_GET_COURSES : "/courses",
+    API_COURSE_FEEDBACK : "/course/{0}/feedback",
 };
 
 
@@ -73,14 +74,16 @@ var HTTP_METHODS = {
     GET : "GET",
     POST: "POST",
     PUT: "PUT",
-    DELETE: "DELETE",
+    DELETE: "DELETE"
 };
 
 
 var DIFFICULTY_LEVEL = {
     1:"easy",
-    2:"medium",
-    3:"hard"
+    2:"easy-medium",
+    3:"medium",
+    4:"medium-hard",
+    5:"hard"
 };
 
 
