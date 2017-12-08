@@ -61,7 +61,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .usernameParameter("username").passwordParameter("password")
                     .failureHandler(authFailerHandler)
                     .successHandler(authSuccessHandler)
-                    .permitAll();
+                    .permitAll()
+                    .and()
+                .logout()
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl("/main.html")
+                    .invalidateHttpSession(true)
+                    ;
     }
 
 

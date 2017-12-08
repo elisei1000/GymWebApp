@@ -29,18 +29,18 @@ public class UserController {
     @Autowired
     private SubscriptionService subscriptionService;
 
-    @PostMapping(value = "/login")
-    public Response login(@RequestBody UserModel userModel) {
-        User user = new User(userModel.getUsername(), userModel.getPassword(),
-                userModel.getEmail(), userModel.getName(), userModel.getBirthDay());
-        List<String> errors = userService.checkIfExistUser(user);
-
-        if(errors.size()==0){
-            return new Response(Status.STATUS_OK, errors);
-        }else{
-            return new Response(Status.STATUS_FAILED, errors);
-        }
-    }
+//    @PostMapping(value = "/login")
+//    public Response login(@RequestBody UserModel userModel) {
+//        User user = new User(userModel.getUsername(), userModel.getPassword(),
+//                userModel.getEmail(), userModel.getName(), userModel.getBirthDay());
+//        List<String> errors = userService.checkIfExistUser(user);
+//
+//        if(errors.size()==0){
+//            return new Response(Status.STATUS_OK, errors);
+//        }else{
+//            return new Response(Status.STATUS_FAILED, errors);
+//        }
+//    }
 
 
     @PostMapping(value = "/user-register")
@@ -101,7 +101,10 @@ public class UserController {
         pages.add("MANAGE_COACHES");
         pages.add("CLIENT_COURSES");
 
-        if (!isLogged && (page.equals("FEEDBACKS") || page.equals("CLIENT_COACHES") || page.equals("MANAGE_COACHES") || page.equals("MANAGE_COURSES") || page.equals("PERSONAL_INFO"))) {
+        if (!isLogged && (page.equals("FEEDBACKS")
+                || page.equals("CLIENT_COACHES")   || page.equals("CLIENT_COURSES") || page.equals("PERSONAL_INFO")
+                || page.equals("MANAGE_COACHES")   || page.equals("MANAGE_COURSES")
+                )) {
             error.add("Nu sunteti logat!");
             return new Response(Status.STATUS_NOT_LOGGED_IN, error);
         }
@@ -127,6 +130,11 @@ public class UserController {
         }
 
         if (page.equals("CLIENT_COACHES") && cuser.getClass() != Client.class && isLogged) {
+            error.add("Nu aveti drepturi pentru a accesa aceasta pagina!");
+            return new Response(Status.STATUS_PERMISSION_DENIED, error);
+        }
+
+        if (page.equals("CLIENT_COURSES") && cuser.getClass() != Client.class && isLogged) {
             error.add("Nu aveti drepturi pentru a accesa aceasta pagina!");
             return new Response(Status.STATUS_PERMISSION_DENIED, error);
         }
