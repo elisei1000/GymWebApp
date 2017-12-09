@@ -65,7 +65,9 @@ var STATUS_OK                 = 'STATUS_OK';
 
 var APIS = {
     API_HAS_PERMISSION:"/cuser/hasPermission",
-    API_GET_COURSES : "/courses",
+    API_GET_COURSES : "/course/courses",
+    API_COURSE_FEEDBACK : "/course/{0}/feedback",
+    API_GET_CURRENT_USER : "/cuser",
 };
 
 
@@ -73,14 +75,16 @@ var HTTP_METHODS = {
     GET : "GET",
     POST: "POST",
     PUT: "PUT",
-    DELETE: "DELETE",
+    DELETE: "DELETE"
 };
 
 
 var DIFFICULTY_LEVEL = {
     1:"easy",
-    2:"medium",
-    3:"hard"
+    2:"easy-medium",
+    3:"medium",
+    4:"medium-hard",
+    5:"hard"
 };
 
 
@@ -89,5 +93,12 @@ var OBJECT_KEYS = {
     COURSE : [
         "id", "difficultyLevel", "startHour", "endHour", "startDate", "endDate", "maxPlaces",
         "title", "description"
+    ],
+    FEEDBACK : [
+        "id", "starsCount", "summary", "details", "date",
+        "author"
+    ],
+    CUSER : [
+        "username", "email", "name", "birthDay"
     ],
 };

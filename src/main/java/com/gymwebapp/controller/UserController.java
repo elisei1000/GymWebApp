@@ -75,7 +75,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/cuser/hasPermission", method = RequestMethod.GET)
-    public Response hasPermission(@RequestBody String page, Principal principal) {
+    public Response hasPermission(@RequestParam("page") String page, Principal principal) {
         User cuser = new User();
         Boolean isLogged = true;
         if (principal != null) {
@@ -101,7 +101,10 @@ public class UserController {
         pages.add("MANAGE_COACHES");
         pages.add("CLIENT_COURSES");
 
-        if (!isLogged && (page.equals("FEEDBACKS") || page.equals("CLIENT_COACHES") || page.equals("MANAGE_COACHES") || page.equals("MANAGE_COURSES") || page.equals("PERSONAL_INFO"))) {
+        if (!isLogged && (page.equals("FEEDBACKS")
+                || page.equals("CLIENT_COACHES")   || page.equals("CLIENT_COURSES") || page.equals("PERSONAL_INFO")
+                || page.equals("MANAGE_COACHES")   || page.equals("MANAGE_COURSES")
+                )) {
             error.add("Nu sunteti logat!");
             return new Response(Status.STATUS_NOT_LOGGED_IN, error);
         }
@@ -127,6 +130,11 @@ public class UserController {
         }
 
         if (page.equals("CLIENT_COACHES") && cuser.getClass() != Client.class && isLogged) {
+            error.add("Nu aveti drepturi pentru a accesa aceasta pagina!");
+            return new Response(Status.STATUS_PERMISSION_DENIED, error);
+        }
+
+        if (page.equals("CLIENT_COURSES") && cuser.getClass() != Client.class && isLogged) {
             error.add("Nu aveti drepturi pentru a accesa aceasta pagina!");
             return new Response(Status.STATUS_PERMISSION_DENIED, error);
         }
