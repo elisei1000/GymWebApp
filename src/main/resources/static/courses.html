@@ -30,6 +30,19 @@
             position: relative;
             overflow: hidden;
         }
+
+        .course_thumbnail >.content >.courseImage{
+            background-image: url("images/box-2.jpg");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: auto 100%;
+            width: 100%;
+            padding: 40%;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+        }
+
         .course_thumbnail >.content >.info{
             position: absolute;
             background-color: rgba(255, 140, 00, 0.8);
@@ -81,6 +94,8 @@
         }
 
 
+
+
         .popup{
             position: fixed;
             top: 0;
@@ -98,19 +113,48 @@
             bottom:0;
             left:0;
             right:0;
-            width:70%;
-            min-width: 400px;
-            max-width: 700px;
+
             height: 100%;
             background-color: white;
             margin: auto;
             box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.4);
         }
 
+        @keyframes rotateInfinity {
+            from {transform: rotate(-45deg);}
+            to{transform: rotate(315deg);}
+        }
+
+        .popup .loading{
+            position: absolute;
+            width: 100%;
+            z-index: 10200;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .popup .loader{
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 50px;
+            margin: auto;
+            border-radius: 25px;
+            border-right: 2px solid;
+            border-top: 2px solid;
+            animation: rotateInfinity 4s;
+            animation-iteration-count: infinite;
+            transform: rotate(-45deg);
+        }
+
 
         .popup .popup-content{
             overflow-y: auto;
             height: 100%;
+            position:relative;
         }
 
         .popup-content .bannerImage{
@@ -168,6 +212,7 @@
             padding: 5px;
         }
 
+
         #coursePopup .feedback{
             padding: 15px;
         }
@@ -190,8 +235,30 @@
         }
 
         #coursePopup hr{
-            margin: 10px auto;
+            margin: 7px auto;
             width: 90%;
+
+        }
+
+        #coursePopup .titled{
+            margin: 12px auto;
+            height: 1px;
+            text-align: center;
+            border:0;
+            background-color: #eee;
+        }
+
+        #coursePopup .titled::after{
+            content: attr(title);
+            margin: auto;
+            line-height: 30px;
+            top: -15px;
+            position: relative;
+            font-size: 0.9em;
+            color: #989898;
+            text-shadow: 2px 2px 5px white;
+            background-color:white;
+            padding: 0 10px;
         }
 
         #coursePopup .feedback .username{
@@ -202,6 +269,33 @@
         #coursePopup .content{
             /*margin-left: 15px;*/
         }
+
+        #coursePopup .stars{
+            position: relative;
+            user-select: none;
+            -ms-user-select: none;
+            -webkit-user-select: none;
+            -o-user-select:none;
+            -moz-user-select: none;
+        }
+
+        #coursePopup .stars .star{
+            display:inline-block;
+            font-size: 1.5em;
+            color:rgba(255, 140, 00, 1);;
+            cursor:default;
+        }
+
+        #coursePopup .stars .star::after{
+            content: "\2606";
+        }
+
+        #coursePopup .stars .star.changeable:hover::after,
+        #coursePopup .stars .star.filled::after{
+            content: "\2605";
+        }
+
+
 
         #coursePopup .summary{
             font-weight: bold;
@@ -214,6 +308,19 @@
             font-size: 0.8em;
         }
 
+        @media only screen and (min-width: 768px) {
+            /* tablets and desktop */
+            .popup .popup-dialog{
+                width: 70%;
+            }
+        }
+
+        @media only screen and (max-width: 767px) {
+            /* phones */
+            .popup .popup-dialog{
+                width: 100%;
+            }
+        }
 
     </style>
 </head>
@@ -302,87 +409,58 @@
 
     <div id="coursePopup" class="popup" role="dialog">
         <div class="popup-dialog">
-
+            <div class="loading">
+                <div class="loader"></div>
+            </div>
             <!-- Modal content-->
             <div class="popup-content">
                 <div class="close-button">&times;</div>
-                <div class="bannerImage" data-image-src="images/box-3.jpg"> </div>
+                <div class="bannerImage"> </div>
                 <div >
                     <div class="title"></div>
                     <div class="difficulty"></div>
                 </div>
                 <div class="description"></div>
-                <div class="myFeedback">
-                    <form>
-                        <label for="summaryFeedback">Summary: </label> <input id="summaryFeedback" type="text" name="summary" placeholder="Summary">
-                        <br>
-                        <label for="detailsFeedback">Details: </label><input id="detailsFeedback" type="text" name="details" placeholder="Details">
-                        <br>
-                        <button>Adauga</button>
-                    </form>
 
+
+                <div class="myFeedback">
+                    <hr class="titled" title="MyFeedback">
+                    <div class="done feedback">
+                        <div class="identity">
+                            <div class="image"></div>
+                            <div class="username"></div>
+                        </div>
+                        <div class="content">
+                            <div class="stars">
+                                <div class="star"></div>
+                                <div class="star"></div>
+                                <div class="star"></div>
+                                <div class="star"></div>
+                                <div class="star"></div>
+                            </div>
+                            <div class="summary"></div>
+                            <div class="details"></div>
+                        </div>
+                    </div>
+                    <div class="edit">
+                        <form>
+                            <div class="stars">
+                                <div class="star changeable"></div>
+                                <div class="star changeable"></div>
+                                <div class="star changeable"></div>
+                                <div class="star changeable"></div>
+                                <div class="star changeable"></div>
+                            </div>
+                            <label for="summaryFeedback">Summary: </label> <input id="summaryFeedback" type="text" name="summary" placeholder="Summary">
+                            <br>
+                            <label for="detailsFeedback">Details: </label><input id="detailsFeedback" type="text" name="details" placeholder="Details">
+                            <br>
+                            <button>Adauga</button>
+                        </form>
+                    </div>
                 </div>
                 <div class="feedbacks">
-                    <div class="feedback">
-                        <div class="identity">
-                            <div class="image"></div>
-                            <div class="username">Ghita</div>
-                        </div>
-                        <div class="content">
-                            <div class="stars"></div>
-                            <div class="summary">It is a good course</div>
-                            <div class="details">It is a good course. I have worked with my trainer
-                            since 2007. The results are clear: I am fitted.</div>
-                        </div>
-                    </div>
-
-                    <hr>
-
-                    <div class="feedback">
-                        <div class="identity">
-                            <div class="image"></div>
-                            <div class="username">Ghita</div>
-                        </div>
-                        <div class="content">
-                            <div class="stars"></div>
-                            <div class="summary">It is a good course</div>
-                            <div class="details">It is a good course. I have worked with my trainer
-                                since 2007. The results are clear: I am fitted.</div>
-                        </div>
-                    </div>
-
-                    <hr>
-
-                    <div class="feedback">
-                        <div class="identity">
-                            <div class="image"></div>
-                            <div class="username">Ghita</div>
-                        </div>
-                        <div class="content">
-                            <div class="stars"></div>
-                            <div class="summary">It is a good course</div>
-                            <div class="details">It is a good course. I have worked with my trainer
-                                since 2007. The results are clear: I am fitted.</div>
-                        </div>
-                    </div>
-
-                    <hr>
-
-
-                    <div class="feedback">
-                        <div class="identity">
-                            <div class="image"></div>
-                            <div class="username">Ghita</div>
-                        </div>
-                        <div class="content">
-                            <div class="stars"></div>
-                            <div class="summary">It is a good course</div>
-                            <div class="details">It is a good course. I have worked with my trainer
-                                since 2007. The results are clear: I am fitted.</div>
-                        </div>
-                    </div>
-
-                    <hr>
+                    <hr class="titled" title="Feedbacks">
                 </div>
             </div>
 
