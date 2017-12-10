@@ -11,42 +11,42 @@ function courseClick(){
     showDialog();
 }
 
-function showCourses(){
-    for(var index in courses){
-        var course = courses[index];
+    function showCourses(){
+        for(var index in courses){
+            var course = courses[index];
 
-        var courseThumb = $('<div ></div>');
-        courseThumb.addClass("course_thumbnail col-xs-6 col-sm-4 col-md-3 wow animated fadeInUp ");
+            var courseThumb = $('<div ></div>');
+            courseThumb.addClass("course_thumbnail col-xs-6 col-sm-4 col-md-3 wow animated fadeInUp ");
 
-        var content = $('<div></div>');
-        content.addClass("content");
+            var content = $('<div></div>');
+            content.addClass("content");
 
-        var divImage = $('<div></div>');
-        divImage.addClass('image').append($('<img />')
-            .attr('src', 'images/box-{0}.jpg'.format(Math.floor(Math.random() * 3) + 1)));
-        content.append(divImage);
+            var divImage = $('<div></div>');
+            divImage.addClass('image').append($('<img />')
+                .attr('src', 'images/box-{0}.jpg'.format(Math.floor(Math.random() * 3) + 1)));
+            content.append(divImage);
 
-        var divDifficulty = $("<div></div>");
-        divDifficulty.html("Difficulty: <span>{0}</span>".format(DIFFICULTY_LEVEL[course.difficultyLevel]))
-                .addClass("difficulty");
-        content.append(divDifficulty);
+            var divDifficulty = $("<div></div>");
+            divDifficulty.html("Difficulty: <span>{0}</span>".format(DIFFICULTY_LEVEL[course.difficultyLevel]))
+                    .addClass("difficulty");
+            content.append(divDifficulty);
 
-        var divInfo = $("<div></div>");
-        divInfo.addClass("info")
-            .append(
-                $("<div></div>").addClass("title").html(course.title).click(courseClick)
-            )
-            .append(
-                $("<div></div>").addClass("description").html("<p>{0}</p>".format(course.description))
-            );
+            var divInfo = $("<div></div>");
+            divInfo.addClass("info")
+                .append(
+                    $("<div></div>").addClass("title").html(course.title).click(courseClick)
+                )
+                .append(
+                    $("<div></div>").addClass("description").html("<p>{0}</p>".format(course.description))
+                );
 
 
-        content.append(divInfo);
+            content.append(divInfo);
 
-        courseThumb.append(content);
-        coursesDiv.append(courseThumb);
+            courseThumb.append(content);
+            coursesDiv.append(courseThumb);
+        }
     }
-}
 
 function loadCourses(data){
     if(!("courses" in data)){

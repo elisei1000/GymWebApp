@@ -1,0 +1,56 @@
+{
+    "data":{
+        "status":"STATUS_OK",
+        "coaches":[
+            {
+                "id":1,
+                "username": "ion",
+                "password": "ionion",
+                "email": "ionica@cs.go",
+                "name": "Ionica Vele",
+                "birthday": "1997-11-13"
+            },
+            {
+                "id":2,
+                "username": "ion2",
+                "password": "ionion",
+                "email": "ionica2@cs.go",
+                "name": "Ionica2 Vele",
+                "birthday": "1997-11-12"
+            },
+            {
+                "id":3,
+                "username": "ion3",
+                "password": "ionion",
+                "email": "ionica3@cs.go",
+                "name": "Viorel Paval",
+                "birthday": "1984-02-01"
+            },
+            {
+                "id":4,
+                "username": "ana",
+                "password": "anaana",
+                "email": "ana@cs.go",
+                "name": "Ana Maria",
+                "birthday": "2000-12-12"
+            },
+            {
+                 "id":5,
+                 "username": "alex",
+                 "password": "ionion",
+                 "email": "alexutzu@cs.go",
+                 "name": "Alex MAricel",
+                 "birthday": "1987-11-13"
+            },
+              {
+                  "id":6,
+                  "username": "bogdan",
+                  "password": "ionion",
+                  "email": "mironb@cs.go",
+                  "name": "Bogdan Miron",
+                  "birthday": "1988-11-23"
+              }
+        ]
+    },
+    "errors":[]
+}
