@@ -20,7 +20,7 @@ var PAGES = {
 
 var PAGES_MAPPINGS = {
     MANAGE_COURSES      : '/manageCourses.html',
-    MANAGE_COACHES      : '/manageCoaches.html',
+    MANAGE_COACHES      : '/manageCouches.html',
     CLIENT_COURSES      : '/courses.html',
     CLIENT_COACHES      : '/coches.html',
     FEEDBACKS           : '/feedbacks.html',
@@ -68,7 +68,6 @@ var APIS = {
     API_GET_COURSES : "/course/courses",
     API_COURSE_FEEDBACK : "/course/{0}/feedback",
     API_GET_CURRENT_USER : "/cuser",
-    API_GET_COACHES : "/coaches"
 };
 
 
@@ -92,7 +91,8 @@ var DIFFICULTY_LEVEL = {
 
 var OBJECT_KEYS = {
     COURSE : [
-        "id", "difficultyLevel", "startHour", "endHour", "startDate", "endDate", "maxPlaces", "title", "description"
+        "id", "difficultyLevel", "startHour", "endHour", "startDate", "endDate", "maxPlaces",
+        "title", "description"
     ],
     FEEDBACK : [
         "id", "starsCount", "summary", "details", "date",
@@ -101,7 +101,4 @@ var OBJECT_KEYS = {
     CUSER : [
         "username", "email", "name", "birthDay"
     ],
-    MANAGE_COACHES : [
-        "id", "username", "password", "email", "name", "birthday"
-    ]
 };
