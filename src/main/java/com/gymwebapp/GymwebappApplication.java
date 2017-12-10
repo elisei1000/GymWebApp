@@ -26,7 +26,7 @@ public class GymwebappApplication {
 			User user =new User();
 			user.setUsername("test");
 			user.setPassword("some");
-			user.setEmail("example@yahoo.com");
+			user.setEmail("exampamle@yahoo.com");
 			user.setBirthDay(new Date());
 			user.setName("Test");
 			userService.addUser(user);
