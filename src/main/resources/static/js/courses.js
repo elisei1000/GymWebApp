@@ -112,8 +112,6 @@ function showFeedbacks(feedbacks){
     }
 }
 
-
-
 function showCourses(){
     for(var id in courses){
         var course = courses[id];
@@ -121,19 +119,19 @@ function showCourses(){
         var courseThumb = $('<div ></div>');
         courseThumb.data("courseId", course.id);
         courseThumb.addClass("course_thumbnail col-xs-6 col-sm-4 col-md-3 wow animated fadeInUp ");
+            var content = $('<div></div>');
+            content.addClass("content");
 
-        var content = $('<div></div>');
-        content.addClass("content");
 
         var divImage = $('<div></div>');
         divImage.addClass('courseImage')
             .css('background-image', 'url(images/box-{0}.jpg)'.format(Math.floor(Math.random() * 3) + 1));
         content.append(divImage);
 
-        var divDifficulty = $("<div></div>");
-        divDifficulty.html("Difficulty: <span>{0}</span>".format(DIFFICULTY_LEVEL[course.difficultyLevel]))
-                .addClass("difficulty");
-        content.append(divDifficulty);
+            var divDifficulty = $("<div></div>");
+            divDifficulty.html("Difficulty: <span>{0}</span>".format(DIFFICULTY_LEVEL[course.difficultyLevel]))
+                    .addClass("difficulty");
+            content.append(divDifficulty);
 
         var divInfo = $("<div></div>");
         divInfo.addClass("info")
@@ -144,11 +142,10 @@ function showCourses(){
                 $("<div></div>").addClass("description").html("<p>{0}</p>".format(course.description))
             );
         content.append(divInfo);
-
-        courseThumb.append(content);
-        coursesDiv.append(courseThumb);
+            courseThumb.append(content);
+            coursesDiv.append(courseThumb);
+        }
     }
-}
 
 function loadUser(data){
     if(!("user" in data)){
