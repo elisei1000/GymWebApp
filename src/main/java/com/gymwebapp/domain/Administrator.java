@@ -12,4 +12,5 @@ public class Administrator extends User{
         super(username, password, email, name, birthDay);
     }
 
+    public Administrator(){}
 }

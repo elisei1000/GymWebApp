@@ -9,6 +9,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 import javax.persistence.EntityManagerFactory;
 
@@ -32,4 +35,6 @@ public class AppConfiguration {
 
     @Bean
     public UserValidator userValidator(){return new UserValidator();}
+
+
 }

@@ -11,15 +11,27 @@ function redirectPage(page){
     window.location = PAGES_MAPPINGS[page];
 }
 
-function verifyRights(data, onsuccess){
+function redirectHome(){
+    redirectPage(PAGE_HOME);
+}
+
+function redirectLogin(){
+    redirectPage(PAGE_LOGIN);
+}
+
+function verifyRights(data, onsuccess, onnotlogged, onnotpermission){
     var message;
-    try{
-        data = JSON.parse(data);
+    if(typeof data === 'string'){
+        try{
+            data = JSON.parse(data);
+        }
+        catch(e){
+            showError("Invalid data received from server", e.toString());
+            console.log(data);
+            return;
+        }
     }
-    catch(e){
-        showError("Invalid data received from server", e.toString());
-        return;
-    }
+    //assume that data is an array (was parsed by jquery)
 
     if(!('data' in data) || !('status' in data.data) ||  !('errors' in data)){
         message = "Invalid data received from server: Important fields are missing";
@@ -30,11 +42,13 @@ function verifyRights(data, onsuccess){
 
     var status = data.data.status;
     if(status === STATUSES.STATUS_NOT_LOGGED_IN){
-        redirectPage(PAGES.LOGIN);
+        if(onnotlogged !== undefined) onnotlogged();
+        else redirectLogin();
         return;
     }
     if(status === STATUSES.STATUS_PERMISSION_DENIED){
-        redirectPage(PAGES.HOME);
+        if(onnotpermission !== undefined) onnotpermission();
+        else redirectHome()
         return;
     }
     if(status === STATUSES.STATUS_FAILED){
@@ -46,16 +60,17 @@ function verifyRights(data, onsuccess){
         onsuccess(data.data);
 }
 
-function callServer(api, method, data, onsuccess){
+function callServer(api, method, data, onsuccess, onnotloggedin, onpermissiondenied){
     if(data === undefined) data = {};
     $.ajax({
         url : api,
         method : method,
         data : data,
+        dataType: "text",
         error: function(jqXHR, textStatus, errorThrown) {
             showError("Cannot communicate with server!",  errorThrown)
         },
-        success: function(data) { verifyRights(data, onsuccess)}
+        success: function(data) { verifyRights(data, onsuccess, onnotloggedin, onpermissiondenied)}
     });
 }
 

@@ -2,10 +2,14 @@ package com.gymwebapp.service;
 
 import com.gymwebapp.domain.Coach;
 import com.gymwebapp.domain.RepositoryException;
+import com.gymwebapp.domain.Subscription;
 import com.gymwebapp.domain.User;
 import com.gymwebapp.domain.Validator.UserValidator;
+import com.gymwebapp.repository.SubscriptionRepository;
 import com.gymwebapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,40 +29,44 @@ public class UserService {
     @Autowired
     private UserValidator userValidator;
 
+
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
     @Transactional
-    public <T extends User> List<String> addUser(T user){
+    public <T extends User> List<String> addUser(T user) {
         List<String> errors;
         errors = userValidator.validate(user);
-        if(errors.size() != 0){
+        if (errors.size() != 0) {
             return errors;
         }
 
-        if(!user.getUsername().isEmpty()) {
-            try{
+        if (!user.getUsername().isEmpty()) {
+            try {
                 userRepository.add(user);
             } catch (RepositoryException e) {
                 errors.add("Username already exists!");
             }
         }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return errors;
     }
 
     @Transactional
     public List<String> checkIfExistUser(User user) {
         List<String> errors = new ArrayList<>();
-        if(user.getUsername() == null || user.getUsername().isEmpty()){
+        if (user.getUsername() == null || user.getUsername().isEmpty()) {
             errors.add("Username is empty!");
         }
 
-        if(user.getPassword() == null || user.getPassword().isEmpty()){
+        if (user.getPassword() == null || user.getPassword().isEmpty()) {
             errors.add("Password is empty!");
         }
 
-        if(errors.size()!=0){
+        if (errors.size() != 0) {
             return errors;
         }
 
-        if(!userRepository.checkUserPassword(user)){
+        if (!userRepository.checkUserPassword(user)) {
             errors.add("Username or password is incorrect!");
         }
         return errors;
@@ -79,6 +87,11 @@ public class UserService {
         } else
             errors.add("Username is empty !");
         return errors;
+    }
+
+    @Transactional
+    public User findUser(String username) {
+        return userRepository.get(username);
     }
 
     @Transactional
