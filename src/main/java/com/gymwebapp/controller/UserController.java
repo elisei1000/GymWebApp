@@ -1,6 +1,7 @@
 package com.gymwebapp.controller;
 
 import com.gymwebapp.domain.*;
+import com.gymwebapp.model.SubscriptionModel;
 import com.gymwebapp.model.UserModel;
 import com.gymwebapp.service.SubscriptionService;
 import com.gymwebapp.service.UserService;
@@ -86,6 +87,7 @@ public class UserController {
         }
 
         List<String> error = new ArrayList<>();
+
         List<String> pages = new ArrayList<>();
         pages.add("MANAGE_COURSES");
         pages.add("CLIENT_COACHES");
@@ -101,57 +103,52 @@ public class UserController {
         pages.add("MANAGE_COACHES");
         pages.add("CLIENT_COURSES");
 
-        if (!isLogged && (page.equals("FEEDBACKS")
-                || page.equals("CLIENT_COACHES")   || page.equals("CLIENT_COURSES") || page.equals("PERSONAL_INFO")
-                || page.equals("MANAGE_COACHES")   || page.equals("MANAGE_COURSES")
-                )) {
-            error.add("Nu sunteti logat!");
-            return new Response(Status.STATUS_NOT_LOGGED_IN, error);
-        }
+        List<String> pagesAllUsers = new ArrayList<>();
+        pagesAllUsers.add("HOME");
+        pagesAllUsers.add("LOGIN");
+        pagesAllUsers.add("REGISTER");
+        pagesAllUsers.add("CONTACT");
+        pagesAllUsers.add("ABOUT");
 
-        if (isLogged && cuser.getClass() != Client.class && page.equals("PERSONAL_INFO")) {
-            error.add("Nu aveti drepturi pentru a accesa aceasta pagina!");
-            return new Response(Status.STATUS_PERMISSION_DENIED, error);
-        }
+        List<String> pagesNotLoggedUser = new ArrayList<>();
+        pagesNotLoggedUser.add("COURSES");
+        pagesNotLoggedUser.add("COACHES");
 
-        if (page.equals("COACHES") && ((cuser.getClass() != Coach.class && isLogged) || !isLogged)) {
-            error.add("Nu aveti drepturi pentru a accesa aceasta pagina!");
-            return new Response(Status.STATUS_PERMISSION_DENIED, error);
-        }
+        List<String> pagesClient = new ArrayList<>();
+        pagesClient.add("PERSONAL_INFO");
+        pagesClient.add("CLIENT_COACHES");
+        pagesClient.add("CLIENT_COURSES");
 
-        if (page.equals("COURSES") && ((cuser.getClass() != Coach.class && isLogged) || !isLogged)) {
-            error.add("Nu aveti drepturi pentru a accesa aceasta pagina!");
-            return new Response(Status.STATUS_PERMISSION_DENIED, error);
-        }
+        List<String> pagesAdministrator = new ArrayList<>();
+        pagesAdministrator.add("MANAGE_COACHES");
+        pagesAdministrator.add("MANAGE_COURSES");
 
-        if (page.equals("FEEDBACKS") && cuser.getClass() != Coach.class && isLogged) {
-            error.add("Nu aveti drepturi pentru a accesa aceasta pagina!");
-            return new Response(Status.STATUS_PERMISSION_DENIED, error);
-        }
+        List<String> pagesCoach = new ArrayList<>();
+        pagesCoach.add("COACHES");
+        pagesCoach.add("COURSES");
+        pagesCoach.add("FEEDBACKS");
 
-        if (page.equals("CLIENT_COACHES") && cuser.getClass() != Client.class && isLogged) {
-            error.add("Nu aveti drepturi pentru a accesa aceasta pagina!");
-            return new Response(Status.STATUS_PERMISSION_DENIED, error);
-        }
 
-        if (page.equals("CLIENT_COURSES") && cuser.getClass() != Client.class && isLogged) {
-            error.add("Nu aveti drepturi pentru a accesa aceasta pagina!");
-            return new Response(Status.STATUS_PERMISSION_DENIED, error);
-        }
-
-        if (page.equals("MANAGE_COACHES") && cuser.getClass() != Administrator.class && isLogged) {
-            error.add("Nu aveti drepturi pentru a accesa aceasta pagina!");
-            return new Response(Status.STATUS_PERMISSION_DENIED, error);
-        }
-
-        if (page.equals("MANAGE_COURSES") && cuser.getClass() != Administrator.class && isLogged) {
-            error.add("Nu aveti drepturi pentru a accesa aceasta pagina!");
-            return new Response(Status.STATUS_PERMISSION_DENIED, error);
-        }
 
         if (!pages.contains(page)) {
             error.add("Ati accesat o pagina inexistenta!");
             return new Response(Status.STATUS_FAILED, error);
+        }
+
+        if (!isLogged && !pagesNotLoggedUser.contains(page)&& !pagesAllUsers.contains(page)) {
+            return new Response(Status.STATUS_NOT_LOGGED_IN, error);
+        }
+
+        if(isLogged && cuser.getClass() == Client.class && !pagesClient.contains(page) && !pagesAllUsers.contains(page)){
+            return new Response(Status.STATUS_PERMISSION_DENIED, error);
+        }
+
+        if(isLogged && cuser.getClass() == Administrator.class && !pagesAdministrator.contains(page) && !pagesAllUsers.contains(page)){
+            return new Response(Status.STATUS_PERMISSION_DENIED, error);
+        }
+
+        if(isLogged && cuser.getClass() == Coach.class && !pagesCoach.contains(page) && !pagesAllUsers.contains(page)){
+            return new Response(Status.STATUS_PERMISSION_DENIED, error);
         }
 
         error.add("");
@@ -162,7 +159,6 @@ public class UserController {
     public Response currentUserSubscription(Principal principal) {
         List<String> error = new ArrayList<>();
         if (principal == null) {
-            error.add("Nu sunteti logat!");
             return new Response(Status.STATUS_NOT_LOGGED_IN, error);
         }
         String username = principal.getName();
@@ -175,7 +171,7 @@ public class UserController {
         Subscription sendSubscription = new Subscription();
         if (client.getSubscription() == null) {
             error.add("Nu aveti abonament inregistrat!");
-            return new Response(Status.STATUS_OK, error);
+            return new Response(Status.STATUS_FAILED, error);
         }
         sendSubscription.setStartDate(client.getSubscription().getStartDate());
         sendSubscription.setEndDate(client.getSubscription().getEndDate());
@@ -183,21 +179,19 @@ public class UserController {
     }
 
     @RequestMapping(value = "/cuser/subscription", method = RequestMethod.POST)
-    public Response addSubscriptionCurrentUser(@RequestParam(name = "endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate, Principal principal) {
+    public Response addSubscriptionCurrentUser(@RequestBody SubscriptionModel subscriptionModel, Principal principal) {
         Date currentDate = new Date();
         List<String> errors = new ArrayList<>();
         if (principal == null) {
-            errors.add("Nu sunteti logat!");
             return new Response(Status.STATUS_NOT_LOGGED_IN, errors);
         }
-        if (endDate.getTime() <= currentDate.getTime()) {
+        if (subscriptionModel.getEndDate().getTime() <= currentDate.getTime()) {
             errors.add("End date trebuie sa fie ulterioara datei currente!");
             return new Response(Status.STATUS_FAILED, errors);
         }
         Subscription subscription = new Subscription();
         subscription.setStartDate(currentDate);
-        subscription.setEndDate(endDate);
-        subscriptionService.addSubscription(subscription);
+        subscription.setEndDate(subscriptionModel.getEndDate());
         String username = principal.getName();
         User cuser = userService.findUser(username);
         if (cuser.getClass() != Client.class) {
@@ -210,19 +204,20 @@ public class UserController {
             errors.add("Aveti deja abonament!");
             return new Response(Status.STATUS_FAILED, errors);
         }
+        subscriptionService.addSubscription(subscription);
         client.setSubscription(subscription);
         return new Response(Status.STATUS_OK, errors);
     }
 
     @RequestMapping(value = "/cuser/subscription", method = RequestMethod.PUT)
-    public Response updateSubscriptionCurrentUser(@RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate, Principal principal) {
+    public Response updateSubscriptionCurrentUser(@RequestBody SubscriptionModel subscriptionModel, Principal principal) {
         Date currentDate = new Date();
         List<String> errors = new ArrayList<>();
         if (principal == null) {
             errors.add("Nu sunteti logat!");
             return new Response(Status.STATUS_NOT_LOGGED_IN, errors);
         }
-        if (endDate.getTime() <= currentDate.getTime()) {
+        if (subscriptionModel.getEndDate().getTime() <= currentDate.getTime()) {
             errors.add("End date trebuie sa fie ulterioara datei currente!");
             return new Response(Status.STATUS_FAILED, errors);
         }
@@ -239,7 +234,7 @@ public class UserController {
             errors.add("Nu aveti abonament!");
             return new Response(Status.STATUS_FAILED, errors);
         }
-        currenUserSubscription.setEndDate(endDate);
+        currenUserSubscription.setEndDate(subscriptionModel.getEndDate());
         currenUserSubscription.setStartDate(new Date());
         subscriptionService.updateSubscription(currenUserSubscription);
         client.setSubscription(currenUserSubscription);
