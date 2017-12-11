@@ -20,7 +20,7 @@ var PAGES = {
 
 var PAGES_MAPPINGS = {
     MANAGE_COURSES      : '/manageCourses.html',
-    MANAGE_COACHES      : '/manageCouches.html',
+    MANAGE_COACHES      : '/manageCoaches.html',
     CLIENT_COURSES      : '/courses.html',
     CLIENT_COACHES      : '/coches.html',
     FEEDBACKS           : '/feedbacks.html',
@@ -68,6 +68,7 @@ var APIS = {
     API_GET_COURSES : "/course/courses",
     API_COURSE_FEEDBACK : "/course/{0}/feedback",
     API_GET_CURRENT_USER : "/cuser",
+    API_GET_COACHES : "/coaches",
 };
 
 
@@ -101,4 +102,7 @@ var OBJECT_KEYS = {
     CUSER : [
         "username", "email", "name", "birthDay"
     ],
+    COACH : [
+        "id", "username", "email", "name", "birthday"
+    ]
 };
