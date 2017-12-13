@@ -1,9 +1,6 @@
 package com.gymwebapp.service;
 
-import com.gymwebapp.domain.Coach;
-import com.gymwebapp.domain.RepositoryException;
-import com.gymwebapp.domain.Subscription;
-import com.gymwebapp.domain.User;
+import com.gymwebapp.domain.*;
 import com.gymwebapp.domain.Validator.UserValidator;
 import com.gymwebapp.repository.SubscriptionRepository;
 import com.gymwebapp.repository.UserRepository;
@@ -111,5 +108,41 @@ public class UserService {
     @Transactional
     public List<Coach> getAllCoaches() {
         return userRepository.getAllCoaches();
+    }
+
+    @Transactional
+    public Coach getCoach(String username) {
+
+        List<Coach> coaches=userRepository.getAllCoaches();
+
+        if(coaches==null){
+            return null;
+        }
+
+        for(Coach coach:coaches) {
+            if (coach.getUsername().compareTo(username)==0) {
+                return coach;
+            }
+        }
+
+        return null;
+    }
+
+    @Transactional
+    public Client getClient(String username) {
+
+        List<Client> clients=userRepository.getAllClients();
+
+        if(clients==null){
+            return null;
+        }
+
+        for(Client client:clients) {
+            if (client.getUsername().compareTo(username)==0) {
+                return client;
+            }
+        }
+
+        return null;
     }
 }

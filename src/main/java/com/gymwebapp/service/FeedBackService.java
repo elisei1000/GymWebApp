@@ -1,6 +1,8 @@
 package com.gymwebapp.service;
 
 import com.gymwebapp.domain.CoachFeedback;
+import com.gymwebapp.domain.Course;
+import com.gymwebapp.domain.CourseFeedback;
 import com.gymwebapp.repository.FeedBackRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,5 +27,17 @@ public class FeedBackService {
             if (cf.getCoach().getUsername().equals(coach_username))
                 coachFeedbacks.add(cf);
         return coachFeedbacks;
+    }
+
+    @Transactional
+    public List<CourseFeedback> getAllCourseFeedBacks(Integer id){
+        List<CourseFeedback> feedbacks=new ArrayList<>();
+        for(CourseFeedback cf:feedBackRepository.getAllCourseFeedbacks()){
+            if(cf.getCourse().getId()==id){
+                feedbacks.add(cf);
+            }
+        }
+
+        return feedbacks;
     }
 }
