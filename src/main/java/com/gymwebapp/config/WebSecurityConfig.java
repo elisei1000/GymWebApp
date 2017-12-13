@@ -82,16 +82,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Autowired
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        InMemoryUserDetailsManagerConfigurer configurer = auth.inMemoryAuthentication();
-        for(com.gymwebapp.domain.User user : userRepository.getAll()){
-            String role = "";
-            if(user instanceof Client) role = "CLIENT";
-            if(user instanceof Administrator) role = "ADMIN";
-            if(user instanceof Coach) role = "COACH";
-            configurer.withUser(user.getUsername()).password(user.getPassword()).roles(role);
-        }
+    public void configure(AuthenticationManagerBuilder auth) throws  Exception{
+        auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
     }
-
-
 }
