@@ -21,7 +21,12 @@ public class CourseService {
         List<CourseModel> courseModelList = new ArrayList<>();
 
         for (Course course : courseRepository.getAll()) {
-            courseModelList.add(new CourseModel(course.getId(), course.getDifficultyLevel(), course.getStartHour(), course.getEndHour(), course.getStartDate(), course.getEndDate(), course.getMaxPlaces()));
+            String teacher = null;
+            if (course.getTeacher() != null) {
+                teacher = course.getTeacher().getUsername();
+            }
+            courseModelList.add(new CourseModel(course.getId(), course.getDifficultyLevel(), course.getStartHour(), course.getEndHour(), course.getStartDate(), course.getEndDate(), course.getMaxPlaces(), course.getClients().size(), teacher, course.getTitle(), course.getDescription()));
+
         }
 
         return courseModelList;
