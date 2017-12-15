@@ -10,12 +10,13 @@ import com.gymwebapp.util.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.util.Pair;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 /**
  * Created by david on 18.11.2017.
@@ -27,8 +28,58 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    List<String> pages;
+    List<String> pagesAllUsers;
+    List<String> pagesNotLoggedUser;
+    List<String> pagesClient;
+    List<String> pagesAdministrator;
+    List<String> pagesCoach;
+
     @Autowired
     private SubscriptionService subscriptionService;
+
+    public UserController(){
+        pages = new ArrayList<>();
+        pagesAllUsers = new ArrayList<>();
+        pagesNotLoggedUser = new ArrayList<>();
+        pagesClient = new ArrayList<>();
+        pagesAdministrator = new ArrayList<>();
+        pagesCoach = new ArrayList<>();
+
+        pages.add("MANAGE_COURSES");
+        pages.add("CLIENT_COACHES");
+        pages.add("FEEDBACKS");
+        pages.add("COURSES");
+        pages.add("COACHES");
+        pages.add("PERSONAL_INFO");
+        pages.add("HOME");
+        pages.add("LOGIN");
+        pages.add("REGISTER");
+        pages.add("CONTACT");
+        pages.add("ABOUT");
+        pages.add("MANAGE_COACHES");
+        pages.add("CLIENT_COURSES");
+
+        pagesAllUsers.add("HOME");
+        pagesAllUsers.add("LOGIN");
+        pagesAllUsers.add("REGISTER");
+        pagesAllUsers.add("CONTACT");
+        pagesAllUsers.add("ABOUT");
+
+        pagesNotLoggedUser.add("COURSES");
+        pagesNotLoggedUser.add("COACHES");
+
+        pagesClient.add("PERSONAL_INFO");
+        pagesClient.add("CLIENT_COACHES");
+        pagesClient.add("CLIENT_COURSES");
+
+        pagesAdministrator.add("MANAGE_COACHES");
+        pagesAdministrator.add("MANAGE_COURSES");
+
+        pagesCoach.add("COACHES");
+        pagesCoach.add("COURSES");
+        pagesCoach.add("FEEDBACKS");
+    }
 
 //    @PostMapping(value = "/login")
 //    public Response login(@RequestBody UserModel userModel) {
@@ -57,7 +108,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/cuser", method = RequestMethod.GET)
+    @RequestMapping(value = "/cuser", method = GET)
     public Response currentUser(Principal principal) {
 
         List<String> error = new ArrayList<>();
@@ -75,7 +126,7 @@ public class UserController {
         return new Response(Status.STATUS_OK, error, Pair.of("user", sendUser));
     }
 
-    @RequestMapping(value = "/cuser/hasPermission", method = RequestMethod.GET)
+    @RequestMapping(value = "/cuser/hasPermission", method = GET)
     public Response hasPermission(@RequestParam("page") String page, Principal principal) {
         User cuser = new User();
         Boolean isLogged = true;
@@ -87,48 +138,6 @@ public class UserController {
         }
 
         List<String> error = new ArrayList<>();
-
-        List<String> pages = new ArrayList<>();
-        pages.add("MANAGE_COURSES");
-        pages.add("CLIENT_COACHES");
-        pages.add("FEEDBACKS");
-        pages.add("COURSES");
-        pages.add("COACHES");
-        pages.add("PERSONAL_INFO");
-        pages.add("HOME");
-        pages.add("LOGIN");
-        pages.add("REGISTER");
-        pages.add("CONTACT");
-        pages.add("ABOUT");
-        pages.add("MANAGE_COACHES");
-        pages.add("CLIENT_COURSES");
-
-        List<String> pagesAllUsers = new ArrayList<>();
-        pagesAllUsers.add("HOME");
-        pagesAllUsers.add("LOGIN");
-        pagesAllUsers.add("REGISTER");
-        pagesAllUsers.add("CONTACT");
-        pagesAllUsers.add("ABOUT");
-
-        List<String> pagesNotLoggedUser = new ArrayList<>();
-        pagesNotLoggedUser.add("COURSES");
-        pagesNotLoggedUser.add("COACHES");
-
-        List<String> pagesClient = new ArrayList<>();
-        pagesClient.add("PERSONAL_INFO");
-        pagesClient.add("CLIENT_COACHES");
-        pagesClient.add("CLIENT_COURSES");
-
-        List<String> pagesAdministrator = new ArrayList<>();
-        pagesAdministrator.add("MANAGE_COACHES");
-        pagesAdministrator.add("MANAGE_COURSES");
-
-        List<String> pagesCoach = new ArrayList<>();
-        pagesCoach.add("COACHES");
-        pagesCoach.add("COURSES");
-        pagesCoach.add("FEEDBACKS");
-
-
 
         if (!pages.contains(page)) {
             error.add("Ati accesat o pagina inexistenta!");
@@ -155,7 +164,7 @@ public class UserController {
         return new Response(Status.STATUS_OK, error);
     }
 
-    @RequestMapping(value = "/cuser/subscription", method = RequestMethod.GET)
+    @RequestMapping(value = "/cuser/subscription", method = GET)
     public Response currentUserSubscription(Principal principal) {
         List<String> error = new ArrayList<>();
         if (principal == null) {
@@ -214,7 +223,6 @@ public class UserController {
         Date currentDate = new Date();
         List<String> errors = new ArrayList<>();
         if (principal == null) {
-            errors.add("Nu sunteti logat!");
             return new Response(Status.STATUS_NOT_LOGGED_IN, errors);
         }
         if (subscriptionModel.getEndDate().getTime() <= currentDate.getTime()) {
@@ -239,6 +247,44 @@ public class UserController {
         subscriptionService.updateSubscription(currenUserSubscription);
         client.setSubscription(currenUserSubscription);
         return new Response(Status.STATUS_OK, errors);
+    }
+
+    @RequestMapping(value="/cuser/permissions", method = GET)
+    public Response getAllPermissions(Principal principal){
+        List<String> errors = new ArrayList<>();
+        List<String> lstAllPages = new ArrayList<String>();
+        lstAllPages.addAll(this.pagesAllUsers);
+        if (principal == null) {
+            lstAllPages.addAll(this.pagesNotLoggedUser);
+            return new Response(Status.STATUS_NOT_LOGGED_IN, errors, Pair.of("pages", lstAllPages));
+        }
+        String username = principal.getName();
+        User cuser = userService.findUser(username);
+        if(cuser.getClass()==Client.class){
+            lstAllPages.addAll(this.pagesClient);
+        }
+        if(cuser.getClass()==Administrator.class){
+            lstAllPages.addAll(this.pagesAdministrator);
+        }
+        if(cuser.getClass()==Coach.class){
+            lstAllPages.addAll(this.pagesCoach);
+        }
+        return new Response(Status.STATUS_OK, errors, Pair.of("pages", lstAllPages));
+    }
+
+    @GetMapping(value="/user/{username}")
+    public Response getUserByUsername(@PathVariable String username){
+        List<String> error = new ArrayList<>();
+        User user = userService.findUser(username);
+        if(user == null){
+            error.add("Nu exista user cu acest username!");
+            return new Response(Status.STATUS_FAILED, error);
+        }
+        User sendUser = new User();
+        sendUser.setUsername(user.getUsername());
+        sendUser.setName(user.getUsername());
+        sendUser.setEmail(user.getEmail());
+        return new Response(Status.STATUS_OK, error, Pair.of("user", sendUser));
     }
 
 }
