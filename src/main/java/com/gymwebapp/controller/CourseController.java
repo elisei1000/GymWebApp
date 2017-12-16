@@ -128,7 +128,7 @@ public class CourseController {
     @DeleteMapping(value = "/course/{id}/feedback")
     public Response deleteFedback(@PathVariable Integer id) {
 
-        List<String> errors
+        List<String> errors= new ArrayList<>();
 
         if (errors.size() != 0) {
             return new Response(Status.STATUS_FAILED, errors);
