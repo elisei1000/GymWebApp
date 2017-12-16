@@ -2,6 +2,7 @@ package com.gymwebapp.controller;
 
 import com.gymwebapp.domain.*;
 import com.gymwebapp.domain.Validator.CourseValidator;
+import com.gymwebapp.domain.Validator.FeedbackValidator;
 import com.gymwebapp.domain.Validator.Validator;
 import com.gymwebapp.model.CourseModel;
 import com.gymwebapp.model.FeedbackModel;
@@ -80,9 +81,18 @@ public class CourseController {
     }
 
     @PostMapping(value = "/course/{id}/feedback")
-    public Response addFedback(@PathVariable Integer id,@RequestBody FeedbackModel feedbackModel) {
+    public Response addFedback(@PathVariable Integer id,@RequestBody FeedbackModel feedbackModel,Principal principal) {
+
+        Validator<FeedbackModel> validator=new FeedbackValidator();
+
+        List<String> validatorErrors=validator.validate(feedbackModel);
+
+        if(validatorErrors.size()!=0){
+            return new Response(Status.STATUS_FAILED, validatorErrors);
+        }
 
         feedbackModel.setDate(new Date());
+        feedbackModel.setAuthor(principal.getName());
 
         List<String> errors = courseService.addFeedback(id,feedbackModel);
 
@@ -94,7 +104,17 @@ public class CourseController {
     }
 
     @PutMapping(value = "/course/{id}/feedback")
-    public Response modifyFedback(@PathVariable Integer id,@RequestBody FeedbackModel feedbackModel) {
+    public Response modifyFedback(@PathVariable Integer id,@RequestBody FeedbackModel feedbackModel,Principal principal) {
+        Validator<FeedbackModel> validator=new FeedbackValidator();
+
+        List<String> validatorErrors=validator.validate(feedbackModel);
+
+        if(validatorErrors.size()!=0){
+            return new Response(Status.STATUS_FAILED, validatorErrors);
+        }
+
+        feedbackModel.setDate(new Date());
+        feedbackModel.setAuthor(principal.getName());
 
         List<String> errors = courseService.modifyFeedback(id,feedbackModel);
 
@@ -108,7 +128,7 @@ public class CourseController {
     @DeleteMapping(value = "/course/{id}/feedback")
     public Response deleteFedback(@PathVariable Integer id) {
 
-        List<String> errors = null;
+        List<String> errors
 
         if (errors.size() != 0) {
             return new Response(Status.STATUS_FAILED, errors);

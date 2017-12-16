@@ -157,13 +157,36 @@ public class CourseService {
             return errors;
         }
 
-        feedbackModified.setDate(new Date());
+        feedbackModified.setDate(feedbackModel.getDate());
         feedbackModified.setDetails(feedbackModel.getDetails());
         feedbackModified.setStarsCount(feedbackModel.getStarsCount());
         feedbackModified.setSummary(feedbackModel.getSummary());
 
         try {
             feedBackRepository.update(feedbackModified);
+        } catch (RepositoryException e) {
+            errors.add("Eroare de sistem!");
+        }
+        return errors;
+    }
+
+    @Transactional
+    public List<String> deleteFeedback(Integer id) {
+        List<String> errors = new ArrayList<>();
+
+        Course course = courseRepository.get(id);
+
+        if (course == null) {
+            errors.add("Cursul dat nu exista!");
+            return errors;
+        }
+
+        List<CourseFeedback> feedbacks = course.getFeedbacks();
+
+        Integer idFeedback=null;
+
+        try {
+            feedBackRepository.remove(idFeedback);
         } catch (RepositoryException e) {
             errors.add("Eroare de sistem!");
         }

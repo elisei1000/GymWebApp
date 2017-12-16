@@ -3,6 +3,7 @@ package com.gymwebapp.service;
 import com.gymwebapp.domain.CoachFeedback;
 import com.gymwebapp.domain.Course;
 import com.gymwebapp.domain.CourseFeedback;
+import com.gymwebapp.domain.RepositoryException;
 import com.gymwebapp.repository.FeedBackRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,5 +40,10 @@ public class FeedBackService {
         }
 
         return feedbacks;
+    }
+
+    @Transactional
+    public void deleteCourseFeedback(Integer id) throws RepositoryException {
+        feedBackRepository.remove(id);
     }
 }
