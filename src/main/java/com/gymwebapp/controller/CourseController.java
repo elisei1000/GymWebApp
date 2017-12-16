@@ -17,6 +17,7 @@ import sun.misc.Request;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -68,10 +69,51 @@ public class CourseController {
             List<FeedbackModel> feedbackResponse = new ArrayList<>();
 
             for (CourseFeedback cf : feedbacks) {
-                feedbackResponse.add(new FeedbackModel(cf.getId(), cf.getStarsCount(), cf.getSummary(), cf.getDetails(), cf.getDate(), cf.getAuthor().getUsername()));
+                String author=null;
+                if(cf.getAuthor()!=null)
+                    author=cf.getAuthor().getUsername();
+                feedbackResponse.add(new FeedbackModel(cf.getId(), cf.getStarsCount(), cf.getSummary(), cf.getDetails(), cf.getDate(), author));
             }
 
             return new Response(Status.STATUS_OK, errors, Pair.of("feedbacks", feedbackResponse));
+        }
+    }
+
+    @PostMapping(value = "/course/{id}/feedback")
+    public Response addFedback(@PathVariable Integer id,@RequestBody FeedbackModel feedbackModel) {
+
+        feedbackModel.setDate(new Date());
+
+        List<String> errors = courseService.addFeedback(id,feedbackModel);
+
+        if (errors.size() != 0) {
+            return new Response(Status.STATUS_FAILED, errors);
+        } else {
+            return new Response(Status.STATUS_OK, errors);
+        }
+    }
+
+    @PutMapping(value = "/course/{id}/feedback")
+    public Response modifyFedback(@PathVariable Integer id,@RequestBody FeedbackModel feedbackModel) {
+
+        List<String> errors = courseService.modifyFeedback(id,feedbackModel);
+
+        if (errors.size() != 0) {
+            return new Response(Status.STATUS_FAILED, errors);
+        } else {
+            return new Response(Status.STATUS_OK, errors);
+        }
+    }
+
+    @DeleteMapping(value = "/course/{id}/feedback")
+    public Response deleteFedback(@PathVariable Integer id) {
+
+        List<String> errors = null;
+
+        if (errors.size() != 0) {
+            return new Response(Status.STATUS_FAILED, errors);
+        } else {
+            return new Response(Status.STATUS_OK, errors);
         }
     }
 
