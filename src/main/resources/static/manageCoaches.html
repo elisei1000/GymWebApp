@@ -23,42 +23,89 @@
 
     <style>
         .coach_thumbnail >.content{
-            margin: 10px;
+            padding: 10px 0px;
         }
 
-        .coach_thumbnail >.content >.image >img{
-            width: 300px;
-            height: 300px;
+        .button {
+            text-align: center;
+            background-color: #dd8733;
+            font-family: 'Raleway', sans-serif;
+        }
+        div >#btn-add {
+            height: 80px;
+            border-radius: 3px;
+            margin: 25px 0 25px 0;
         }
 
-        .coach_thumbnail .content .email{
-            position: absolute;
-            bottom:5px;
-            right:15px;
+        .option{
+            margin: 25px;
         }
-        .coach_thumbnail .content .name{
-            position: absolute;
-            bottom:5px;
-            left:15px;
+
+        .coach_thumbnail >.content >.image{
+            width: 100%;
+            padding: 40%;
+            background-position: center;
+            background-size: auto 100%;
+            background-repeat: no-repeat;
+            background-color: white;
+        }
+
+        .coach_thumbnail >.content >.info {
+            width: 100%;
+            text-align: center;
+        }
+
+        .coach_thumbnail >.content >.info >.nume{
+            /*position: absolute;*/
+            /*bottom:5px;*/
+            /*left:15px;*/
             font-size: 20px;
         }
 
-
-        .coach_thumbnail .content .info{
-        }
-
-        .coach_thumbnail .content .info .name {
-            margin-left: 10px;
-            position: absolute;
-            width: 73%;
-            background-color: rgba(255, 255, 255, 0.8);
-            height: 40px;
-        }
-
-        .coach_thumbnail .content .info .email {
+        .coach_thumbnail >.content >.info >.email {
             font-size: 13px;
+            /*position: absolute;*/
+            /*bottom:5px;*/
+            /*right:15px;*/
         }
 
+
+
+        form {
+            width: 100%;
+            height:100%;
+            max-width:300px;
+            min-width:250px;
+            padding:10px 50px;
+            border:2px solid gray;
+            border-radius:10px;
+            font-family:raleway;
+            background-color: whitesmoke;
+        }
+        p {
+            margin-top:30px
+        }
+        input[type=text] {
+            width:82%;
+            padding:10px;
+            margin-bottom:30px;
+            border:1px solid #ccc;
+            padding-left:40px;
+            font-size:16px;
+            font-family:raleway
+        }
+
+        form {
+        }
+        button{
+            text-align: center;
+            background-color:#dd8733;
+            font-family: 'Raleway',sans-serif;
+        }
+
+        button.ui-dialog-titlebar-close {
+            display: none;
+        }
 
     </style>
 </head>
@@ -132,8 +179,34 @@
 </div>
 <!-- Coaches Section Begins -->
 <section id="coaches" class="courses pad-top-210">
-    <div class="container-fluid">
-        <div class="row no-margin">
+    <div id="main-page" class="container-fluid">
+
+        <div id="dialog-form">
+            <p class="validateTips">All form fields are required!</p>
+
+            <form>
+                <fieldset>
+                    <label for="name">Username</label>
+                    <input type="text" name="username" id="username" placeholder="sebi" class="text ui-widget-content ui-corner-all">
+                    <label for="name">Name</label>
+                    <input type="text" name="name" id="name" placeholder="Jane Smith" class="text ui-widget-content ui-corner-all">
+                    <label for="email">Email</label>
+                    <input type="text" name="email" id="email" placeholder="jane@smith.com" class="text ui-widget-content ui-corner-all">
+                    <label for="birthday">Birthday</label>
+                    <input type="text" name="birthday" id="birthday" placeholder="yyyy-mm-dd" class="text ui-widget-content ui-corner-all">
+
+                    <!-- Allow form submission with keyboard without duplicating the dialog button -->
+                    <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+                </fieldset>
+            </form>
+            <button id="btn-save" class=" button option col-xs-2 col-sm-2 col-md-2">Save</button>
+            <button id="btn-cancel" class="button option col-xs-2 col-sm-2 col-md-2">Cancel</button>
+        </div>
+
+        <div id="full-page" class="row no-margin">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <button id="btn-add" class=" button col-xs-3 col-sm-3 col-md-3">Add new coach</button>
+            </div>
             <div id="coachesGrid"/>
 
         </div>
@@ -162,6 +235,8 @@
 <script type="text/javascript" src="js/const.js"></script>
 <script type="text/javascript" src="js/core/core.js"></script>
 <script type="text/javascript" src="js/manageCoaches.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 </body>
 

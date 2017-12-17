@@ -103,6 +103,6 @@ var OBJECT_KEYS = {
         "username", "email", "name", "birthDay"
     ],
     COACH : [
-        "id", "username", "email", "name", "birthday"
+        "username", "email", "name", "birthDay"
     ]
 };
