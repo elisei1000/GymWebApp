@@ -65,10 +65,11 @@ var STATUS_OK                 = 'STATUS_OK';
 
 var APIS = {
     API_HAS_PERMISSION:"/cuser/hasPermission",
-    API_GET_COURSES : "/course/courses",
+    API_GET_COURSES : "/course",
     API_COURSE_FEEDBACK : "/course/{0}/feedback",
     API_GET_CURRENT_USER : "/cuser",
     API_GET_COACHES : "/coaches",
+    API_COURSE: "/course/{0}",
 };
 
 
@@ -94,6 +95,10 @@ var OBJECT_KEYS = {
     COURSE : [
         "id", "difficultyLevel", "startHour", "endHour", "startDate", "endDate", "maxPlaces",
         "title", "description"
+    ],
+    COURSE_FULL :[
+        "id", "difficultyLevel", "startHour", "endHour", "startDate", "endDate", "maxPlaces",
+        "title", "description", "numberOfParticipants", "maxPlaces"
     ],
     FEEDBACK : [
         "id", "starsCount", "summary", "details", "date",
