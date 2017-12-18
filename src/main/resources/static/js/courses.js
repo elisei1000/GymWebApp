@@ -14,31 +14,6 @@ var FEEDBACK_STATE = {
     DONE:"DONE"
 };
 
-function courseClick(){
-    var courseDiv = $(this).parent().parent().parent();
-    var courseId = courseDiv.data("courseId");
-
-    var course = courses[courseId];
-    courseDialog.content.title.text(course.title);
-    courseDialog.content.description.text(course.description);
-    courseDialog.content.difficulty.text(
-        "Difficulty: {0}".format(DIFFICULTY_LEVEL[course.difficultyLevel])
-    );
-
-    var url = $(this).parent().parent().children('.courseImage').css('background-image');
-    courseDialog.content.image.css('backgroundImage', url);
-    showLoader();
-    $(function(){
-        callServer(APIS.API_COURSE_FEEDBACK.format(courseId), HTTP_METHODS.GET, {},
-            //onsuccess
-            function(data){
-                if(!loadFeedbacks(data)) return;
-                showDialog();
-                closeLoader();
-        });
-    })
-
-}
 
 function showMyFeedback(){
     var feedback = myFeedback;
@@ -47,6 +22,15 @@ function showMyFeedback(){
         {
             courseDialog.content.myFeedback.edit.show();
             courseDialog.content.myFeedback.done.hide();
+            courseDialog.content.myFeedback.edit.summary.attr("value", (feedback!== undefined ? feedback.summary:""));
+            courseDialog.content.myFeedback.edit.details.text((feedback!== undefined ? feedback.details:""));
+            courseDialog.content.myFeedback.edit.stars.children().each(
+                function(index){
+                    if(myFeedback!== undefined && index < myFeedback.starsCount)
+                        $(this).addClass('filled');
+                    else
+                        $(this).removeClass('filled');
+                });
             break;
         }
         case FEEDBACK_STATE.DONE:
@@ -112,7 +96,42 @@ function showFeedbacks(feedbacks){
     }
 }
 
-
+function showCourseInPopup(course){
+    var courseId = course.id;
+    courseDialog.content.courseId.text(courseId);
+    courseDialog.content.title.text(course.title);
+    courseDialog.content.time.startTime.text('{0}:00'.format(course.startHour));
+    courseDialog.content.time.endTime.text('{0}:00'.format(course.endHour));
+    courseDialog.content.date.startDate.text(new Date(course.startDate).toLocaleDateString('ro-RO'));
+    courseDialog.content.date.endDate.text(new Date(course.endDate).toLocaleDateString('ro-RO'));
+    console.log(course);
+    courseDialog.content.participants.freePlaces.text(course.maxPlaces - course.numberOfParticipants);
+    courseDialog.content.participants.occupiedPlaces.text(course.numberOfParticipants);
+    if(course.teacher !== undefined && course.teacher != null)
+    {
+        courseDialog.content.teacher.show();
+        courseDialog.content.teacher.username.text(course.teacher);
+    }
+    else{
+        courseDialog.content.teacher.hide();
+    }
+    courseDialog.content.description.text(course.description);
+    courseDialog.content.difficulty.text(
+        "Difficulty: {0}".format(DIFFICULTY_LEVEL[course.difficultyLevel])
+    );
+    var url = $(this).parent().parent().children('.courseImage').css('background-image');
+    courseDialog.content.image.css('backgroundImage', url);
+    showLoader();
+    $(function(){
+        callServer(APIS.API_COURSE_FEEDBACK.format(courseId), HTTP_METHODS.GET, {},
+            //onsuccess
+            function(data){
+                if(!loadFeedbacks(data)) return;
+                showDialog();
+                closeLoader();
+            });
+    })
+}
 
 function showCourses(){
     for(var id in courses){
@@ -138,7 +157,13 @@ function showCourses(){
         var divInfo = $("<div></div>");
         divInfo.addClass("info")
             .append(
-                $("<div></div>").addClass("title").html(course.title).click(courseClick)
+                $("<div></div>").addClass("title").html(course.title).click(function(){
+                        var courseDiv = $(this).parent().parent().parent();
+                        var courseId = courseDiv.data("courseId");
+
+                        callServer(APIS.API_COURSE.format(courseId), HTTP_METHODS.GET,{}, loadCourse);
+                    }
+                )
             )
             .append(
                 $("<div></div>").addClass("description").html("<p>{0}</p>".format(course.description))
@@ -148,6 +173,22 @@ function showCourses(){
         courseThumb.append(content);
         coursesDiv.append(courseThumb);
     }
+}
+
+function loadCourse(data){
+    if(!("course" in data)){
+        showError("Invalid data received from server!",
+        "Course not in JSON: {0}".format(JSON.stringify(data)));
+        return false;
+    }
+
+    if (!validateObject(data.course, OBJECT_KEYS.COURSE_FULL)){
+        showError("Invalid data received from server!",
+            "Course hasn't all necessary fields : {0}".format(JSON.stringify(data.course)));
+        return false;
+    }
+    var course = data.course;
+    showCourseInPopup(course);
 }
 
 function loadUser(data){
@@ -257,11 +298,23 @@ function initDialog(){
     courseDialog.real.click(function(){event.preventDefault();return false;})
     courseDialog.loading = courseDialog.real.children(".loading");
     courseDialog.content = courseDialog.real.children(".popup-content");
+    courseDialog.content.courseId = courseDialog.content.find('.courseId');
     courseDialog.content.image = courseDialog.content.children(".bannerImage");
     courseDialog.content.closeButton = courseDialog.content.children(".close-button");
     courseDialog.content.title = courseDialog.content.find(".title");
     courseDialog.content.description = courseDialog.content.children(".description");
     courseDialog.content.difficulty = courseDialog.content.find(".difficulty");
+    courseDialog.content.time = courseDialog.content.children('.time');
+    courseDialog.content.time.startTime = courseDialog.content.time.children('.start');
+    courseDialog.content.time.endTime = courseDialog.content.time.children('.end');
+    courseDialog.content.date = courseDialog.content.children('.date');
+    courseDialog.content.date.startDate = courseDialog.content.date.children('.start');
+    courseDialog.content.date.endDate = courseDialog.content.date.children('.end');
+    courseDialog.content.participants = courseDialog.content.children(".participants");
+    courseDialog.content.participants.occupiedPlaces = courseDialog.content.participants.children(".occupiedPlaces");
+    courseDialog.content.participants.freePlaces = courseDialog.content.participants.children(".freePlaces");
+    courseDialog.content.teacher  = courseDialog.content.find('.teacher');
+    courseDialog.content.teacher.username = courseDialog.content.teacher.find('.username');
     if(canHaveFeedback){
         courseDialog.content.myFeedback = courseDialog.content.children(".myFeedback");
         courseDialog.content.myFeedback.end = courseDialog.content.myFeedback.children(".end");
@@ -270,7 +323,84 @@ function initDialog(){
         courseDialog.content.myFeedback.done.details = courseDialog.content.myFeedback.done.find(".details");
         courseDialog.content.myFeedback.done.summary = courseDialog.content.myFeedback.done.find(".summary");
         courseDialog.content.myFeedback.done.stars = courseDialog.content.myFeedback.done.find(".stars");
+        courseDialog.content.myFeedback.done.editButton = courseDialog.content.myFeedback.done.find(".button.edit");
+        courseDialog.content.myFeedback.done.editButton.click(function(){
+           feedbackState = FEEDBACK_STATE.EDIT;
+           courseDialog.content.myFeedback.edit.cancelButton.removeClass("hide");
+           showMyFeedback();
+        });
+        courseDialog.content.myFeedback.done.deleteButton = courseDialog.content.myFeedback.done.find(".button.delete");
+        courseDialog.content.myFeedback.done.deleteButton.click(function(){
+            var courseId = courseDialog.content.courseId.text();
+            callServer(APIS.API_COURSE_FEEDBACK.format(courseId), HTTP_METHODS.DELETE, {}, function(){
+                feedbackState = FEEDBACK_STATE.EDIT;
+                courseDialog.content.myFeedback.edit.cancelButton.addClass("hide");
+                myFeedback = undefined;
+                showMyFeedback();
+            });
+        });
+
         courseDialog.content.myFeedback.edit = courseDialog.content.myFeedback.children(".edit");
+        courseDialog.content.myFeedback.edit.summary = courseDialog.content.myFeedback.edit.find('#summaryFeedbackInput');
+        courseDialog.content.myFeedback.edit.details = courseDialog.content.myFeedback.edit.find('#detailsFeedbackInput');
+        courseDialog.content.myFeedback.edit.stars = courseDialog.content.myFeedback.edit.find('.stars');
+        courseDialog.content.myFeedback.edit.stars.mouseleave(function(){
+            $(this).children(".star").removeClass('temporaryFilled temporaryUnFilled');
+        });
+        courseDialog.content.myFeedback.edit.stars.find('.star.changeable').hover(function(){
+            var parentIndex =  $(this).index();
+            $(this).parent().children(".star.changeable").each(function(index) {
+                if (index <= parentIndex)
+                    $(this).addClass('temporaryFilled').removeClass("temporaryUnFilled");
+                else
+                    $(this).removeClass('temporaryFilled').addClass('temporaryUnFilled');
+            })
+        },
+        function(){
+            $(this).parent().children(".star").removeClass('temporaryFilled temporaryUnFilled');
+        }).click(function(){
+            $(this).parent().children(".star.temporaryFilled").addClass('filled').removeClass("temporaryFilled");
+            $(this).parent().children(".star.temporaryUnFilled").removeClass('temporaryUnFilled filled');
+        });
+        courseDialog.content.myFeedback.edit.cancelButton = courseDialog.content.myFeedback.edit.find(".button.cancel");
+        courseDialog.content.myFeedback.edit.cancelButton.click(function(){
+           feedbackState = FEEDBACK_STATE.DONE;
+           showMyFeedback();
+        });
+        courseDialog.content.myFeedback.edit.submitButton = courseDialog.content.myFeedback.edit.find(".button.submit");
+        courseDialog.content.myFeedback.edit.submitButton.click(function(){
+           var feedback = {};
+           var courseId = courseDialog.content.courseId.text();
+           var date  = new Date().getTime();
+           feedback.details = courseDialog.content.myFeedback.edit.details.val();
+           feedback.summary = courseDialog.content.myFeedback.edit.summary.val();
+           feedback.starsCount = 0;
+           var stars = courseDialog.content.myFeedback.edit.stars.children(".star");
+           for(var i =0; i<stars.length; i++){
+               var star = $(stars.get(i));
+               if(!star.hasClass("filled"))
+                   break;
+               feedback.starsCount++;
+           }
+           console.log(JSON.stringify(feedback));
+           if(feedback.details === undefined || feedback.details === ''){
+               showError("Details must be non empty!", "Invalid feedback: {0}".format(JSON.stringify(feedback)));
+               return;
+           }
+           if(feedback.summary === undefined || feedback.summary === ""){
+               showError("Summary must be non empty!", "Invalid feedback: {0}".format(JSON.stringify(feedback)));
+               return;
+           }
+
+           callServer(APIS.API_COURSE_FEEDBACK.format(courseId), myFeedback !== undefined?HTTP_METHODS.PUT : HTTP_METHODS.POST,
+                feedback, function(){
+                    feedbackState = FEEDBACK_STATE.DONE;
+                    myFeedback = feedback;
+                    myFeedback.date = date;
+                    myFeedback.author = user.username;
+                    showMyFeedback();
+               });
+        });
     }
     else{
         courseDialog.content.children(".myFeedback").remove();
