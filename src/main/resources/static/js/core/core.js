@@ -48,7 +48,7 @@ function verifyRights(data, onsuccess, onnotlogged, onnotpermission){
     }
     if(status === STATUSES.STATUS_PERMISSION_DENIED){
         if(onnotpermission !== undefined) onnotpermission();
-        else redirectHome()
+        else redirectHome();
         return;
     }
     if(status === STATUSES.STATUS_FAILED){
@@ -65,8 +65,9 @@ function callServer(api, method, data, onsuccess, onnotloggedin, onpermissionden
     $.ajax({
         url : api,
         method : method,
-        data : data,
+        data : method.toUpperCase() === HTTP_METHODS.GET?data:JSON.stringify(data),
         dataType: "text",
+        contentType: "application/json; charset=utf-8",
         error: function(jqXHR, textStatus, errorThrown) {
             showError("Cannot communicate with server!",  errorThrown)
         },
