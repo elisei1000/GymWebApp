@@ -7,6 +7,7 @@ import com.gymwebapp.domain.RepositoryException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.lang.reflect.Type;
 import java.util.List;
 
 @org.springframework.stereotype.Repository
@@ -42,6 +43,12 @@ public class CourseRepository implements CrudRepository<Course, Integer>{
     public long size() {
         TypedQuery<Course> q = entityManager.createQuery("select c from Course c", Course.class);
         return q.getResultList().size();
+    }
+
+    public Integer getLastGeneratedValue()
+    {
+        TypedQuery<Integer> q = entityManager.createQuery("select max(id) from Course c ", Integer.class);
+        return q.getSingleResult();
     }
 
     @Override

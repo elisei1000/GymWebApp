@@ -51,14 +51,14 @@ public class CourseRepositoryTest {
     public void testAddCourseNotExistingShouldAddInRepository(){
 
         try {
-
+            long size = courseRepository.size();
             courseRepository.add(new Course(2,4,5,new Date(), new Date(), 10, (Coach)userRepository.get("coach1")));
 //            javax.persistence.PersistenceException: org.hibernate.PersistentObjectException: detached entity passed to persist: com.gymwebapp.domain.Course
 //            courseRepository.add(new Course(2,4,5,new Date(), new Date(), 10));
 
-            assertThat(courseRepository.size()).isEqualTo(5);
+            assertThat(courseRepository.size()).isEqualTo(size+1);
 
-            Course course = courseRepository.get(5);
+            Course course = courseRepository.get(courseRepository.getLastGeneratedValue());
             assertThat(course.getMaxPlaces()).isEqualTo(10);
             assertThat(course.getStartHour()).isEqualTo(4);
             assertThat(course.getEndHour()).isEqualTo(5);
@@ -104,10 +104,12 @@ public class CourseRepositoryTest {
 
         try{
 
-            int id = courseRepository.getAll().get(0).getId();
-
-            courseRepository.remove(id);
-            assertThat(courseRepository.size()).isEqualTo(3);
+            long size = courseRepository.size();
+            courseRepository.add(new Course(2,4,5,new Date(), new Date(), 10, (Coach)userRepository.get("coach1")));
+//
+            Integer id_to_delete = courseRepository.getLastGeneratedValue();
+            courseRepository.remove(id_to_delete);
+            assertThat(courseRepository.size()).isEqualTo(size);
 
         }catch (RepositoryException e){
             assert(false);
@@ -119,7 +121,7 @@ public class CourseRepositoryTest {
     public void testDeleteCourseCourseDoesntExistThrowsRepositoryException() {
         try{
 
-            courseRepository.remove(20);
+            courseRepository.remove(-1);
             assert(false);
 
         }catch (RepositoryException e){
