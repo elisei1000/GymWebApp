@@ -52,7 +52,7 @@ public class Course implements HasId<Integer>{
         this.description = description;
     }
 
-    @Column(name="description")
+    @Column(name="description", columnDefinition = "TEXT")
     private String description;
 
     @ManyToOne
