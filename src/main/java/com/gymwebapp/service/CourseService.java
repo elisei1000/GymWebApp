@@ -89,9 +89,19 @@ public class CourseService {
     public void attendUserToCourse(Integer id, Client client) throws RepositoryException {
         Course course = courseRepository.get(id);
         if (course == null) {
-            throw new RepositoryException("");
+            throw new RepositoryException("Cursul dat nu exisa!");
         }
         List<Client> clients = course.getClients();
+
+        if(course.getMaxPlaces()>=clients.size()){
+            throw new RepositoryException("Numarul de cursanti este maxim!");
+        }
+
+        for (Client c:clients){
+            if(c.getUsername().compareTo(client.getUsername())==0){
+                throw new RepositoryException("Clientul este deja asignat la curs!");
+            }
+        }
 
         clients.add(client);
 
@@ -100,11 +110,16 @@ public class CourseService {
 
     @Transactional
     public void deleteCourse(Integer id) throws RepositoryException {
-        courseRepository.remove(id);
+        Course course = courseRepository.get(id);
+        if (course == null) {
+            throw new RepositoryException("");
+        } else {
+            courseRepository.remove(id);
+        }
     }
 
     @Transactional
-    public List<String> addFeedback(Integer id,FeedbackModel feedbackModel) {
+    public List<String> addFeedback(Integer id, FeedbackModel feedbackModel) {
         List<String> errors = new ArrayList<>();
 
         Course course = courseRepository.get(id);
@@ -117,17 +132,17 @@ public class CourseService {
         List<CourseFeedback> feedbacks = course.getFeedbacks();
 
         for (CourseFeedback feedback : feedbacks) {
-            String author="";
-            if(feedback.getAuthor()!=null){
-                author=feedback.getAuthor().getUsername();
+            String author = "";
+            if (feedback.getAuthor() != null) {
+                author = feedback.getAuthor().getUsername();
             }
             if (author.compareTo(feedbackModel.getAuthor()) == 0) {
                 errors.add("Utilizatorul a dat deja feedback!");
-                return  errors;
+                return errors;
             }
         }
 
-        Feedback feedback=new CourseFeedback(feedbackModel.getStarsCount(),feedbackModel.getSummary(),feedbackModel.getDetails(),feedbackModel.getDate(),null,course);
+        Feedback feedback = new CourseFeedback(feedbackModel.getStarsCount(), feedbackModel.getSummary(), feedbackModel.getDetails(), feedbackModel.getDate(), null, course);
 
         try {
             feedBackRepository.add(feedback);
@@ -138,7 +153,7 @@ public class CourseService {
     }
 
     @Transactional
-    public List<String> modifyFeedback(Integer id,FeedbackModel feedbackModel) {
+    public List<String> modifyFeedback(Integer id, FeedbackModel feedbackModel) {
         List<String> errors = new ArrayList<>();
 
         Course course = courseRepository.get(id);
@@ -150,19 +165,19 @@ public class CourseService {
 
         List<CourseFeedback> feedbacks = course.getFeedbacks();
 
-        Feedback feedbackModified=null;
+        Feedback feedbackModified = null;
 
         for (CourseFeedback feedback : feedbacks) {
-            String author="";
-            if(feedback.getAuthor()!=null){
-                author=feedback.getAuthor().getUsername();
+            String author = "";
+            if (feedback.getAuthor() != null) {
+                author = feedback.getAuthor().getUsername();
             }
             if (author.compareTo(feedbackModel.getAuthor()) == 0) {
-                feedbackModified=feedback;
+                feedbackModified = feedback;
             }
         }
 
-        if(feedbackModified==null) {
+        if (feedbackModified == null) {
             errors.add("Utilizatorul nu a dat feedback!");
             return errors;
         }
@@ -181,7 +196,7 @@ public class CourseService {
     }
 
     @Transactional
-    public List<String> deleteFeedback(Integer id) {
+    public List<String> deleteFeedback(Integer id,String username) {
         List<String> errors = new ArrayList<>();
 
         Course course = courseRepository.get(id);
@@ -193,7 +208,19 @@ public class CourseService {
 
         List<CourseFeedback> feedbacks = course.getFeedbacks();
 
-        Integer idFeedback=null;
+        Integer idFeedback = null;
+
+        for(Feedback feedback:feedbacks){
+            if(feedback.getAuthor().getUsername().compareTo(username)==0) {
+                idFeedback = feedback.getId();
+                break;
+            }
+        }
+
+        if(idFeedback==null){
+            errors.add("Nu exista feedback dat!");
+            return errors;
+        }
 
         try {
             feedBackRepository.remove(idFeedback);

@@ -14,7 +14,6 @@ import com.gymwebapp.util.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.web.bind.annotation.*;
-import sun.misc.Request;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -70,9 +69,9 @@ public class CourseController {
             List<FeedbackModel> feedbackResponse = new ArrayList<>();
 
             for (CourseFeedback cf : feedbacks) {
-                String author=null;
-                if(cf.getAuthor()!=null)
-                    author=cf.getAuthor().getUsername();
+                String author = null;
+                if (cf.getAuthor() != null)
+                    author = cf.getAuthor().getUsername();
                 feedbackResponse.add(new FeedbackModel(cf.getId(), cf.getStarsCount(), cf.getSummary(), cf.getDetails(), cf.getDate(), author));
             }
 
@@ -81,20 +80,26 @@ public class CourseController {
     }
 
     @PostMapping(value = "/course/{id}/feedback")
-    public Response addFedback(@PathVariable Integer id,@RequestBody FeedbackModel feedbackModel,Principal principal) {
+    public Response addFedback(@PathVariable Integer id, @RequestBody FeedbackModel feedbackModel, Principal principal) {
 
-        Validator<FeedbackModel> validator=new FeedbackValidator();
+        Validator<FeedbackModel> validator = new FeedbackValidator();
 
-        List<String> validatorErrors=validator.validate(feedbackModel);
+        List<String> validatorErrors = validator.validate(feedbackModel);
 
-        if(validatorErrors.size()!=0){
+        if (validatorErrors.size() != 0) {
             return new Response(Status.STATUS_FAILED, validatorErrors);
         }
 
         feedbackModel.setDate(new Date());
-        feedbackModel.setAuthor(principal.getName());
+        if (principal != null) {
+            feedbackModel.setAuthor(principal.getName());
+        }else{
+            List<String> e=new ArrayList<>();
+            e.add("Nu sunteti logat!");
+            return new Response(Status.STATUS_NOT_LOGGED_IN, e);
+        }
 
-        List<String> errors = courseService.addFeedback(id,feedbackModel);
+        List<String> errors = courseService.addFeedback(id, feedbackModel);
 
         if (errors.size() != 0) {
             return new Response(Status.STATUS_FAILED, errors);
@@ -104,19 +109,25 @@ public class CourseController {
     }
 
     @PutMapping(value = "/course/{id}/feedback")
-    public Response modifyFedback(@PathVariable Integer id,@RequestBody FeedbackModel feedbackModel,Principal principal) {
-        Validator<FeedbackModel> validator=new FeedbackValidator();
+    public Response modifyFedback(@PathVariable Integer id, @RequestBody FeedbackModel feedbackModel, Principal principal) {
+        Validator<FeedbackModel> validator = new FeedbackValidator();
 
-        List<String> validatorErrors=validator.validate(feedbackModel);
+        List<String> validatorErrors = validator.validate(feedbackModel);
 
-        if(validatorErrors.size()!=0){
+        if (validatorErrors.size() != 0) {
             return new Response(Status.STATUS_FAILED, validatorErrors);
         }
 
         feedbackModel.setDate(new Date());
-        feedbackModel.setAuthor(principal.getName());
+        if (principal != null) {
+            feedbackModel.setAuthor(principal.getName());
+        }else{
+            List<String> e=new ArrayList<>();
+            e.add("Nu sunteti logat!");
+            return new Response(Status.STATUS_NOT_LOGGED_IN, e);
+        }
 
-        List<String> errors = courseService.modifyFeedback(id,feedbackModel);
+        List<String> errors = courseService.modifyFeedback(id, feedbackModel);
 
         if (errors.size() != 0) {
             return new Response(Status.STATUS_FAILED, errors);
@@ -126,9 +137,19 @@ public class CourseController {
     }
 
     @DeleteMapping(value = "/course/{id}/feedback")
-    public Response deleteFedback(@PathVariable Integer id) {
+    public Response deleteFedback(@PathVariable Integer id, Principal principal) {
 
-        List<String> errors= new ArrayList<>();
+        List<String> errors = new ArrayList<>();
+
+        String username = null;
+        if (principal != null) {
+            username = principal.getName();
+        }else{
+            errors.add("Nu sunteti logat!");
+            return new Response(Status.STATUS_NOT_LOGGED_IN, errors);
+        }
+
+        courseService.deleteFeedback(id, username);
 
         if (errors.size() != 0) {
             return new Response(Status.STATUS_FAILED, errors);
@@ -186,22 +207,27 @@ public class CourseController {
 
     @PutMapping(value = "course/{id}/attend")
     public Response attendParticipant(@PathVariable Integer id, Principal principal) {
-
-        String username = principal.getName();
-        Client client = userService.getClient(username);
         List<String> errors = new ArrayList<>();
+
+        String username = null;
+        if (principal != null) {
+            username = principal.getName();
+        }else{
+            errors.add("Nu sunteti logat!");
+            return new Response(Status.STATUS_NOT_LOGGED_IN, errors);
+        }
+        Client client = userService.getClient(username);
 
         if (client == null) {
             errors.add("Clientul nu exista!");
-            return new Response(Status.STATUS_FAILED,errors);
+            return new Response(Status.STATUS_FAILED, errors);
         } else {
-
             try {
                 courseService.attendUserToCourse(id, client);
-                return new Response(Status.STATUS_OK,errors);
+                return new Response(Status.STATUS_OK, errors);
             } catch (RepositoryException e) {
-                errors.add("Nu a putut fi adaugat clientul!");
-                return new Response(Status.STATUS_FAILED,errors);
+                errors.add(e.getMessage());
+                return new Response(Status.STATUS_FAILED, errors);
 
             }
         }
