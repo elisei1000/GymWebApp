@@ -22,6 +22,9 @@ public class CourseService {
     @Autowired
     private FeedBackRepository feedBackRepository;
 
+    @Autowired
+    private UserService userService;
+
     @Transactional
     public List<CourseModel> getAll() {
         List<CourseModel> courseModelList = new ArrayList<>();
@@ -142,7 +145,9 @@ public class CourseService {
             }
         }
 
-        Feedback feedback = new CourseFeedback(feedbackModel.getStarsCount(), feedbackModel.getSummary(), feedbackModel.getDetails(), feedbackModel.getDate(), null, course);
+        Client client=userService.getClient(feedbackModel.getAuthor());
+
+        Feedback feedback = new CourseFeedback(feedbackModel.getStarsCount(), feedbackModel.getSummary(), feedbackModel.getDetails(), feedbackModel.getDate(), client, course);
 
         try {
             feedBackRepository.add(feedback);
