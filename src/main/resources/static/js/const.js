@@ -67,6 +67,7 @@ var APIS = {
     API_HAS_PERMISSION:"/cuser/hasPermission",
     API_GET_COURSES : "/course",
     API_COURSE_FEEDBACK : "/course/{0}/feedback",
+    API_COURSE_ATTEND : "/course/{0}/attend",
     API_GET_CURRENT_USER : "/cuser",
     API_GET_COACHES : "/coaches",
     API_COURSE: "/course/{0}",

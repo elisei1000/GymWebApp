@@ -230,9 +230,10 @@
 
 
         #coursePopup .myFeedback .control{
-            position:absolute;
-            top: 10px;
-            right: 10px;
+            float:right;
+            position:relative;
+            display:block;
+            /*width: 100%;*/
         }
 
         #coursePopup .button{
@@ -250,10 +251,10 @@
         }
 
 
-        #coursePopup .myFeedback .done,
-        #coursePopup .myFeedback .edit{
+        #coursePopup .myFeedback>.done,
+        #coursePopup .myFeedback>.edit{
             position: relative;
-            padding:15px;
+            padding: 15px;
         }
 
         #coursePopup .myFeedback .edit #detailsFeedbackInput,
@@ -262,13 +263,17 @@
             margin-bottom:10px;
         }
 
+        #coursePopup .button{
+            margin-left: 15px;
+            padding: 5px;
+            display:inline-block;
+        }
+
         #coursePopup .button.edit,
         #coursePopup .button.delete,
         #coursePopup .button.submit,
         #coursePopup .button.cancel{
             float: right;
-            margin-left: 15px;
-            padding: 5px;
         }
 
         #coursePopup .feedback{
@@ -374,6 +379,12 @@
 
         #coursePopup .details{
             font-size: 0.8em;
+        }
+
+        @media only screen and (max-width: 480px){
+            #coursePopup .myFeedback .control{
+                width: 100%;
+            }
         }
 
         @media only screen and (min-width: 768px) {
@@ -509,6 +520,7 @@
                     (
                     <span class="freePlaces">4</span>
                     free places)
+                    <div class="button attend">Attend</div>
                 </div>
                 <div class="teacher">
                     <i class="glyphicon glyphicon-user" aria-hidden="true"></i>
