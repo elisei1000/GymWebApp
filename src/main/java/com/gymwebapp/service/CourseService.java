@@ -96,7 +96,7 @@ public class CourseService {
         }
         List<Client> clients = course.getClients();
 
-        if(course.getMaxPlaces()>=clients.size()){
+        if(course.getMaxPlaces()==clients.size()){
             throw new RepositoryException("Numarul de cursanti este maxim!");
         }
 
