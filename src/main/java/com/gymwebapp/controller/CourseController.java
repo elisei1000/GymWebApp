@@ -203,6 +203,35 @@ public class CourseController {
                 return new Response(Status.STATUS_FAILED, errors);
             }
         }
+
+    }
+
+    @GetMapping(value = "course/{id}/attended")
+    public Response checkattendParticipant(@PathVariable Integer id, Principal principal) {
+        List<String> errors = new ArrayList<>();
+
+        String username = null;
+        if (principal != null) {
+            username = principal.getName();
+        }else{
+            errors.add("Nu sunteti logat!");
+            return new Response(Status.STATUS_NOT_LOGGED_IN, errors);
+        }
+        Client client = userService.getClient(username);
+
+        if (client == null) {
+            errors.add("Clientul nu exista!");
+            return new Response(Status.STATUS_FAILED, errors);
+        } else {
+            try {
+                boolean check=courseService.checkAttendUserToCourse(id, client);
+                return new Response(Status.STATUS_OK, new ArrayList<String>(), Pair.of("attended",check));
+            } catch (RepositoryException e) {
+                errors.add(e.getMessage());
+                return new Response(Status.STATUS_FAILED, errors);
+
+            }
+        }
     }
 
     @PutMapping(value = "course/{id}/attend")

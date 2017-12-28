@@ -52,6 +52,7 @@ public class CourseRepositoryTest {
 
         try {
             long size = courseRepository.size();
+            System.out.println(size);
             courseRepository.add(new Course(2,4,5,new Date(), new Date(), 10, (Coach)userRepository.get("coach1")));
 //            javax.persistence.PersistenceException: org.hibernate.PersistentObjectException: detached entity passed to persist: com.gymwebapp.domain.Course
 //            courseRepository.add(new Course(2,4,5,new Date(), new Date(), 10));

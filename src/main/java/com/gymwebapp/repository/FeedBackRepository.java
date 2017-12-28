@@ -52,6 +52,12 @@ public class FeedBackRepository implements CrudRepository<Feedback, Integer> {
         entityManager.remove(entityManager.find(Feedback.class, integer));
     }
 
+    public Integer getLastGeneratedValue()
+    {
+        TypedQuery<Integer> q = entityManager.createQuery("select max(id) from Feedback c ", Integer.class);
+        return q.getSingleResult();
+    }
+
     @Override
     public long size() {
         TypedQuery<Feedback> q = entityManager.createQuery("select f from Feedback f", Feedback.class);

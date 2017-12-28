@@ -46,4 +46,14 @@ public class FeedBackService {
     public void deleteCourseFeedback(Integer id) throws RepositoryException {
         feedBackRepository.remove(id);
     }
+
+    @Transactional
+    public long size(){
+        return feedBackRepository.size();
+    }
+
+    @Transactional
+    public Integer getLastId(){
+        return feedBackRepository.getLastGeneratedValue();
+    }
 }

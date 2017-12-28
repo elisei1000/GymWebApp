@@ -33,10 +33,28 @@ public class SubscriptionService {
         }
     }
 
+    @Transactional
+    public void deleteSubscription(Subscription subscription){
+        try{
+            subscriptionRepository.remove(subscription.getId());
+        }catch (RepositoryException e){
+            e.printStackTrace();
+        }
+    }
 
     @Transactional
     public Subscription find(Integer id) {
         return subscriptionRepository.get(id);
+    }
+
+    @Transactional
+    public long size(){
+        return subscriptionRepository.size();
+    }
+
+    @Transactional
+    public Integer getLastId(){
+        return subscriptionRepository.getLastGeneratedValue();
     }
 }
 

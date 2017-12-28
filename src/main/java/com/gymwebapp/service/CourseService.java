@@ -22,6 +22,9 @@ public class CourseService {
     @Autowired
     private FeedBackRepository feedBackRepository;
 
+    @Autowired
+    private UserService userService;
+
     @Transactional
     public List<CourseModel> getAll() {
         List<CourseModel> courseModelList = new ArrayList<>();
@@ -86,6 +89,23 @@ public class CourseService {
     }
 
     @Transactional
+    public boolean checkAttendUserToCourse(Integer id, Client client) throws RepositoryException {
+        Course course = courseRepository.get(id);
+        if (course == null) {
+            throw new RepositoryException("Cursul dat nu exisa!");
+        }
+        List<Client> clients = course.getClients();
+
+        for (Client c:clients) {
+            if (c.getUsername().compareTo(client.getUsername()) == 0) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Transactional
     public void attendUserToCourse(Integer id, Client client) throws RepositoryException {
         Course course = courseRepository.get(id);
         if (course == null) {
@@ -93,7 +113,7 @@ public class CourseService {
         }
         List<Client> clients = course.getClients();
 
-        if(course.getMaxPlaces()>=clients.size()){
+        if(course.getMaxPlaces()==clients.size()){
             throw new RepositoryException("Numarul de cursanti este maxim!");
         }
 
@@ -142,7 +162,9 @@ public class CourseService {
             }
         }
 
-        Feedback feedback = new CourseFeedback(feedbackModel.getStarsCount(), feedbackModel.getSummary(), feedbackModel.getDetails(), feedbackModel.getDate(), null, course);
+        Client client=userService.getClient(feedbackModel.getAuthor());
+
+        Feedback feedback = new CourseFeedback(feedbackModel.getStarsCount(), feedbackModel.getSummary(), feedbackModel.getDetails(), feedbackModel.getDate(), client, course);
 
         try {
             feedBackRepository.add(feedback);
@@ -229,4 +251,23 @@ public class CourseService {
         }
         return errors;
     }
+
+
+    @Transactional
+    public Integer getLastId(){
+        return courseRepository.getLastGeneratedValue();
+    }
+
+    @Transactional
+    public List<Client> getAllClientsForCourse(Integer id){
+        return courseRepository.get(id).getClients();
+    }
+
+    @Transactional
+    public long size(){
+        return courseRepository.size();
+    }
+
+
+
 }

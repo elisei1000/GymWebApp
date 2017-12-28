@@ -53,6 +53,11 @@ public class SubscriptionRepository implements CrudRepository<Subscription, Inte
         return q.getResultList();
     }
 
+    public Integer getLastGeneratedValue(){
+        TypedQuery<Integer> q = entityManager.createQuery("select max(id) from Subscription s", Integer.class);
+        return q.getSingleResult();
+    }
+
     public boolean checkIfSubscriptionExists(Integer integer){
         return entityManager.find(Subscription.class, integer)!=null;
     }

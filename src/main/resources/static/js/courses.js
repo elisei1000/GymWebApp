@@ -22,8 +22,8 @@ function showMyFeedback(){
         {
             courseDialog.content.myFeedback.edit.show();
             courseDialog.content.myFeedback.done.hide();
-            courseDialog.content.myFeedback.edit.summary.attr("value", (feedback!== undefined ? feedback.summary:""));
-            courseDialog.content.myFeedback.edit.details.text((feedback!== undefined ? feedback.details:""));
+            courseDialog.content.myFeedback.edit.summary.val(feedback !== undefined ? feedback.summary:"");
+            courseDialog.content.myFeedback.edit.details.val(feedback!== undefined ? feedback.details:"");
             courseDialog.content.myFeedback.edit.stars.children().each(
                 function(index){
                     if(myFeedback!== undefined && index < myFeedback.starsCount)
@@ -104,9 +104,26 @@ function showCourseInPopup(course){
     courseDialog.content.time.endTime.text('{0}:00'.format(course.endHour));
     courseDialog.content.date.startDate.text(new Date(course.startDate).toLocaleDateString('ro-RO'));
     courseDialog.content.date.endDate.text(new Date(course.endDate).toLocaleDateString('ro-RO'));
-    console.log(course);
     courseDialog.content.participants.freePlaces.text(course.maxPlaces - course.numberOfParticipants);
     courseDialog.content.participants.occupiedPlaces.text(course.numberOfParticipants);
+    callServer(APIS.API_COURSE_ATTENDED.format(courseId), HTTP_METHODS.GET, {},
+        function(data){
+            if(!("attended" in data)){
+                showError("Invalid response from server",
+                    "Invalid response from server for attended url: {0}".format(JSON.stringify(data)));
+                return;
+            }
+            var attended = data.attended;
+            if(attended)
+                courseDialog.content.participants.attendButton.addClass("disabled").text("Already attended");
+            else
+                if(course.maxPlaces - course.numberOfParticipants > 0)
+                    courseDialog.content.participants.attendButton.removeClass("disabled").text("Attend");
+                else
+                    courseDialog.content.participants.attendButton.addClass("disabled").text("No free places available")
+    }, function(){}
+        );
+
     if(course.teacher !== undefined && course.teacher != null)
     {
         courseDialog.content.teacher.show();
@@ -139,7 +156,7 @@ function showCourses(){
 
         var courseThumb = $('<div ></div>');
         courseThumb.data("courseId", course.id);
-        courseThumb.addClass("course_thumbnail col-xs-6 col-sm-4 col-md-3 wow animated fadeInUp ");
+        courseThumb.addClass("course_thumbnail col-xs-12 col-sm-4 col-md-3 col-lg-2 wow animated fadeInUp ");
 
         var content = $('<div></div>');
         content.addClass("content");
@@ -235,15 +252,20 @@ function loadFeedbacks(data){
         courseDialog.content.feedbacks.show();
         showFeedbacks(feedbackList);
     }
-
     if(canHaveFeedback){
         if(myFeedback !== undefined)
+        {
+            courseDialog.content.myFeedback.edit.cancelButton.removeClass("hide");
             feedbackState = FEEDBACK_STATE.DONE;
+        }
         else
+        {
+            courseDialog.content.myFeedback.edit.cancelButton.addClass("hide");
             feedbackState = FEEDBACK_STATE.EDIT;
+        }
         showMyFeedback();
     }
-     return true;
+    return true;
 }
 
 function loadCourses(data){
@@ -313,9 +335,24 @@ function initDialog(){
     courseDialog.content.participants = courseDialog.content.children(".participants");
     courseDialog.content.participants.occupiedPlaces = courseDialog.content.participants.children(".occupiedPlaces");
     courseDialog.content.participants.freePlaces = courseDialog.content.participants.children(".freePlaces");
+    courseDialog.content.participants.attendButton = courseDialog.content.participants.children(".button.attend");
     courseDialog.content.teacher  = courseDialog.content.find('.teacher');
     courseDialog.content.teacher.username = courseDialog.content.teacher.find('.username');
     if(canHaveFeedback){
+        courseDialog.content.participants.attendButton.click(function(){
+            if(!($(this).hasClass("disabled")))
+            {
+                var courseId = courseDialog.content.courseId.text();
+                callServer(APIS.API_COURSE_ATTEND.format(courseId), HTTP_METHODS.PUT, {}, function(){
+                    courses[courseId].numberOfParticipants += 1;
+                    courseDialog.content.participants.occupiedPlaces.text(courses[courseId].numberOfParticipants);
+                    courseDialog.content.participants.freePlaces.text(
+                        courses[courseId].maxPlaces - courses[courseId].numberOfParticipants);
+                    courseDialog.content.participants.attendButton.addClass("disabled").text("Already attended")
+                })
+            }
+        });
+
         courseDialog.content.myFeedback = courseDialog.content.children(".myFeedback");
         courseDialog.content.myFeedback.end = courseDialog.content.myFeedback.children(".end");
         courseDialog.content.myFeedback.done = courseDialog.content.myFeedback.children(".done");
@@ -404,6 +441,7 @@ function initDialog(){
     }
     else{
         courseDialog.content.children(".myFeedback").remove();
+        courseDialog.content.participants.attendButton.remove();
     }
     courseDialog.content.feedbacks = courseDialog.content.children(".feedbacks");
 }
@@ -417,6 +455,7 @@ function init(){
 
     callServer(APIS.API_HAS_PERMISSION, HTTP_METHODS.GET, {page: PAGE_CLIENT_COURSES},
         function() {
+            //onsuccess
             canHaveFeedback = true;
             callServer(APIS.API_GET_CURRENT_USER, HTTP_METHODS.GET,
                 {}, function(data){
@@ -428,6 +467,7 @@ function init(){
                 })
         },
         function(){
+            //onnotloggedin
             canHaveFeedback = false;
             initDialog();
             callServer(APIS.API_GET_COURSES, HTTP_METHODS.GET, {}, loadCourses)

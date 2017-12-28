@@ -31,8 +31,7 @@ public class UserService {
 
     @Transactional
     public <T extends User> List<String> addUser(T user) {
-        List<String> errors;
-        errors = userValidator.validate(user);
+        List<String> errors= userValidator.validate(user);
         if (errors.size() != 0) {
             return errors;
         }
@@ -75,7 +74,7 @@ public class UserService {
         if (errors.size() != 0) {
             return errors;
         }
-        if (!user.getUsername().isEmpty()) {
+        if (!user.getUsername().isEmpty() || user.getUsername()!=null) {
             try {
                 userRepository.update(user);
             } catch (RepositoryException e) {
@@ -94,14 +93,19 @@ public class UserService {
     @Transactional
     public <T extends User> List<String> removeUser(T user) {
         List<String> errors = new ArrayList<>();
-        if (!user.getUsername().isEmpty()) {
-            try {
-                userRepository.remove(user.getUsername());
-            } catch (RepositoryException e) {
-                errors.add(e.getMessage());
-            }
-        } else
+
+        if( user.getUsername()==null)
             errors.add("Username is empty !");
+        else {
+            if (!user.getUsername().isEmpty()) {
+                try {
+                    userRepository.remove(user.getUsername());
+                } catch (RepositoryException e) {
+                    errors.add(e.getMessage());
+                }
+            } else
+                errors.add("Username is empty !");
+        }
         return errors;
     }
 
@@ -144,5 +148,10 @@ public class UserService {
         }
 
         return null;
+    }
+
+    @Transactional
+    public long getSize(){
+        return userRepository.size();
     }
 }

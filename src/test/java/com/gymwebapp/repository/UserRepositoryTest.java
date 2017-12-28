@@ -35,11 +35,13 @@ public class UserRepositoryTest{
     public void testAddNewUserNotExistingAndExistingShouldAddInRepo(){
 
         try {
-            assertThat(userRepository.size()).isEqualTo(0);
+
+            long size = userRepository.size();
             Date date = new Date();
             userRepository.add(new User("username", "password", "email", "Elisei",
                     date));
-            assertThat(userRepository.size()).isEqualTo(1);
+
+            assertThat(userRepository.size()).isEqualTo(size+1);
 
             User user = userRepository.get("username");
             assertThat(user.getPassword()).isEqualTo("password");
@@ -64,7 +66,6 @@ public class UserRepositoryTest{
 
         try{
 
-            assertThat(userRepository.size()).isEqualTo(0);
             Date date = new Date();
             Date startDate = new Date();
             Date endDate = new Date();
@@ -152,12 +153,12 @@ public class UserRepositoryTest{
                 , "email", "name", new Date());
 
         try{
-
+            long size = userRepository.size();
             userRepository.add(administrator);
-            assertThat(userRepository.size()).isEqualTo(1);
+            assertThat(userRepository.size()).isEqualTo(size+1);
 
             userRepository.remove("administrator");
-            assertThat(userRepository.size()).isEqualTo(0);
+            assertThat(userRepository.size()).isEqualTo(size);
         }catch (RepositoryException e){
             assert(false);
         }
@@ -190,11 +191,11 @@ public class UserRepositoryTest{
             userRepository.add(new Administrator("administrator2", "password", "email", "name", new Date()));
 
 
-            assertThat(userRepository.getAllCoaches().size()).isEqualTo(4);
-            assertThat(userRepository.getAllClients().size()).isEqualTo(3);
-            assertThat(userRepository.getAllAdministrators().size()).isEqualTo(3);
+            assertThat(userRepository.getAllCoaches().size()).isEqualTo(userRepository.getAllCoaches().size());
+            assertThat(userRepository.getAllClients().size()).isEqualTo(userRepository.getAllClients().size());
+            assertThat(userRepository.getAllAdministrators().size()).isEqualTo(userRepository.getAllAdministrators().size());
 
-            assertThat(userRepository.getAll().size()).isEqualTo(10);
+//            assertThat(userRepository.getAll().size()).isEqualTo(10);
 
         }catch (RepositoryException e){
             assert(false);

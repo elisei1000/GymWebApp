@@ -19,6 +19,10 @@ public class Subscription implements HasId<Integer>{
     @Column(name="end_date")
     private Date endDate;
 
+    @OneToOne
+    @JoinColumn(name="username")
+    private Client client;
+
     public Subscription(){
 
     }
@@ -27,6 +31,12 @@ public class Subscription implements HasId<Integer>{
         this.id = id;
         this.endDate = endDate;
         this.startDate = startDate;
+    }
+
+    public Subscription(Date startDate, Date endDate, Client client){
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.client = client;
     }
 
     public Integer getId() {

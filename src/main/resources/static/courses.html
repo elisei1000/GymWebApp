@@ -72,9 +72,17 @@
 
         .course_thumbnail .content .difficulty{
             position: absolute;
-            top:5px;
-            right:5px;
+            top: 0;
+            right: 0;
+            background-color: rgba(150, 150, 150, 0.8);
+            padding: 5px;
+            color: white;
         }
+
+        .course_thumbnail .content .difficulty span{
+            font-weight: bold;
+        }
+
         .course_thumbnail .content .info .description{
             position: absolute;
             width: 100%;
@@ -229,9 +237,10 @@
 
 
         #coursePopup .myFeedback .control{
-            position:absolute;
-            top: 10px;
-            right: 10px;
+            float:right;
+            position:relative;
+            display:block;
+            /*width: 100%;*/
         }
 
         #coursePopup .button{
@@ -246,13 +255,22 @@
             font-family: Montserrat;
             outline: none;
             cursor: pointer;
+            margin-left: 15px;
+            padding: 5px;
+            display:inline-block;
+        }
+
+        #coursePopup .button.disabled{
+            background: rgb(150, 150, 150);
+            cursor: default;
+
         }
 
 
-        #coursePopup .myFeedback .done,
-        #coursePopup .myFeedback .edit{
+        #coursePopup .myFeedback>.done,
+        #coursePopup .myFeedback>.edit{
             position: relative;
-            padding:15px;
+            padding: 15px;
         }
 
         #coursePopup .myFeedback .edit #detailsFeedbackInput,
@@ -266,8 +284,6 @@
         #coursePopup .button.submit,
         #coursePopup .button.cancel{
             float: right;
-            margin-left: 15px;
-            padding: 5px;
         }
 
         #coursePopup .feedback{
@@ -375,6 +391,12 @@
             font-size: 0.8em;
         }
 
+        @media only screen and (max-width: 480px){
+            #coursePopup .myFeedback .control{
+                width: 100%;
+            }
+        }
+
         @media only screen and (min-width: 768px) {
             /* tablets and desktop */
             .popup .popup-dialog{
@@ -440,12 +462,7 @@
                                     <!-- Collect the nav links, forms, and other content for toggling -->
                                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                         <ul class="nav navbar-nav navbar-right">
-                                            <li><a href="about.html">About</a></li>
-                                            <li><a href="courses.html">Courses </a></li>
-                                            <li><a href="coaches.html">Coaches</a></li>
-                                            <li><a href="schedule.html">Schedule</a></li>
-                                            <li><a href="subscription.html">Subscription </a></li>
-                                            <li><a href="contact.html">Contact us</a></li>
+
                                         </ul>
                                     </div>
                                 </div>
@@ -508,6 +525,7 @@
                     (
                     <span class="freePlaces">4</span>
                     free places)
+                    <div class="button attend">Attend</div>
                 </div>
                 <div class="teacher">
                     <i class="glyphicon glyphicon-user" aria-hidden="true"></i>
