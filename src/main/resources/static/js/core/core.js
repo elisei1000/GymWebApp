@@ -8,7 +8,7 @@ function showError(message, errorThrown){
 }
 
 function redirectPage(page){
-    window.location = PAGES_MAPPINGS[page];
+    window.location = PAGES_MAPPINGS_URL[page];
 }
 
 function redirectHome(){
@@ -42,12 +42,12 @@ function verifyRights(data, onsuccess, onnotlogged, onnotpermission){
 
     var status = data.data.status;
     if(status === STATUSES.STATUS_NOT_LOGGED_IN){
-        if(onnotlogged !== undefined) onnotlogged();
+        if(onnotlogged !== undefined) onnotlogged(data.data);
         else redirectLogin();
         return;
     }
     if(status === STATUSES.STATUS_PERMISSION_DENIED){
-        if(onnotpermission !== undefined) onnotpermission();
+        if(onnotpermission !== undefined) onnotpermission(data.data);
         else redirectHome();
         return;
     }
@@ -85,6 +85,67 @@ function validateObject(object, keys){
     }
     return true;
 }
+
+function generatePages(data){
+    if (!("pages" in data)) {
+        showError("Invalid data received from server!",
+            "Invalid permissions response received from server {0}".format(JSON.stringify(data)))
+        return;
+    }
+    var pages = data.pages;
+    var toRemove = [PAGE_HOME, PAGE_LOGIN, PAGE_ABOUT, PAGE_REGISTER, PAGE_CONTACT];
+    pages = pages.filter(function (el) {
+        return toRemove.indexOf(el) < 0;
+    });
+
+    pages.push(PAGE_ABOUT, PAGE_CONTACT);
+    var ul = $(".nav.navbar-nav");
+    ul.empty();
+    //ul.hide();
+    for (var page in pages) {
+        page = pages[page];
+
+        ul.append($("<li></li>").append($("<a></a>")
+            .text(PAGES_MAPPINGS_NAME[page])
+            .attr("href", PAGES_MAPPINGS_URL[page])));
+    }
+    //ul.fadeIn();
+
+}
+
+function initMenuAndLinks() {
+    callServer(APIS.API_GET_CURRENT_USER, HTTP_METHODS.GET, {}, function(data){
+        if(!("user" in data)){
+            showError("Invalid data received from server!",
+            "Invalid cuser response received from server {0}".format(JSON.stringify(data)));
+            return;
+        }
+        var user = data.user;
+        if(!validateObject(user, OBJECT_KEYS.CUSER)){
+            showError("Invalid object received from server!",
+            "Invalid user received from server {0}".format(JSON.stringify(data)));
+            return;
+        }
+        var ul, lis, a, i;
+        ul = $(".top-head .pull-right");
+        lis = ul.children("li");
+        a = $(lis.get(1)).children("a");
+        i = a.children('i');
+        a.removeAttr("href").html(user.username);
+        a.prepend(i);
+
+        a = $(lis.get(2)).children("a");
+        i = a.children("i");
+        a.attr("href", "/logout").html("Logout");
+        a.prepend(i);
+
+    }
+    , function() {//onnotloggedin
+        });
+
+    callServer(APIS.API_PERMISSIONS, HTTP_METHODS.GET, {}, generatePages, generatePages, generatePages)
+}
+$(initMenuAndLinks);
 
 if (!String.prototype.format) {
     String.prototype.format = function() {

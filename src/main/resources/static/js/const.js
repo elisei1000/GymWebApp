@@ -18,20 +18,36 @@ var PAGES = {
     ABOUT               : 'ABOUT'
 };
 
-var PAGES_MAPPINGS = {
+var PAGES_MAPPINGS_URL = {
     MANAGE_COURSES      : '/manageCourses.html',
     MANAGE_COACHES      : '/manageCoaches.html',
     CLIENT_COURSES      : '/courses.html',
-    CLIENT_COACHES      : '/coches.html',
+    CLIENT_COACHES      : '/coaches.html',
     FEEDBACKS           : '/feedbacks.html',
     COURSES             : '/courses.html',
     COACHES             : '/coaches.html',
     PERSONAL_INFO       : '/personalInfo.html',
     HOME                : '/main.html',
     LOGIN               : '/loginPage.html',
-    REGISTER            : '/registerPage.html',
+    REGISTER            : '/register.html',
     CONTACT             : '/contact.html',
     ABOUT               : '/about.html',
+};
+
+var PAGES_MAPPINGS_NAME = {
+    MANAGE_COURSES      : 'MANAGE COURSES',
+    MANAGE_COACHES      : 'MANAGE COACHES',
+    CLIENT_COURSES      : 'COURSES',
+    CLIENT_COACHES      : 'COACHES',
+    FEEDBACKS           : 'FEEDBACKS',
+    COURSES             : 'COURSES',
+    COACHES             : 'COACHES',
+    PERSONAL_INFO       : 'PERSONAL INFO',
+    HOME                : 'HOME',
+    LOGIN               : 'LOGIN',
+    REGISTER            : 'REGISTER',
+    CONTACT             : 'CONTACT US',
+    ABOUT               : 'ABOUT',
 };
 
 
@@ -65,6 +81,7 @@ var STATUS_OK                 = 'STATUS_OK';
 
 var APIS = {
     API_HAS_PERMISSION:"/cuser/hasPermission",
+    API_PERMISSIONS: "/cuser/permissions",
     API_GET_COURSES : "/course",
     API_COURSE_FEEDBACK : "/course/{0}/feedback",
     API_COURSE_ATTENDED : "/course/{0}/attended",
