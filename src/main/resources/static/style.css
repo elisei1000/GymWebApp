@@ -1622,6 +1622,7 @@ header.fixed .menuBar .navbar-right {
     text-transform: uppercase;
     font-style: italic;
     margin-bottom: 30px;
+    padding-top: 50px;
 }
 
 .element p {
