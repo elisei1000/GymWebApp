@@ -121,7 +121,8 @@ function showCourseInPopup(course){
                     courseDialog.content.participants.attendButton.removeClass("disabled").text("Attend");
                 else
                     courseDialog.content.participants.attendButton.addClass("disabled").text("No free places available")
-    });
+    }, function(){}
+        );
 
     if(course.teacher !== undefined && course.teacher != null)
     {
