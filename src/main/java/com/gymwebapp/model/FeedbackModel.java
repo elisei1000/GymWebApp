@@ -25,6 +25,12 @@ public class FeedbackModel {
         this.author = author;
     }
 
+    public FeedbackModel(int starsCount, String summary, String details) {
+        this.starsCount = starsCount;
+        this.summary = summary;
+        this.details = details;
+    }
+
     public Integer getId() {
         return id;
     }
