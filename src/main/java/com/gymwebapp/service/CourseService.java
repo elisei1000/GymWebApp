@@ -89,6 +89,23 @@ public class CourseService {
     }
 
     @Transactional
+    public boolean checkAttendUserToCourse(Integer id, Client client) throws RepositoryException {
+        Course course = courseRepository.get(id);
+        if (course == null) {
+            throw new RepositoryException("Cursul dat nu exisa!");
+        }
+        List<Client> clients = course.getClients();
+
+        for (Client c:clients) {
+            if (c.getUsername().compareTo(client.getUsername()) == 0) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Transactional
     public void attendUserToCourse(Integer id, Client client) throws RepositoryException {
         Course course = courseRepository.get(id);
         if (course == null) {
