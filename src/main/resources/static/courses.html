@@ -73,9 +73,17 @@
 
         .course_thumbnail .content .difficulty{
             position: absolute;
-            top:5px;
-            right:5px;
+            top: 0;
+            right: 0;
+            background-color: rgba(150, 150, 150, 0.8);
+            padding: 5px;
+            color: white;
         }
+
+        .course_thumbnail .content .difficulty span{
+            font-weight: bold;
+        }
+
         .course_thumbnail .content .info .description{
             position: absolute;
             width: 100%;
@@ -248,6 +256,15 @@
             font-family: Montserrat;
             outline: none;
             cursor: pointer;
+            margin-left: 15px;
+            padding: 5px;
+            display:inline-block;
+        }
+
+        #coursePopup .button.disabled{
+            background: rgb(150, 150, 150);
+            cursor: default;
+
         }
 
 
@@ -261,12 +278,6 @@
         #coursePopup .myFeedback .edit #summaryFeedbackInput{
             width: 100%;
             margin-bottom:10px;
-        }
-
-        #coursePopup .button{
-            margin-left: 15px;
-            padding: 5px;
-            display:inline-block;
         }
 
         #coursePopup .button.edit,

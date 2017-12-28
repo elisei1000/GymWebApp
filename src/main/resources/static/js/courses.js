@@ -106,12 +106,23 @@ function showCourseInPopup(course){
     courseDialog.content.date.endDate.text(new Date(course.endDate).toLocaleDateString('ro-RO'));
     courseDialog.content.participants.freePlaces.text(course.maxPlaces - course.numberOfParticipants);
     courseDialog.content.participants.occupiedPlaces.text(course.numberOfParticipants);
-    /*if(course.maxPlaces - course.numberOfParticipants > 0){
-        courseDialog.content.participants.attendButton.removeClass('hide');
-    }
-    else{
-        courseDialog.content.participants.attendButton.addClass("hide");
-    }*/
+    callServer(APIS.API_COURSE_ATTENDED.format(courseId), HTTP_METHODS.GET, {},
+        function(data){
+            if(!("attended" in data)){
+                showError("Invalid response from server",
+                    "Invalid response from server for attended url: {0}".format(JSON.stringify(data)));
+                return;
+            }
+            var attended = data.attended;
+            if(attended)
+                courseDialog.content.participants.attendButton.addClass("disabled").text("Already attended");
+            else
+                if(course.maxPlaces - course.numberOfParticipants > 0)
+                    courseDialog.content.participants.attendButton.removeClass("disabled").text("Attend");
+                else
+                    courseDialog.content.participants.attendButton.addClass("disabled").text("No free places available")
+    });
+
     if(course.teacher !== undefined && course.teacher != null)
     {
         courseDialog.content.teacher.show();
@@ -144,7 +155,7 @@ function showCourses(){
 
         var courseThumb = $('<div ></div>');
         courseThumb.data("courseId", course.id);
-        courseThumb.addClass("course_thumbnail col-xs-6 col-sm-4 col-md-3 wow animated fadeInUp ");
+        courseThumb.addClass("course_thumbnail col-xs-12 col-sm-4 col-md-3 col-lg-2 wow animated fadeInUp ");
 
         var content = $('<div></div>');
         content.addClass("content");
@@ -328,13 +339,17 @@ function initDialog(){
     courseDialog.content.teacher.username = courseDialog.content.teacher.find('.username');
     if(canHaveFeedback){
         courseDialog.content.participants.attendButton.click(function(){
-            var courseId = courseDialog.content.courseId.text();
-            callServer(APIS.API_COURSE_ATTEND.format(courseId), HTTP_METHODS.PUT, {}, function(){
-                courses[courseId].numberOfParticipants += 1;
-                courseDialog.content.participants.occupiedPlaces.text(courses[courseId].numberOfParticipants);
-                courseDialog.content.participants.freePlaces.text(
-                    courses[courseId].maxPlaces - courses[courseId].numberOfParticipants);
-            })
+            if(!($(this).hasClass("disabled")))
+            {
+                var courseId = courseDialog.content.courseId.text();
+                callServer(APIS.API_COURSE_ATTEND.format(courseId), HTTP_METHODS.PUT, {}, function(){
+                    courses[courseId].numberOfParticipants += 1;
+                    courseDialog.content.participants.occupiedPlaces.text(courses[courseId].numberOfParticipants);
+                    courseDialog.content.participants.freePlaces.text(
+                        courses[courseId].maxPlaces - courses[courseId].numberOfParticipants);
+                    courseDialog.content.participants.attendButton.addClass("disabled").text("Already attended")
+                })
+            }
         });
 
         courseDialog.content.myFeedback = courseDialog.content.children(".myFeedback");
