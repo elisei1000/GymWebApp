@@ -59,10 +59,12 @@ public class UserController {
         pages.add("ABOUT");
         pages.add("MANAGE_COACHES");
         pages.add("CLIENT_COURSES");
+        pages.add("SCHEDULE");
 
         pagesAllUsers.add("HOME");
         pagesAllUsers.add("LOGIN");
         pagesAllUsers.add("REGISTER");
+        pagesAllUsers.add("SCHEDULE");
         pagesAllUsers.add("CONTACT");
         pagesAllUsers.add("ABOUT");
 

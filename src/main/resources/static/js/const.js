@@ -32,6 +32,7 @@ var PAGES_MAPPINGS_URL = {
     REGISTER            : '/register.html',
     CONTACT             : '/contact.html',
     ABOUT               : '/about.html',
+    SCHEDULE            : '/schedule.html',
 };
 
 var PAGES_MAPPINGS_NAME = {
@@ -48,6 +49,7 @@ var PAGES_MAPPINGS_NAME = {
     REGISTER            : 'REGISTER',
     CONTACT             : 'CONTACT US',
     ABOUT               : 'ABOUT',
+    SCHEDULE            : 'SCHEDULE',
 };
 
 
@@ -65,6 +67,7 @@ var PAGE_LOGIN = 'LOGIN';
 var PAGE_REGISTER = 'REGISTER';
 var PAGE_CONTACT = 'CONTACT';
 var PAGE_ABOUT  = 'ABOUT';
+var PAGE_SCHEDULE = 'SCHEDULE';
 
 var STATUSES = {
     STATUS_NOT_LOGGED_IN        :'STATUS_NOT_LOGGED_IN'    ,

@@ -93,12 +93,12 @@ function generatePages(data){
         return;
     }
     var pages = data.pages;
-    var toRemove = [PAGE_HOME, PAGE_LOGIN, PAGE_ABOUT, PAGE_REGISTER, PAGE_CONTACT];
+    var toRemove = [PAGE_HOME, PAGE_LOGIN, PAGE_ABOUT, PAGE_REGISTER, PAGE_CONTACT, PAGE_SCHEDULE];
     pages = pages.filter(function (el) {
         return toRemove.indexOf(el) < 0;
     });
 
-    pages.push(PAGE_ABOUT, PAGE_CONTACT);
+    pages.push(PAGE_SCHEDULE, PAGE_ABOUT, PAGE_CONTACT);
     var ul = $(".nav.navbar-nav");
     ul.empty();
     //ul.hide();

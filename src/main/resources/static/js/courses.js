@@ -106,23 +106,25 @@ function showCourseInPopup(course){
     courseDialog.content.date.endDate.text(new Date(course.endDate).toLocaleDateString('ro-RO'));
     courseDialog.content.participants.freePlaces.text(course.maxPlaces - course.numberOfParticipants);
     courseDialog.content.participants.occupiedPlaces.text(course.numberOfParticipants);
-    callServer(APIS.API_COURSE_ATTENDED.format(courseId), HTTP_METHODS.GET, {},
-        function(data){
-            if(!("attended" in data)){
-                showError("Invalid response from server",
-                    "Invalid response from server for attended url: {0}".format(JSON.stringify(data)));
-                return;
-            }
-            var attended = data.attended;
-            if(attended)
-                courseDialog.content.participants.attendButton.addClass("disabled").text("Already attended");
-            else
+    if(canHaveFeedback){
+        callServer(APIS.API_COURSE_ATTENDED.format(courseId), HTTP_METHODS.GET, {},
+            function(data){
+                if(!("attended" in data)){
+                    showError("Invalid response from server",
+                        "Invalid response from server for attended url: {0}".format(JSON.stringify(data)));
+                    return;
+                }
+                var attended = data.attended;
+                if(attended)
+                    courseDialog.content.participants.attendButton.addClass("disabled").text("Already attended");
+                else
                 if(course.maxPlaces - course.numberOfParticipants > 0)
                     courseDialog.content.participants.attendButton.removeClass("disabled").text("Attend");
                 else
                     courseDialog.content.participants.attendButton.addClass("disabled").text("No free places available")
-    }, function(){}
+            }
         );
+    }
 
     if(course.teacher !== undefined && course.teacher != null)
     {
@@ -471,6 +473,14 @@ function init(){
             canHaveFeedback = false;
             initDialog();
             callServer(APIS.API_GET_COURSES, HTTP_METHODS.GET, {}, loadCourses)
+        },
+        function(){
+            //permission denied
+            callServer(APIS.API_HAS_PERMISSION, HTTP_METHODS.GET, {page:PAGE_COURSES},function(){
+                canHaveFeedback = false;
+                initDialog();
+                callServer(APIS.API_GET_COURSES, HTTP_METHODS.GET, {}, loadCourses);
+            })
         }
     );
 };
