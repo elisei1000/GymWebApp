@@ -225,7 +225,7 @@ public class CourseController {
         } else {
             try {
                 boolean check=courseService.checkAttendUserToCourse(id, client);
-                return new Response(Status.STATUS_OK, new ArrayList<String>(), Pair.of("attented",check));
+                return new Response(Status.STATUS_OK, new ArrayList<String>(), Pair.of("attended",check));
             } catch (RepositoryException e) {
                 errors.add(e.getMessage());
                 return new Response(Status.STATUS_FAILED, errors);
