@@ -92,6 +92,7 @@ var APIS = {
     API_GET_CURRENT_USER : "/cuser",
     API_GET_COACHES : "/coaches",
     API_COURSE: "/course/{0}",
+    API_COACH_FEEDBACK: "coach/{0}/feedback",
 };
 
 
