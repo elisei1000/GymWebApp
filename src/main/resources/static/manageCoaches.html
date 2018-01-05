@@ -10,21 +10,107 @@
     <title> Fitness Point </title>
     <!-- CSS -->
     <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" />
-	 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link type="text/css" href="css/animate.css?v=1.0" rel="stylesheet" />
     <link type="text/css" rel="stylesheet" href="css/owl.carousel.min.css?v=1.0">
     <link type="text/css" rel="stylesheet" href="css/jquery.fancybox.css?v=1.0">
     <link type="text/css" rel="stylesheet" href="webkit/webkit.css?v=1.0">
-    <link type="text/css" rel="stylesheet" href="css/font-awesome">
-    <link type="text/css" href="css/style.css?v=1.0" rel="stylesheet" />
+    <link type="text/css" href="style.css?v=1.0" rel="stylesheet" />
     <link type="text/css" href="css/media.css?v=1.0" rel="stylesheet" />
     <link rel="stylesheet" href="css/switcher.css" type="text/css" />
     <link rel="stylesheet" href="css/switcher/style1.css" id="colors">
 
+    <style>
+        .coach_thumbnail >.content{
+            padding: 10px 0px;
+        }
+
+        .button {
+            text-align: center;
+            background-color: #dd8733;
+            font-family: 'Raleway', sans-serif;
+        }
+        div >#btn-add {
+            height: 80px;
+            border-radius: 3px;
+            margin: 25px 0 25px 0;
+        }
+
+        .option{
+            margin: 25px;
+        }
+
+        .coach_thumbnail >.content >.image{
+            width: 100%;
+            padding: 40%;
+            background-position: center;
+            background-size: auto 100%;
+            background-repeat: no-repeat;
+            background-color: white;
+        }
+
+        .coach_thumbnail >.content >.info {
+            width: 100%;
+            text-align: center;
+        }
+
+        .coach_thumbnail >.content >.info >.nume{
+            /*position: absolute;*/
+            /*bottom:5px;*/
+            /*left:15px;*/
+            font-size: 20px;
+        }
+
+        .coach_thumbnail >.content >.info >.email {
+            font-size: 13px;
+            /*position: absolute;*/
+            /*bottom:5px;*/
+            /*right:15px;*/
+        }
+
+
+
+        form {
+            width: 100%;
+            height:100%;
+            max-width:300px;
+            min-width:250px;
+            padding:10px 50px;
+            border:2px solid gray;
+            border-radius:10px;
+            font-family:raleway;
+            background-color: whitesmoke;
+        }
+        p {
+            margin-top:30px
+        }
+        input[type=text] {
+            width:82%;
+            padding:10px;
+            margin-bottom:30px;
+            border:1px solid #ccc;
+            padding-left:40px;
+            font-size:16px;
+            font-family:raleway
+        }
+
+        form {
+        }
+        button{
+            text-align: center;
+            background-color:#dd8733;
+            font-family: 'Raleway',sans-serif;
+        }
+
+        button.ui-dialog-titlebar-close {
+            display: none;
+        }
+
+    </style>
 </head>
 
 <body id="mainBox" class="creamBg" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" data-offset="150">
-    <div class="main">
+<div class="main">
     <div class="head_wrap">
         <!-- Top Header Section Begins -->
         <div class="top-head">
@@ -88,24 +174,67 @@
         </header>
         <!-- Header Section Ends -->
     </div>
-        
 
+</div>
+<!-- Coaches Section Begins -->
+<section id="coaches" class="courses pad-top-210">
+    <div id="main-page" class="container-fluid">
 
+        <div id="dialog-form">
+            <p class="validateTips">All form fields are required!</p>
+
+            <form>
+                <fieldset>
+                    <label for="name">Username</label>
+                    <input type="text" name="username" id="username" placeholder="sebi" class="text ui-widget-content ui-corner-all">
+                    <label for="name">Name</label>
+                    <input type="text" name="name" id="name" placeholder="Jane Smith" class="text ui-widget-content ui-corner-all">
+                    <label for="email">Email</label>
+                    <input type="text" name="email" id="email" placeholder="jane@smith.com" class="text ui-widget-content ui-corner-all">
+                    <label for="birthday">Birthday</label>
+                    <input type="text" name="birthday" id="birthday" placeholder="yyyy-mm-dd" class="text ui-widget-content ui-corner-all">
+
+                    <!-- Allow form submission with keyboard without duplicating the dialog button -->
+                    <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+                </fieldset>
+            </form>
+            <button id="btn-save" class=" button option col-xs-2 col-sm-2 col-md-2">Save</button>
+            <button id="btn-cancel" class="button option col-xs-2 col-sm-2 col-md-2">Cancel</button>
+        </div>
+
+        <div id="full-page" class="row no-margin">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <button id="btn-add" class=" button col-xs-3 col-sm-3 col-md-3">Add new coach</button>
+            </div>
+            <div id="coachesGrid"/>
+
+        </div>
     </div>
 
-    <!-- Jquery Js -->
-    <script type="text/javascript" src="js/libs/jquery.min.js"></script>
-    <script type="text/javascript" src="js/libs/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/libs/element.js"></script>
-    <script type="text/javascript" src="js/libs/modernizr.js"></script>
-    <script type="text/javascript" src="js/libs/owl.carousel.js"></script>
-    <script type="text/javascript" src="js/libs/jquery.localscroll-1.2.7-min.js"></script>
-    <script type="text/javascript" src="js/libs/wow.min.js"></script>
-    <script type="text/javascript" src="js/libs/imagesloaded.pkgd.min.js"></script>
-    <script type="text/javascript" src="js/libs/waypoints.min.js"></script>
-    <script type="text/javascript" src="js/libs/jquery.isotope.min.js"></script>
-    <script type="text/javascript" src="js/libs/jquery.fancybox.js"></script>
-    <script type="text/javascript" src="js/libs/switcher.js"></script>
+</section>
+
+</div>
+
+
+</div>
+
+<!-- Jquery Js -->
+<script type="text/javascript" src="js/libs/jquery.min.js"></script>
+<script type="text/javascript" src="js/libs/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/libs/modernizr.js"></script>
+<script type="text/javascript" src="js/owl.carousel.js"></script>
+<script type="text/javascript" src="js/libs/jquery.localscroll-1.2.7-min.js"></script>
+<script type="text/javascript" src="js/wow.min.js"></script>
+<script type="text/javascript" src="js/libs/imagesloaded.pkgd.min.js"></script>
+<script type="text/javascript" src="js/libs/waypoints.min.js"></script>
+<script type="text/javascript" src="js/libs/jquery.isotope.min.js"></script>
+<script type="text/javascript" src="js/jquery.fancybox.js"></script>
+<script type="text/javascript" src="js/libs/switcher.js"></script>
+<script type="text/javascript" src="js/const.js"></script>
+<script type="text/javascript" src="js/core/core.js"></script>
+<script type="text/javascript" src="js/manageCoaches.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 </body>
 

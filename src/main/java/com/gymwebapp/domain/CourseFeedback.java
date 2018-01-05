@@ -17,6 +17,10 @@ public class CourseFeedback extends Feedback{
         this.course = course;
     }
 
+    public CourseFeedback(int starsCount, String summary, String details, Date date, Client author) {
+        super(starsCount, summary, details, date, author);
+    }
+
     public CourseFeedback(){
 
     }

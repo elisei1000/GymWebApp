@@ -23,9 +23,10 @@ public class SubscriptionRepository implements CrudRepository<Subscription, Inte
 
     @Override
     public void update(Subscription entity) throws RepositoryException {
-        if(!checkIfSubscriptionExists(entity.getId()))
+        Subscription resultFind = entityManager.find(Subscription.class, entity.getId());
+        if(resultFind==null)
             throw new RepositoryException("Subscription doesn't exists");
-        entityManager.merge(entity);
+        resultFind.setEndDate(entity.getEndDate());
     }
 
     @Override
@@ -50,6 +51,11 @@ public class SubscriptionRepository implements CrudRepository<Subscription, Inte
     public List<Subscription> getAll() throws RepositoryException {
         TypedQuery<Subscription> q = entityManager.createQuery("select s from Subscription s", Subscription.class);
         return q.getResultList();
+    }
+
+    public Integer getLastGeneratedValue(){
+        TypedQuery<Integer> q = entityManager.createQuery("select max(id) from Subscription s", Integer.class);
+        return q.getSingleResult();
     }
 
     public boolean checkIfSubscriptionExists(Integer integer){

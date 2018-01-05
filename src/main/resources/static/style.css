@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------
 [Table of contents]
-1.  css reset 
+1.  css reset
   1.1 HTML5 display-role reset for older browsers
   1.2 Flaticon css
   1.3 css reset
@@ -21,7 +21,7 @@
 16. Copyright css
 17. Back To Top css
 18. News Page css
-19. News Details Page css 
+19. News Details Page css
 -------------------------------------------------------------------*/
 
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i|Passion+One:400,700,900');
@@ -196,7 +196,7 @@ a:focus {
 @font-face {
     font-family: "Flaticon";
     src: url("../webkit/Flaticon.eot");
-    src: url("../webkit/Flaticon.eot?#iefix") format("embedded-opentype"), url("../webkit/Flaticon.woff") format("woff"), url("../webkit/Flaticon.ttf") format("truetype"), url("../webkit/Flaticon.svg#Flaticon") format("svg");
+    src: url("../webkit/Flaticon.eot?#iefix") format("embedded-opentype"), url("webkit/Flaticon.woff") format("woff"), url("../webkit/Flaticon.ttf") format("truetype"), url("../webkit/Flaticon.svg#Flaticon") format("svg");
     font-weight: normal;
     font-style: normal;
 }
@@ -827,7 +827,7 @@ p {
 }
 
 .creamBg {
-    background-image: url('../images/greyBg.png');
+    background-image: url('images/greyBg.png');
     background-repeat: repeat;
 }
 
@@ -868,7 +868,7 @@ p {
 
 /* 2.5  Head Wrap*/
 
-.head_wrap{    
+.head_wrap{
     position: absolute;
     width: 100%;
     z-index: 999;
@@ -879,7 +879,7 @@ p {
 #site-head {
     display: inline-block;
     height: 100vh;
-    background-image: url(../images/banner-img.jpg);
+    background-image: url(images/banner-img.jpg);
     background-position: center top;
     background-size: cover;
     padding: 0;
@@ -889,9 +889,9 @@ p {
     vertical-align: top;
 }
 #mainBoxLogin{
-	display: cover;
+    display: cover;
     height: 100vh;
-    background-image: url(../images/footerBg.jpg);
+    background-image: url(images/footerBg.jpg);
 }
 
 #mainBox{
@@ -1159,8 +1159,8 @@ header.fixed .menuBar .navbar-right {
 }
 
 .bannerText {
-	position:relative;
-	
+    position:relative;
+
 }
 
 .banskew {
@@ -1328,7 +1328,7 @@ header.fixed .menuBar .navbar-right {
 /* 7. Feature CSS */
 
 #feature {
-    background-image: url('../images/featureBg.jpg');
+    background-image: url('images/featureBg.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: top right;
@@ -1422,16 +1422,16 @@ header.fixed .menuBar .navbar-right {
     -webkit-transform: skew(29.6deg);
     -moz-transform: skew(29.6deg);
     -o-transform: skew(29.6deg);
-        padding: 23px 38px;
+    padding: 23px 38px;
     width: 100%;
 }
 
-.tabs-header { 
+.tabs-header {
     position: relative;
     display: inline-block;
     width: 100%;
     overflow: auto;
-    padding-bottom: 30px;
+    margin-top:30px;
 }
 .tabs-header #filters {
     display: inline-flex;
@@ -1478,7 +1478,7 @@ header.fixed .menuBar .navbar-right {
     transform: translate3d(-650%, 0, 0);
 }
 
-@media screen and (-webkit-min-device-pixel-ratio:0) and (min-color-index:0) { 
+@media screen and (-webkit-min-device-pixel-ratio:0) and (min-color-index:0) {
 
     .button-group .button:first-child.is-checked ~ .button:last-child::before {
         -webkit-transform: translate3d(-652%, 0, 0);
@@ -1622,6 +1622,7 @@ header.fixed .menuBar .navbar-right {
     text-transform: uppercase;
     font-style: italic;
     margin-bottom: 30px;
+    padding-top: 50px;
 }
 
 .element p {
@@ -1632,7 +1633,7 @@ header.fixed .menuBar .navbar-right {
 .element-btn {
     float: left;
     clear: both;
-    margin-top: 20px;    
+    margin-top: 20px;
     width: 100%;
 }
 
@@ -1653,7 +1654,7 @@ header.fixed .menuBar .navbar-right {
     -moz-transition: all 0.3s ease-in-out;
     -ms-transition: all 0.3s ease-in-out;
     box-shadow: 0px 10px 50px -10px rgba(255, 10, 120, 1);
-   
+
 }
 
 .fill-btn {
@@ -1693,7 +1694,7 @@ header.fixed .menuBar .navbar-right {
 
 .gallery {
     position: relative;
-    background-image: url('../images/galleryBg.jpg');
+    background-image: url('images/galleryBg.jpg');
     background-repeat: no-repeat;
     padding-bottom: 85px;
 }
@@ -1887,7 +1888,7 @@ header.fixed .menuBar .navbar-right {
 /* 10. Products css */
 
 #products {
-    padding-bottom: 55px;    
+    padding-bottom: 55px;
 }
 
 .products {
@@ -2110,7 +2111,7 @@ header.fixed .menuBar .navbar-right {
     top: 0;
     bottom: 0;
     opacity: 0.5;
-    background: url('../images/callToActionBg.jpg') no-repeat center;
+    background: url('images/callToActionBg.jpg') no-repeat center;
     width: 100%;
     height: 100%;
 }
@@ -2342,7 +2343,7 @@ header.fixed .menuBar .navbar-right {
     top: 0;
     bottom: 0;
     opacity: 0.05;
-    background: url('../images/testimonialBg.jpg') no-repeat center;
+    background: url('images/testimonialBg.jpg') no-repeat center;
     width: 100%;
     height: 100%;
 }
@@ -2553,7 +2554,7 @@ header.fixed .menuBar .navbar-right {
     top: 0;
     bottom: 0;
     opacity: 0.13;
-    background: url('../images/footerBg.jpg') no-repeat top center;
+    background: url('images/footerBg.jpg') no-repeat top center;
     background-size: cover;
     width: 100%;
     height: 100%;

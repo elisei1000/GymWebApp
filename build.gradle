@@ -24,7 +24,13 @@ repositories {
 
 
 dependencies {
+	compile("org.springframework.boot:spring-boot-starter-web") {
+		exclude module: "spring-boot-starter-tomcat"
+	}
 
+	compile("org.springframework.boot:spring-boot-starter-jetty")
+	compile("org.springframework.boot:spring-boot-starter-actuator")
+	compile 'org.springframework.boot:spring-boot-starter-security:1.5.6.RELEASE'
 
 	compile('org.springframework.boot:spring-boot-starter-data-rest')
 	compile('org.springframework.boot:spring-boot-starter-web')
@@ -43,6 +49,7 @@ dependencies {
 	compile "org.hibernate:hibernate-entitymanager:5.2.10.Final"
 	compile "com.fasterxml.jackson.core:jackson-databind:2.5.0"
 	compile 'mysql:mysql-connector-java'
+	compile 'org.springframework.boot:spring-boot-devtools'
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('com.h2database:h2')
 }

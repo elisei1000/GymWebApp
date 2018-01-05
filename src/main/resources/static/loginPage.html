@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,24 +8,23 @@
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
     <title> Fitness Point </title>
     <!-- CSS -->
-    <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" />
-	 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-    <link type="text/css" href="css/animate.css?v=1.0" rel="stylesheet" />
+    <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link type="text/css" href="css/animate.css?v=1.0" rel="stylesheet"/>
     <link type="text/css" rel="stylesheet" href="css/owl.carousel.min.css?v=1.0">
     <link type="text/css" rel="stylesheet" href="css/jquery.fancybox.css?v=1.0">
     <link type="text/css" rel="stylesheet" href="webkit/webkit.css?v=1.0">
-    <link type="text/css" rel="stylesheet" href="css/font-awesome">
-    <link type="text/css" href="css/style.css?v=1.0" rel="stylesheet" />
-    <link type="text/css" href="css/media.css?v=1.0" rel="stylesheet" />
-    <link rel="stylesheet" href="css/switcher.css" type="text/css" />
+    <link type="text/css" href="style.css?v=1.0" rel="stylesheet"/>
+    <link type="text/css" href="css/media.css?v=1.0" rel="stylesheet"/>
+    <link rel="stylesheet" href="css/switcher.css" type="text/css"/>
     <link rel="stylesheet" href="css/switcher/style1.css" id="colors">
 
 </head>
 
 <body id="mainBoxLogin" class="creamBg" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" data-offset="150">
-    <div class="main" >
+<div class="main">
     <div class="head_wrap">
         <!-- Top Header Section Begins -->
         <div class="top-head">
@@ -34,12 +32,14 @@
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <ul class=" pull-right">
-                            <li> <i class="glyphicon glyphicon-time" aria-hidden="true"></i> 8.00 am – 10.00 pm </li>
+                            <li><i class="glyphicon glyphicon-time" aria-hidden="true"></i> 8.00 am – 10.00 pm</li>
                             <li>
-                                <a href="register.html"> <i class="glyphicon glyphicon-user" aria-hidden="true"></i> Register </a>
+                                <a href="register.html"> <i class="glyphicon glyphicon-user" aria-hidden="true"></i>
+                                    Register </a>
                             </li>
                             <li>
-                                <a href="login.html"> <i class="glyphicon glyphicon-log-in" aria-hidden="true"></i> Login </a>
+                                <a href="loginPage.html"> <i class="glyphicon glyphicon-log-in" aria-hidden="true"></i>
+                                    Login </a>
                             </li>
                         </ul>
                     </div>
@@ -55,30 +55,27 @@
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 main-menu">
                         <div class="menuBar scrollbtn">
                             <nav class="navbar navbar-default">
-                                <div class="skewbox"> </div>
+                                <div class="skewbox"></div>
                                 <div class="container-fluid">
                                     <!-- Brand and toggle get grouped for better mobile display -->
                                     <div class="navbar-header">
-                                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                                data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                                             <span class="sr-only">Toggle navigation</span>
                                             <span class="icon-bar"></span>
                                             <span class="icon-bar"></span>
                                             <span class="icon-bar"></span>
                                         </button>
                                         <div class="logo">
-                                            <a class="navbar-brand" href="main.html"><img src="images/logo.svg" alt="logo" /></a>
+                                            <a class="navbar-brand" href="main.html"><img src="images/logo.svg"
+                                                                                          alt="logo"/></a>
                                         </div>
                                     </div>
 
                                     <!-- Collect the nav links, forms, and other content for toggling -->
                                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                         <ul class="nav navbar-nav navbar-right">
-                                            <li><a href="about.html">About</a></li>
-                                            <li><a href="courses.html">Courses </a></li>
-                                            <li><a href="coaches.html">Coaches</a></li>
-                                            <li><a href="schedule.html">Schedule</a></li>
-                                            <li><a href="subscription.html">Subscription </a></li>
-                                            <li><a href="contact.html">Contact us</a></li>
+
                                         </ul>
                                     </div>
                                 </div>
@@ -89,36 +86,37 @@
             </div>
         </header>
         <!-- Header Section Ends -->
-<div class="log"></div>
-<div class="login-block">
-    <h1>Login</h1>
-
-    <input type="text" value="" placeholder="Username" id="username" />
-    <input type="password" value="" placeholder="Password" id="password" />
-    <button onclick="submitLogin()">Submit</button>
-
+        <div class="log"></div>
+        <div class="login-block">
+            <h1>Login</h1>
+            <form method="post" accept-charset="UTF-8" class="login-pane" id="login-form"  enctype="multipart/form-data">
+                <input type="hidden" name="${_csrf.parameterName}"
+                       value="${_csrf.token}"/>
+                <input type="text" value="" placeholder="Username" id="username"/>
+                <input type="password" value="" placeholder="Password" id="password"/>
+                <button type="button" onclick="submitLogin()">Submit</button>
+            </form>
+        </div>
+    </div><!-- container -->
 
 </div>
-</div><!-- container -->
 
-    </div>
-
-    <!-- Jquery Js -->
-    <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
-    <script type="text/javascript" src="js/libs/jquery.min.js"></script>
-    <script type="text/javascript" src="js/main-script.js"></script>
-    <script type="text/javascript" src="js/libs/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/libs/element.js"></script>
-    <script type="text/javascript" src="js/libs/modernizr.js"></script>
-    <script type="text/javascript" src="js/libs/owl.carousel.js"></script>
-    <script type="text/javascript" src="js/libs/jquery.localscroll-1.2.7-min.js"></script>
-    <script type="text/javascript" src="js/libs/wow.min.js"></script>
-    <script type="text/javascript" src="js/libs/imagesloaded.pkgd.min.js"></script>
-    <script type="text/javascript" src="js/libs/waypoints.min.js"></script>
-    <script type="text/javascript" src="js/libs/jquery.isotope.min.js"></script>
-    <script type="text/javascript" src="js/libs/jquery.fancybox.js"></script>
-    <script type="text/javascript" src="js/libs/switcher.js"></script>
-
+<!-- Jquery Js -->
+<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="js/libs/jquery.min.js"></script>
+<script type="text/javascript" src="js/main-script.js"></script>
+<script type="text/javascript" src="js/libs/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/libs/modernizr.js"></script>
+<script type="text/javascript" src="js/owl.carousel.js"></script>
+<script type="text/javascript" src="js/libs/jquery.localscroll-1.2.7-min.js"></script>
+<script type="text/javascript" src="js/wow.min.js"></script>
+<script type="text/javascript" src="js/libs/imagesloaded.pkgd.min.js"></script>
+<script type="text/javascript" src="js/libs/waypoints.min.js"></script>
+<script type="text/javascript" src="js/libs/jquery.isotope.min.js"></script>
+<script type="text/javascript" src="js/jquery.fancybox.js"></script>
+<script type="text/javascript" src="js/libs/switcher.js"></script>
+<script type="text/javascript" src="js/const.js"></script>
+<script type="text/javascript" src="js/core/core.js"></script>
 </body>
 
 </html>

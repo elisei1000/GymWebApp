@@ -53,6 +53,7 @@ public class UserRepository implements CrudRepository<User, String> {
 
     @Override
     public User get(String s){
+
         return entityManager.find(User.class, s);
     }
 
