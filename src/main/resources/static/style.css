@@ -3831,3 +3831,11 @@ blockquote h6 {
 .login-block button:hover {
     background: #FF8C00;
 }
+
+ #scheduler {
+     margin-right:50px;
+     margin-left:50px;
+     position: relative;
+     margin-bottom: 20px;
+     margin-top:50px;
+ }
