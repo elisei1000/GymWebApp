@@ -92,6 +92,7 @@ var APIS = {
     API_GET_CURRENT_USER : "/cuser",
     API_GET_COACHES : "/coaches",
     API_COURSE: "/course/{0}",
+    API_POST_REGISTER : "/user-register",
 };
 
 
@@ -131,5 +132,8 @@ var OBJECT_KEYS = {
     ],
     COACH : [
         "username", "email", "name", "birthDay"
-    ]
+    ],
+    USER: [
+        "username", "birthDay", "email", "name", "password"
+    ],
 };
