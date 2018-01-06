@@ -6,6 +6,7 @@ import com.gymwebapp.domain.Validator.FeedbackValidator;
 import com.gymwebapp.domain.Validator.Validator;
 import com.gymwebapp.model.CourseModel;
 import com.gymwebapp.model.FeedbackModel;
+import com.gymwebapp.model.ScheduleModel;
 import com.gymwebapp.service.CourseService;
 import com.gymwebapp.service.FeedBackService;
 import com.gymwebapp.service.UserService;
@@ -16,6 +17,9 @@ import org.springframework.data.util.Pair;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -272,6 +276,37 @@ public class CourseController {
             errors.add("Nu a putut fi sters cursul!");
             return new Response(Status.STATUS_FAILED, errors);
         }
+    }
+
+    @GetMapping(value = "course/program")
+    public Response schedule(@RequestParam String startDate, @RequestParam String endDate) {
+        List<String> errors = new ArrayList<>();
+
+        if (startDate.equals(null) || startDate.isEmpty() || endDate.equals(null) || endDate.isEmpty())
+            errors.add("Datele sunt invalide !");
+
+        if (errors.size() != 0)
+            return new Response(Status.STATUS_FAILED, errors);
+
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date sDate = null, eDate = null;
+        try {
+            sDate = format.parse(startDate);
+            eDate = format.parse(endDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        ScheduleModel scheduleModel = new ScheduleModel(sDate, eDate);
+        List<List<Course>> schedule_courses = courseService.getSchedule(scheduleModel);
+        List<List<CourseModel>> schedule_response = new ArrayList<>();
+        for (int i = 0; i < schedule_courses.size(); i++)
+            schedule_response.add(new ArrayList<>());
+
+        for (int i = 0; i < schedule_courses.size(); i++)
+            for (Course course : schedule_courses.get(i))
+                schedule_response.get(i).add(new CourseModel(course.getId(), course.getDifficultyLevel(), course.getStartHour(), course.getEndHour(), course.getStartDate(), course.getEndDate(), course.getMaxPlaces(), course.getClients().size(), course.getTeacher().getName(), course.getTitle(), course.getDescription()));
+        return new Response(Status.STATUS_OK, new ArrayList<>(), Pair.of("program", schedule_response));
     }
 
 }

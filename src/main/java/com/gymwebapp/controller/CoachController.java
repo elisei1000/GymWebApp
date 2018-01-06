@@ -34,7 +34,6 @@ public class CoachController {
 
     @PostMapping(value = "/coach")
     public Response add(@RequestBody UserModel userModel) {
-        //to do : check if has permission
         Coach coach = new Coach(userModel.getUsername(), userModel.getPassword(), userModel.getEmail(),
                 userModel.getName(), userModel.getBirthDay());
         List<String> errors = userService.addUser(coach);

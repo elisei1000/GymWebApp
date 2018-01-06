@@ -3,6 +3,7 @@ package com.gymwebapp.service;
 import com.gymwebapp.domain.*;
 import com.gymwebapp.model.CourseModel;
 import com.gymwebapp.model.FeedbackModel;
+import com.gymwebapp.model.ScheduleModel;
 import com.gymwebapp.repository.CourseRepository;
 import com.gymwebapp.repository.FeedBackRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 
 @Service
@@ -268,6 +269,24 @@ public class CourseService {
         return courseRepository.size();
     }
 
+    @Transactional
+    public List<List<Course>> getSchedule(ScheduleModel scheduleModel) {
+        List<Course> courses = courseRepository.getAll();
+        List<List<Course>> schedule_courses = new ArrayList<>();
+        for (int i = 0; i < 7; i++)
+            schedule_courses.add(new ArrayList<>());
 
-
+        Calendar calendar = Calendar.getInstance();
+        for (Course course : courses) {
+            if (course.getStartDate().compareTo(scheduleModel.getStartDate()) >= 0 && course.getEndDate().compareTo(scheduleModel.getEndDate()) <= 0) {
+                calendar.setTime(course.getStartDate());
+                int day = calendar.get(Calendar.DAY_OF_WEEK);
+                if (day == 1)
+                    schedule_courses.get(6).add(course);
+                else
+                    schedule_courses.get(day - 2).add(course);
+            }
+        }
+        return schedule_courses;
+    }
 }
