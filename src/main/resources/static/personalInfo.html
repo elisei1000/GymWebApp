@@ -3,6 +3,8 @@
 <html lang="en">
 
 <head>
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
@@ -20,93 +22,6 @@
     <link rel="stylesheet" href="css/switcher.css" type="text/css" />
     <link rel="stylesheet" href="css/switcher/style1.css" id="colors">
 
-    <style>
-        .coach_thumbnail >.content{
-            padding: 10px 0px;
-        }
-
-        .button {
-            text-align: center;
-            background-color: #dd8733;
-            font-family: 'Raleway', sans-serif;
-        }
-        div >#btn-add {
-            height: 80px;
-            border-radius: 3px;
-            margin: 25px 0 25px 0;
-        }
-
-        .option{
-            margin: 25px;
-        }
-
-        .coach_thumbnail >.content >.image{
-            width: 100%;
-            padding: 40%;
-            background-position: center;
-            background-size: auto 100%;
-            background-repeat: no-repeat;
-            background-color: white;
-        }
-
-        .coach_thumbnail >.content >.info {
-            width: 100%;
-            text-align: center;
-        }
-
-        .coach_thumbnail >.content >.info >.nume{
-            /*position: absolute;*/
-            /*bottom:5px;*/
-            /*left:15px;*/
-            font-size: 20px;
-        }
-
-        .coach_thumbnail >.content >.info >.email {
-            font-size: 13px;
-            /*position: absolute;*/
-            /*bottom:5px;*/
-            /*right:15px;*/
-        }
-
-
-
-        form {
-            width: 100%;
-            height:100%;
-            max-width:300px;
-            min-width:250px;
-            padding:10px 50px;
-            border:2px solid gray;
-            border-radius:10px;
-            font-family:raleway;
-            background-color: whitesmoke;
-        }
-        p {
-            margin-top:30px
-        }
-        input[type=text] {
-            width:82%;
-            padding:10px;
-            margin-bottom:30px;
-            border:1px solid #ccc;
-            padding-left:40px;
-            font-size:16px;
-            font-family:raleway
-        }
-
-        form {
-        }
-        button{
-            text-align: center;
-            background-color:#dd8733;
-            font-family: 'Raleway',sans-serif;
-        }
-
-        button.ui-dialog-titlebar-close {
-            display: none;
-        }
-
-    </style>
 </head>
 
 <body id="mainBox" class="creamBg" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" data-offset="150">
@@ -161,8 +76,8 @@
                                             <li><a href="courses.html">Courses </a></li>
                                             <li><a href="coaches.html">Coaches</a></li>
                                             <li><a href="schedule.html">Schedule</a></li>
-                                            <li><a href="subscribtion.html">Subscription </a></li>
-                                            <li><a href="contact">Contact us</a></li>
+                                            <li><a href="subscription.html">Subscription </a></li>
+                                            <li><a href="contact.html">Contact us</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -175,52 +90,109 @@
         <!-- Header Section Ends -->
     </div>
 
-</div>
-<!-- Coaches Section Begins -->
-<section id="coaches" class="courses pad-top-210">
-    <div id="main-page" class="container-fluid">
 
-        <div id="dialog-form">
-            <p class="validateTips">All form fields are required!</p>
+<!--/div><!-- container -->
 
-            <form>
-                <fieldset>
-                    <label for="name">Username</label>
-                    <input type="text" name="username" id="username" placeholder="sebi" class="text ui-widget-content ui-corner-all">
-                    <label for="name">Name</label>
-                    <input type="text" name="name" id="name" placeholder="Jane Smith" class="text ui-widget-content ui-corner-all">
-                    <label for="email">Email</label>
-                    <input type="text" name="email" id="email" placeholder="jane@smith.com" class="text ui-widget-content ui-corner-all">
-                    <label for="birthday">Birthday</label>
-                    <input type="text" name="birthday" id="birthday" placeholder="yyyy-mm-dd" class="text ui-widget-content ui-corner-all">
-
-                    <!-- Allow form submission with keyboard without duplicating the dialog button -->
-                    <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
-                </fieldset>
-            </form>
-            <button id="btn-save" class=" button option col-xs-2 col-sm-2 col-md-2">Save</button>
-            <button id="btn-cancel" class="button option col-xs-2 col-sm-2 col-md-2">Cancel</button>
-        </div>
-
-        <div id="full-page" class="row no-margin">
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <button id="btn-add" class=" button col-xs-3 col-sm-3 col-md-3">Add new coach</button>
+<div class="principal">
+    <div class="header_tot">
+        <div class="header">
+            <h1>Contul meu</h1>
+            <div class="subtitlu">
+                <a href="personalInfo.html" class="activ">Profil</a>  <span class="mx-3">/</span> <a href="personalInfo.html" class="">Abonamente</a> <span class="mx-3">/</span> <a href="personalInfo.html">Logout</a>
             </div>
-            <div id="coachesGrid"/>
-
         </div>
     </div>
 
-</section>
+    <!--<div class="big_box">-->
+        <div class="rowD" id="profil">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6">
+                <div class="rowD">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-10">
+
+                        <div class="big_box boxMargin">
+                            <h2 class="sinfo"><i class="icon-user"></i> Datele contului</h2>
+
+                            <div class="rowD no-gutters">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="">Nume si prenume</label>
+                                        <div class="form-inline">
+                                            <input type="text" value="Cristolovean Diana " class="form-control col-sm-9 actnume" data-x="{&quot;v&quot;:&quot;cont\/actnume&quot;}" data-reload="1" placeholder="Nume si prenume">
+                                        </div>
+                                        <div id="xnume"></div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="rowD">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="">Username</label>
+                                        <div class="form-inline">
+                                            <input type="text" value="" class="form-control col-sm-9 acttel" data-x="{&quot;v&quot;:&quot;cont\/acttel&quot;}" data-reload="1" placeholder="Username">
+                                        </div>
+                                        <div id="xtel"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rowD">
+
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Adresa de email</label>
+                                        <div class="form-inline">
+                                            <input type="text" placeholder="Adresa de email" class="form-control col-sm-9 addmail" data-x="{&quot;v&quot;:&quot;cont\/addmail&quot;}">
+                                        </div>
+                                        <div id="xmail"></div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                            <div class="rowD">
+
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Zi de nastere</label>
+                                        <div class="form-inline">
+                                            <input type="text" placeholder="Zi de nastere" class="form-control col-sm-9 addmail" data-x="{&quot;v&quot;:&quot;cont\/addmail&quot;}">
+                                        </div>
+                                        <div id="birthday"></div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+
+                        </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+       <!--</div>-->
+    </div>
 
 </div>
 
 
-</div>
 
 <!-- Jquery Js -->
 <script type="text/javascript" src="js/libs/jquery.min.js"></script>
+<script type="text/javascript" src="js/main-script.js"></script>
+<script type="text/javascript" src="js/const.js"></script>
+<script type="text/javascript" src="js/core/core.js"></script>
 <script type="text/javascript" src="js/libs/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/libs/element.js"></script>
 <script type="text/javascript" src="js/libs/modernizr.js"></script>
 <script type="text/javascript" src="js/libs/owl.carousel.js"></script>
 <script type="text/javascript" src="js/libs/jquery.localscroll-1.2.7-min.js"></script>
@@ -230,11 +202,6 @@
 <script type="text/javascript" src="js/libs/jquery.isotope.min.js"></script>
 <script type="text/javascript" src="js/libs/jquery.fancybox.js"></script>
 <script type="text/javascript" src="js/libs/switcher.js"></script>
-<script type="text/javascript" src="js/const.js"></script>
-<script type="text/javascript" src="js/core/core.js"></script>
-<script type="text/javascript" src="js/manageCoaches.js"></script>
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 </body>
 
