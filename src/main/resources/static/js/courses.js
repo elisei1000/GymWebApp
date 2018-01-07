@@ -1,4 +1,4 @@
-/**
+ne mai /**
  * Created by elisei on 24.11.2017.
  */
 var courses = {};
