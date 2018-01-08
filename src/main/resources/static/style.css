@@ -3831,3 +3831,183 @@ blockquote h6 {
 .login-block button:hover {
     background: #FF8C00;
 }
+
+ #scheduler {
+     margin-right:50px;
+     margin-left:50px;
+     position: relative;
+     margin-bottom: 20px;
+     margin-top:50px;
+ }
+
+.register-block {
+    width: 500px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    border-top: 5px solid #FF8C00;
+    margin: 0 auto;
+    margin-top: 170px;
+}
+
+.register-block h1 {
+    text-align: center;
+    color: #000;
+    font-size: 18px;
+    text-transform: uppercase;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.register-block input {
+    width: 100%;
+    height: 42px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    font-size: 14px;
+    font-family: Montserrat;
+    padding: 0 20px 0 50px;
+    outline: none;
+}
+
+.register-block input#username {
+    background: #fff url('http://i.imgur.com/u0XmBmv.png') 20px top no-repeat;
+    background-size: 16px 80px;
+}
+
+.register-block input#password {
+    background: #fff url('http://i.imgur.com/Qf83FTt.png') 20px top no-repeat;
+    background-size: 16px 80px;
+}
+
+.register-block input:active, .register-block input:focus {
+    border: 1px solid #FF8C00;
+
+}
+
+.register-block button {
+    width: 100%;
+    height: 40px;
+    background: #FF8C00;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 1px solid #FF8C00;
+    color: #fff;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-family: Montserrat;
+    outline: none;
+    cursor: pointer;
+}
+
+.register-block button:hover {
+    background: #FF8C00;
+}
+
+
+/*infoAccount style*/
+.principal{
+    max-width: 1400px;
+    width: 100%;
+    float: left;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-top: 150px;
+}
+
+.form-group, .col-sm-12, .form-inline, .rowD{
+    width:100%;
+    float: left;
+}
+.header_tot {
+    font-family: 'Oswald', sans-serif;
+    text-transform: uppercase;
+    text-align: center !important;
+    margin-bottom: 3rem !important;
+    margin-top: 3rem !important;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+    margin-left: 530px;
+
+}
+.header h1{
+    font-family: 'Oswald',sans-serif;
+    font-size: -webkit-xxx-large;
+}
+
+.big_box{
+    font-size: large;
+    border-radius: 5px;
+    padding: 20px;
+    background: #efefef;
+    border-top: 5px solid #FF8C00;
+    width: 100%;
+    float:left;
+
+}
+
+
+.big_box input{
+    float: left;
+
+    width:100%;
+    padding: 20px;
+}
+/*
+.boxMargin {
+    padding: 20px;
+    margin: 20px 0;
+    background: #efefef;
+}*/
+.col-sm-6 {
+    -ms-flex: 0 0 50%;
+    flex: 0 0 50%;
+    max-width: 50%;
+}
+
+.rowD {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.col-sm-1 {
+    flex: 0 0 8.333333%;
+    max-width: 8.333333%;
+}
+
+
+.fa-user:before {
+    content: "\f007";
+}
+
+h2.sinfo {
+    font-weight: normal !important;
+    font-family: 'Oswald', sans-serif;
+    text-transform: uppercase;
+    font-size: 1.5em;
+    margin: 0 0 15px 0;
+}
+
+.ml-3, .mx-3 {
+    margin-left: 1rem!important;
+}
+.mr-3, .mx-3 {
+    margin-right: 1rem!important;
+}
+.subtitlu a {
+    color: #1c1b1b;
+    font-weight: bold;
+    text-decoration: none;
+}
+

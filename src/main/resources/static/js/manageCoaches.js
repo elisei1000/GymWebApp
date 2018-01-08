@@ -1,20 +1,21 @@
 var coaches = [];
+var freeIds = [];
 
 var coachesDiv;
 var coachesContent;
 
-
+var dialog;
 function loadDialog() {
-    var dialog, form,
+    var  form,
 
-        // From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
-        emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
-        username = $( "#username" ),
-        name = $( "#name" ),
-        email = $( "#email" ),
-        birthday = $( "#birthday" ),
-        allFields = $( [] ).add(username).add( name ).add( email ).add( birthday ),
-        tips = $( ".validateTips" );
+    // From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
+    emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
+    username = $( "#username" ),
+    name = $( "#name" ),
+    email = $( "#email" ),
+    birthday = $( "#birthday" ),
+    allFields = $( [] ).add(username).add( name ).add( email ).add( birthday ),
+    tips = $( ".validateTips" );
 
     function updateTips( t ) {
         tips
@@ -46,8 +47,36 @@ function loadDialog() {
         }
     }
 
-    function addCoachFromInput() {
+    function updateCoach(data) {
+        // console.log(data.target.parentElement);
 
+        // console.log($("#name").val());
+        // console.log($("#email").val());
+        console.log($("#btn-update").attr("name"));
+
+        var id = $("#btn-update").attr("name");
+
+
+        var valid = true;
+        // var name = $("#name");
+        // var email = $("#email");
+
+        valid = valid && checkLength( name, "name", 3, 16 );
+        valid = valid && checkLength( email, "email", 6, 80 );
+        valid = valid && checkRegexp( name, /^[A-Za-z\s]+$/i, "Name may consist of a-z, A-Z and spaces." );
+        valid = valid && checkRegexp( email, emailRegex, "Invalid email format! (eg. ui@jquery.com)" );
+
+        if(valid) {
+            var coach = document.getElementById(id);
+            coach.getElementsByClassName("nume")[0].innerText = name.val();
+            coach.getElementsByClassName("email")[0].innerText = email.val();
+            dialog.dialog( "close" );
+        }
+        // var newCoach = document.getElementById('coachesGrid').removeChild(coach);
+
+    }
+
+    function addCoach() {
         var valid = true;
         allFields.removeClass( "ui-state-error" );
 
@@ -62,6 +91,12 @@ function loadDialog() {
         valid = valid && checkRegexp( birthday, /^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/, "Invalid birthday field!" );
 
         var tempCoach = {};
+        if(freeIds.length == 0)
+            tempCoach.id = coaches.length;
+        else {
+            tempCoach.id = freeIds[0];
+            freeIds.splice(0,1);
+        }
         tempCoach["username"] = username.val();
         tempCoach["name"] = name.val();
         tempCoach["email"] = email.val();
@@ -69,12 +104,8 @@ function loadDialog() {
 
         if ( valid ) {
             addCoachToGrid(tempCoach);
+            // coaches.add(tempCoach);
 
-            // $( "#users tbody" ).append( "<tr>" +
-            //     "<td>" + name.val() + "</td>" +
-            //     "<td>" + email.val() + "</td>" +
-            //     "<td>" + birthday.val() + "</td>" +
-            //     "</tr>" );
             dialog.dialog( "close" );
         }
         return valid;
@@ -102,29 +133,78 @@ function loadDialog() {
 
     form = dialog.find( "form" ).on( "submit", function( event ) {
         event.preventDefault();
-        addCoachFromInput();
+        addCoach();
     });
 
     $("#btn-add").click(function () {
         // coachesContent = $('#coachesGrid').html();
         $('#coachesGrid').hide();
         $('#btn-add').hide();
+        $('#btn-update').hide();
+        $("#btn-save").show();
+        $('label[for=username], input#username').show();
+        $('label[for=birthday], input#birthday').show();
         dialog.dialog("open");
     });
+
     $("#btn-cancel").click(function() {
         dialog.dialog( "close" );
     });
-    $("#btn-save").click(addCoachFromInput);
+    $("#btn-save").click(addCoach);
+    $("#btn-update").click(updateCoach);
 }
 
-function coachClick(coachInfo) {
-    console.log(coachInfo);
+function deleteClick(event) {
+    console.log("deleting: ", event);
+
+    var id = event.target.parentElement.id;
+    removeCoachFromGrid(id);
+    freeIds.push(id);
 }
+function removeCoachFromGrid(id) {
+    // console.log("before: ", coaches);
+    // coaches.splice(id, 1);
+    // console.log("after: ", coaches);
+
+    var coach = document.getElementById('' +id);
+    document.getElementById('coachesGrid').removeChild(coach);
+
+    // showCoaches();
+}
+
+function updateClick(coachInfo) {
+    var id = coachInfo.target.parentElement.parentElement.id;
+    var coach = document.getElementById('' +id);
+
+    var name = coach.getElementsByClassName("nume")[0].innerText;
+    var email = coach.getElementsByClassName("email")[0].innerText;
+
+    email = email.replace("email: ","");
+    console.log("updating: " , id, name, email, coach);
+
+    $("#name").val(name);
+    $("#email").val(email);
+
+
+    $('#btn-update').show();
+    $('#btn-update').attr("name", id);
+    $('#coachesGrid').hide();
+    $('#btn-add').hide();
+    $("#btn-save").hide();
+
+    $('label[for=username], input#username').hide();
+    $('label[for=birthday], input#birthday').hide();
+
+    dialog.dialog("open");
+}
+
+
 
 //coach must have: name, email, username and birthday
 function addCoachToGrid(coach) {
     var coachThumb = $('<div ></div>');
     coachThumb.addClass("coach_thumbnail col-xs-6 col-sm-4 col-md-3");
+    coachThumb.attr("id", coach.id);
 
     var content = $('<div></div>');
     content.addClass("content");
@@ -136,19 +216,23 @@ function addCoachToGrid(coach) {
     var divName = $("<div></div>");
     divName.addClass("nume").html(coach.name);        //todo: manage click
     var divEmail = $("<div></div>");
-    divEmail.html("email: <span>{0}</span>".format(coach.email))
+    divEmail.html("email: {0}".format(coach.email))
         .addClass("email");
 
-    var btnInfo = $("<button></button>");
-    btnInfo.addClass("info")
-        .append(divName)
-        .append(divEmail).click(coachClick())
-    // )
-    // .append(
-    //     $("<div></div>").addClass("age").html("<p>{0}</p>".format(coach.birthday))
-    ;
+    var btnDelete = $("<button></button>");
+    btnDelete.addClass("btn-delete").on("click", deleteClick);
 
-    content.append(btnInfo);
+    var divInfo = $("<div></div>").addClass("info");
+
+    var btnUpdate = $("<button></button>").addClass("btn-update")
+        .append(divName)
+        .append(divEmail)
+        .on("click", updateClick);
+
+    divInfo.attr("id", coach.id);
+    divInfo.append(btnUpdate).append(btnDelete);
+
+    content.append(divInfo);
 
     coachThumb.append(content);
     coachesDiv.append(coachThumb);
@@ -156,15 +240,16 @@ function addCoachToGrid(coach) {
 
 
 function showCoaches(){
+    coachesDiv.html("");
     for(var index in coaches){
         var coach = coaches[index];
-
+        coach.id = index;
         addCoachToGrid(coach);
     }
 }
 
 
-function loadCoaches(data) {
+function loadCoachesFromServer(data) {
     console.log(data);              //todo: delete this log
 
     if(!("coaches" in data)){
@@ -183,6 +268,8 @@ function loadCoaches(data) {
 
     coaches = data.coaches;
     showCoaches();
+    // $(".btn-delete").on("click", deleteClick);
+    // $(".btn-update").on("click", updateClick);
 }
 
 
@@ -193,9 +280,8 @@ function init(){
         return ;
     }
 
-
     callServer(APIS.API_HAS_PERMISSION, HTTP_METHODS.GET, {page: PAGE_MANAGE_COACHES});
-    callServer(APIS.API_GET_COACHES, HTTP_METHODS.GET, {}, loadCoaches);
+    callServer(APIS.API_GET_COACHES, HTTP_METHODS.GET, {}, loadCoachesFromServer);
     loadDialog();
 };
 

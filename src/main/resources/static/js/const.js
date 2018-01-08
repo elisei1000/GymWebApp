@@ -93,6 +93,7 @@ var APIS = {
     API_GET_COACHES : "/coaches",
     API_COURSE: "/course/{0}",
     API_COACH_FEEDBACK: "coach/{0}/feedback",
+    API_POST_REGISTER : "/user-register",
 };
 
 
@@ -132,5 +133,8 @@ var OBJECT_KEYS = {
     ],
     COACH : [
         "username", "email", "name", "birthDay"
-    ]
+    ],
+    USER: [
+        "username", "birthDay", "email", "name", "password"
+    ],
 };
