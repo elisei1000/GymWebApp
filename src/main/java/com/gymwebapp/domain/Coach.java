@@ -12,7 +12,7 @@ import java.util.List;
 @Table(name="Coach", uniqueConstraints = @UniqueConstraint(columnNames = {"username"}))
 public class Coach extends User {
 
-    @OneToMany(mappedBy = "coach")
+    @OneToMany(mappedBy = "coach", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CoachFeedback> feedbacks;
 
     public Coach(String username, String password, String email, String name, Date birthDay) {

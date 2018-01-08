@@ -67,7 +67,7 @@ public class Course implements HasId<Integer>{
     private List<Client> clients;
 
 
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<CourseFeedback> feedbacks;
     public Course(){
 
