@@ -38,7 +38,7 @@ public class UserController {
     @Autowired
     private SubscriptionService subscriptionService;
 
-    public UserController(){
+    public UserController() {
         pages = new ArrayList<>();
         pagesAllUsers = new ArrayList<>();
         pagesNotLoggedUser = new ArrayList<>();
@@ -59,10 +59,12 @@ public class UserController {
         pages.add("ABOUT");
         pages.add("MANAGE_COACHES");
         pages.add("CLIENT_COURSES");
+        pages.add("SCHEDULE");
 
         pagesAllUsers.add("HOME");
         pagesAllUsers.add("LOGIN");
         pagesAllUsers.add("REGISTER");
+        pagesAllUsers.add("SCHEDULE");
         pagesAllUsers.add("CONTACT");
         pagesAllUsers.add("ABOUT");
 
@@ -101,11 +103,8 @@ public class UserController {
                 userModel.getName(), userModel.getBirthDay());
         List<String> errors = userService.addUser(client);
 
-        if(errors.size()==0){
-            return new Response(Status.STATUS_OK, errors);
-        }else{
-            return new Response(Status.STATUS_FAILED, errors);
-        }
+        Status status = errors.size() == 0 ? Status.STATUS_OK : Status.STATUS_FAILED;
+        return new Response(status, errors);
     }
 
     @RequestMapping(value = "/cuser", method = GET)
@@ -144,19 +143,19 @@ public class UserController {
             return new Response(Status.STATUS_FAILED, error);
         }
 
-        if (!isLogged && !pagesNotLoggedUser.contains(page)&& !pagesAllUsers.contains(page)) {
+        if (!isLogged && !pagesNotLoggedUser.contains(page) && !pagesAllUsers.contains(page)) {
             return new Response(Status.STATUS_NOT_LOGGED_IN, error);
         }
 
-        if(isLogged && cuser.getClass() == Client.class && !pagesClient.contains(page) && !pagesAllUsers.contains(page)){
+        if (isLogged && cuser.getClass() == Client.class && !pagesClient.contains(page) && !pagesAllUsers.contains(page)) {
             return new Response(Status.STATUS_PERMISSION_DENIED, error);
         }
 
-        if(isLogged && cuser.getClass() == Administrator.class && !pagesAdministrator.contains(page) && !pagesAllUsers.contains(page)){
+        if (isLogged && cuser.getClass() == Administrator.class && !pagesAdministrator.contains(page) && !pagesAllUsers.contains(page)) {
             return new Response(Status.STATUS_PERMISSION_DENIED, error);
         }
 
-        if(isLogged && cuser.getClass() == Coach.class && !pagesCoach.contains(page) && !pagesAllUsers.contains(page)){
+        if (isLogged && cuser.getClass() == Coach.class && !pagesCoach.contains(page) && !pagesAllUsers.contains(page)) {
             return new Response(Status.STATUS_PERMISSION_DENIED, error);
         }
 
@@ -249,10 +248,10 @@ public class UserController {
         return new Response(Status.STATUS_OK, errors);
     }
 
-    @RequestMapping(value="/cuser/permissions", method = GET)
-    public Response getAllPermissions(Principal principal){
+    @RequestMapping(value = "/cuser/permissions", method = GET)
+    public Response getAllPermissions(Principal principal) {
         List<String> errors = new ArrayList<>();
-        List<String> lstAllPages = new ArrayList<String>();
+        List<String> lstAllPages = new ArrayList<>();
         lstAllPages.addAll(this.pagesAllUsers);
         if (principal == null) {
             lstAllPages.addAll(this.pagesNotLoggedUser);
@@ -260,23 +259,23 @@ public class UserController {
         }
         String username = principal.getName();
         User cuser = userService.findUser(username);
-        if(cuser.getClass()==Client.class){
+        if (cuser.getClass() == Client.class) {
             lstAllPages.addAll(this.pagesClient);
         }
-        if(cuser.getClass()==Administrator.class){
+        if (cuser.getClass() == Administrator.class) {
             lstAllPages.addAll(this.pagesAdministrator);
         }
-        if(cuser.getClass()==Coach.class){
+        if (cuser.getClass() == Coach.class) {
             lstAllPages.addAll(this.pagesCoach);
         }
         return new Response(Status.STATUS_OK, errors, Pair.of("pages", lstAllPages));
     }
 
-    @GetMapping(value="/user/{username}")
-    public Response getUserByUsername(@PathVariable String username){
+    @GetMapping(value = "/user/{username}")
+    public Response getUserByUsername(@PathVariable String username) {
         List<String> error = new ArrayList<>();
         User user = userService.findUser(username);
-        if(user == null){
+        if (user == null) {
             error.add("Nu exista user cu acest username!");
             return new Response(Status.STATUS_FAILED, error);
         }

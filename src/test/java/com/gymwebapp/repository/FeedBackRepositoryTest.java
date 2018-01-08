@@ -58,9 +58,10 @@ public class FeedBackRepositoryTest {
     public void testAddNewFeedbackExistingClientShouldAddClientInRepository(){
 
         try {
+            long size= feedBackRepository.size();
             feedBackRepository.add(new Feedback(4, "asda", "null", new Date(), (Client) userRepository.get("client1")));
 
-            assertThat(feedBackRepository.size()).isEqualTo(7);
+            assertThat(feedBackRepository.size()).isEqualTo(size+1);
 
             List<Feedback> feedbacks = feedBackRepository.getAll();
             Feedback feedback = feedbacks.get(feedbacks.size()-1);
@@ -103,7 +104,7 @@ public class FeedBackRepositoryTest {
         try{
 
             Feedback feedback = new Feedback(4, "aaaa", "Aaaa", new Date(), (Client) userRepository.get("client2"));
-            feedback.setId(30000);
+            feedback.setId(-1);
 
             feedBackRepository.update(feedback);
             assert(false);
@@ -118,13 +119,13 @@ public class FeedBackRepositoryTest {
 
 
         try{
-
-            assertThat(feedBackRepository.size()).isEqualTo(6);
+            long size = feedBackRepository.size();
+            assertThat(feedBackRepository.size()).isEqualTo(size);
 
             int id = feedBackRepository.getAll().get(0).getId();
             feedBackRepository.remove(id);
 
-            assertThat(feedBackRepository.size()).isEqualTo(5);
+            assertThat(feedBackRepository.size()).isEqualTo(size-1);
         }catch (RepositoryException e){
             assert(false);
         }
@@ -135,7 +136,7 @@ public class FeedBackRepositoryTest {
     public void testFeedBackDeleteNotExistingShouldThrowRepositoryException(){
         try{
 
-            feedBackRepository.remove(213000);
+            feedBackRepository.remove(-1);
             assert(false);
         }catch (RepositoryException e){
             assert(true);

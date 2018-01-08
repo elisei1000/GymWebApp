@@ -15,8 +15,7 @@
     <link type="text/css" rel="stylesheet" href="css/owl.carousel.min.css?v=1.0">
     <link type="text/css" rel="stylesheet" href="css/jquery.fancybox.css?v=1.0">
     <link type="text/css" rel="stylesheet" href="webkit/webkit.css?v=1.0">
-    <link type="text/css" rel="stylesheet" href="css/font-awesome">
-    <link type="text/css" href="css/style.css?v=1.0" rel="stylesheet" />
+    <link type="text/css" href="style.css?v=1.0" rel="stylesheet" />
     <link type="text/css" href="css/media.css?v=1.0" rel="stylesheet" />
     <link rel="stylesheet" href="css/switcher.css" type="text/css" />
     <link rel="stylesheet" href="css/switcher/style1.css" id="colors">
@@ -24,7 +23,7 @@
 
         .course_thumbnail{
             margin-top: 40px;
-            min-height: 200px;
+
         }
         .course_thumbnail >.content{
             position: relative;
@@ -73,9 +72,17 @@
 
         .course_thumbnail .content .difficulty{
             position: absolute;
-            top:5px;
-            right:5px;
+            top: 0;
+            right: 0;
+            background-color: rgba(150, 150, 150, 0.8);
+            padding: 5px;
+            color: white;
         }
+
+        .course_thumbnail .content .difficulty span{
+            font-weight: bold;
+        }
+
         .course_thumbnail .content .info .description{
             position: absolute;
             width: 100%;
@@ -189,7 +196,7 @@
         #coursePopup .title{
             font-size:2em;
             line-height: 40px;
-            padding: 5px 10px 5px 10px;
+            padding: 5px 10px 5px 15px;
             text-transform: uppercase;
             color:  rgba(255, 140, 00, 1);;
             font-style: italic;
@@ -203,15 +210,81 @@
             padding: 5px 10px 5px 10px;
         }
 
+        #coursePopup .time,
+        #coursePopup .date,
+        #coursePopup .teacher,
+        #coursePopup .participants,
         #coursePopup .description{
-            padding: 5px;
-            clear:both;
+            clear: both;
+            margin: 15px;
+        }
+
+        #coursePopup .time .glyphicon,
+        #coursePopup .date .glyphicon,
+        #coursePopup .teacher .glyphicon,
+        #coursePopup .participants .glyphicon,
+        #coursePopup .description .glyphicon{
+            margin-right:5px;
+        }
+
+        #coursePopup .description{
+            text-align: justify;
         }
 
         #coursePopup .myFeedback{
             padding: 5px;
         }
 
+
+        #coursePopup .myFeedback .control{
+            float:right;
+            position:relative;
+            display:block;
+            /*width: 100%;*/
+        }
+
+        #coursePopup .button{
+            background: #FF8C00;
+            box-sizing: border-box;
+            border-radius: 7px;
+            border: 1px solid #FF8C00;
+            color: #fff;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 1em;
+            font-family: Montserrat;
+            outline: none;
+            cursor: pointer;
+            margin-left: 15px;
+            padding: 5px;
+            display:inline-block;
+        }
+
+        #coursePopup .button.disabled{
+            background: rgb(150, 150, 150);
+            cursor: default;
+
+        }
+
+
+        #coursePopup .myFeedback>.done,
+        #coursePopup .myFeedback>.edit{
+            position: relative;
+            padding: 15px;
+        }
+
+        #coursePopup .myFeedback .edit #detailsFeedbackInput,
+        #coursePopup .myFeedback .edit #summaryFeedbackInput{
+            width: 100%;
+            margin-bottom:10px;
+        }
+
+        #coursePopup .button.edit,
+        #coursePopup .button.delete,
+        #coursePopup .button.submit,
+        #coursePopup .button.cancel{
+            float: right;
+        }
 
         #coursePopup .feedback{
             padding: 15px;
@@ -271,12 +344,12 @@
         }
 
         #coursePopup .stars{
-            position: relative;
             user-select: none;
             -ms-user-select: none;
             -webkit-user-select: none;
             -o-user-select:none;
             -moz-user-select: none;
+            letter-spacing: -3px;
         }
 
         #coursePopup .stars .star{
@@ -290,11 +363,21 @@
             content: "\2606";
         }
 
-        #coursePopup .stars .star.changeable:hover::after,
         #coursePopup .stars .star.filled::after{
             content: "\2605";
         }
 
+        #coursePopup .stars .star.changeable{
+            cursor:pointer;
+        }
+
+        #coursePopup .stars .star.temporaryUnFilled::after{
+            content: "\2606";
+        }
+
+        #coursePopup .stars .star.temporaryFilled::after{
+            content: "\2605";
+        }
 
 
         #coursePopup .summary{
@@ -306,6 +389,12 @@
 
         #coursePopup .details{
             font-size: 0.8em;
+        }
+
+        @media only screen and (max-width: 480px){
+            #coursePopup .myFeedback .control{
+                width: 100%;
+            }
         }
 
         @media only screen and (min-width: 768px) {
@@ -373,12 +462,7 @@
                                     <!-- Collect the nav links, forms, and other content for toggling -->
                                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                         <ul class="nav navbar-nav navbar-right">
-                                            <li><a href="about.html">About</a></li>
-                                            <li><a href="courses.html">Courses </a></li>
-                                            <li><a href="coaches.html">Coaches</a></li>
-                                            <li><a href="schedule.html">Schedule</a></li>
-                                            <li><a href="subscription.html">Subscription </a></li>
-                                            <li><a href="contact.html">Contact us</a></li>
+
                                         </ul>
                                     </div>
                                 </div>
@@ -419,13 +503,45 @@
                 <div >
                     <div class="title"></div>
                     <div class="difficulty"></div>
+                    <div class="hidden courseId"></div>
                 </div>
+
+                <div class="time">
+                    <i class="glyphicon glyphicon-time" aria-hidden="true"></i>
+                    <span class="start">8.00 am</span>
+                    –
+                    <span class="end">10.00 pm</span>
+                </div>
+                <div class="date">
+                    <i class="glyphicon glyphicon-calendar" aria-hidden="true"></i>
+                    <span class="start">12.12.2017</span>
+                    -
+                    <span class="end">12.12.2017</span>
+                </div>
+                <div class="participants">
+                    <i class="glyphicon glyphicon-book" aria-hidden="true"></i>
+                    <span class="occupiedPlaces">2</span>
+                    participants
+                    (
+                    <span class="freePlaces">4</span>
+                    free places)
+                    <div class="button attend">Attend</div>
+                </div>
+                <div class="teacher">
+                    <i class="glyphicon glyphicon-user" aria-hidden="true"></i>
+                    <span class="username">Elisei1000</span>
+                </div>
+
                 <div class="description"></div>
 
 
                 <div class="myFeedback">
                     <hr class="titled" title="MyFeedback">
                     <div class="done feedback">
+                        <div class="control">
+                            <div class="button delete">Delete</div>
+                            <div class="button edit">Edit</div>
+                        </div>
                         <div class="identity">
                             <div class="image"></div>
                             <div class="username"></div>
@@ -443,19 +559,26 @@
                         </div>
                     </div>
                     <div class="edit">
+                        <div class="control">
+                            <div class="button submit">Submit</div>
+                            <div class="button cancel hide">Cancel edit</div>
+                        </div>
                         <form>
-                            <div class="stars">
+                            <label >Rating: </label><br>
+                            <div class="stars changeable">
                                 <div class="star changeable"></div>
                                 <div class="star changeable"></div>
                                 <div class="star changeable"></div>
                                 <div class="star changeable"></div>
                                 <div class="star changeable"></div>
                             </div>
-                            <label for="summaryFeedback">Summary: </label> <input id="summaryFeedback" type="text" name="summary" placeholder="Summary">
+                            <label for="summaryFeedbackInput">Summary: </label>
                             <br>
-                            <label for="detailsFeedback">Details: </label><input id="detailsFeedback" type="text" name="details" placeholder="Details">
+                            <input id="summaryFeedbackInput"  type="text" name="summary" placeholder="Summary">
                             <br>
-                            <button>Adauga</button>
+                            <label for="detailsFeedbackInput">Details: </label><br>
+                            <textarea id="detailsFeedbackInput"  name="details" placeholder="Details">
+                            </textarea>
                         </form>
                     </div>
                 </div>
@@ -470,7 +593,6 @@
     <!-- Jquery Js -->
     <script type="text/javascript" src="js/libs/jquery.min.js"></script>
     <script type="text/javascript" src="js/libs/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/libs/element.js"></script>
     <script type="text/javascript" src="js/libs/modernizr.js"></script>
     <script type="text/javascript" src="js/libs/owl.carousel.js"></script>
     <script type="text/javascript" src="js/libs/jquery.localscroll-1.2.7-min.js"></script>

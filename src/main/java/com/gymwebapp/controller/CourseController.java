@@ -6,6 +6,7 @@ import com.gymwebapp.domain.Validator.FeedbackValidator;
 import com.gymwebapp.domain.Validator.Validator;
 import com.gymwebapp.model.CourseModel;
 import com.gymwebapp.model.FeedbackModel;
+import com.gymwebapp.model.ScheduleModel;
 import com.gymwebapp.service.CourseService;
 import com.gymwebapp.service.FeedBackService;
 import com.gymwebapp.service.UserService;
@@ -14,9 +15,11 @@ import com.gymwebapp.util.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.web.bind.annotation.*;
-import sun.misc.Request;
 
 import java.security.Principal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -70,9 +73,9 @@ public class CourseController {
             List<FeedbackModel> feedbackResponse = new ArrayList<>();
 
             for (CourseFeedback cf : feedbacks) {
-                String author=null;
-                if(cf.getAuthor()!=null)
-                    author=cf.getAuthor().getUsername();
+                String author = null;
+                if (cf.getAuthor() != null)
+                    author = cf.getAuthor().getUsername();
                 feedbackResponse.add(new FeedbackModel(cf.getId(), cf.getStarsCount(), cf.getSummary(), cf.getDetails(), cf.getDate(), author));
             }
 
@@ -81,20 +84,26 @@ public class CourseController {
     }
 
     @PostMapping(value = "/course/{id}/feedback")
-    public Response addFedback(@PathVariable Integer id,@RequestBody FeedbackModel feedbackModel,Principal principal) {
+    public Response addFedback(@PathVariable Integer id, @RequestBody FeedbackModel feedbackModel, Principal principal) {
 
-        Validator<FeedbackModel> validator=new FeedbackValidator();
+        Validator<FeedbackModel> validator = new FeedbackValidator();
 
-        List<String> validatorErrors=validator.validate(feedbackModel);
+        List<String> validatorErrors = validator.validate(feedbackModel);
 
-        if(validatorErrors.size()!=0){
+        if (validatorErrors.size() != 0) {
             return new Response(Status.STATUS_FAILED, validatorErrors);
         }
 
         feedbackModel.setDate(new Date());
-        feedbackModel.setAuthor(principal.getName());
+        if (principal != null) {
+            feedbackModel.setAuthor(principal.getName());
+        }else{
+            List<String> e=new ArrayList<>();
+            e.add("Nu sunteti logat!");
+            return new Response(Status.STATUS_NOT_LOGGED_IN, e);
+        }
 
-        List<String> errors = courseService.addFeedback(id,feedbackModel);
+        List<String> errors = courseService.addFeedback(id, feedbackModel);
 
         if (errors.size() != 0) {
             return new Response(Status.STATUS_FAILED, errors);
@@ -104,19 +113,25 @@ public class CourseController {
     }
 
     @PutMapping(value = "/course/{id}/feedback")
-    public Response modifyFedback(@PathVariable Integer id,@RequestBody FeedbackModel feedbackModel,Principal principal) {
-        Validator<FeedbackModel> validator=new FeedbackValidator();
+    public Response modifyFedback(@PathVariable Integer id, @RequestBody FeedbackModel feedbackModel, Principal principal) {
+        Validator<FeedbackModel> validator = new FeedbackValidator();
 
-        List<String> validatorErrors=validator.validate(feedbackModel);
+        List<String> validatorErrors = validator.validate(feedbackModel);
 
-        if(validatorErrors.size()!=0){
+        if (validatorErrors.size() != 0) {
             return new Response(Status.STATUS_FAILED, validatorErrors);
         }
 
         feedbackModel.setDate(new Date());
-        feedbackModel.setAuthor(principal.getName());
+        if (principal != null) {
+            feedbackModel.setAuthor(principal.getName());
+        }else{
+            List<String> e=new ArrayList<>();
+            e.add("Nu sunteti logat!");
+            return new Response(Status.STATUS_NOT_LOGGED_IN, e);
+        }
 
-        List<String> errors = courseService.modifyFeedback(id,feedbackModel);
+        List<String> errors = courseService.modifyFeedback(id, feedbackModel);
 
         if (errors.size() != 0) {
             return new Response(Status.STATUS_FAILED, errors);
@@ -126,9 +141,19 @@ public class CourseController {
     }
 
     @DeleteMapping(value = "/course/{id}/feedback")
-    public Response deleteFedback(@PathVariable Integer id) {
+    public Response deleteFedback(@PathVariable Integer id, Principal principal) {
 
-        List<String> errors= new ArrayList<>();
+        List<String> errors = new ArrayList<>();
+
+        String username = null;
+        if (principal != null) {
+            username = principal.getName();
+        }else{
+            errors.add("Nu sunteti logat!");
+            return new Response(Status.STATUS_NOT_LOGGED_IN, errors);
+        }
+
+        courseService.deleteFeedback(id, username);
 
         if (errors.size() != 0) {
             return new Response(Status.STATUS_FAILED, errors);
@@ -182,26 +207,60 @@ public class CourseController {
                 return new Response(Status.STATUS_FAILED, errors);
             }
         }
+
+    }
+
+    @GetMapping(value = "course/{id}/attended")
+    public Response checkattendParticipant(@PathVariable Integer id, Principal principal) {
+        List<String> errors = new ArrayList<>();
+
+        String username = null;
+        if (principal != null) {
+            username = principal.getName();
+        }else{
+            errors.add("Nu sunteti logat!");
+            return new Response(Status.STATUS_NOT_LOGGED_IN, errors);
+        }
+        Client client = userService.getClient(username);
+
+        if (client == null) {
+            errors.add("Clientul nu exista!");
+            return new Response(Status.STATUS_FAILED, errors);
+        } else {
+            try {
+                boolean check=courseService.checkAttendUserToCourse(id, client);
+                return new Response(Status.STATUS_OK, new ArrayList<String>(), Pair.of("attended",check));
+            } catch (RepositoryException e) {
+                errors.add(e.getMessage());
+                return new Response(Status.STATUS_FAILED, errors);
+
+            }
+        }
     }
 
     @PutMapping(value = "course/{id}/attend")
     public Response attendParticipant(@PathVariable Integer id, Principal principal) {
-
-        String username = principal.getName();
-        Client client = userService.getClient(username);
         List<String> errors = new ArrayList<>();
+
+        String username = null;
+        if (principal != null) {
+            username = principal.getName();
+        }else{
+            errors.add("Nu sunteti logat!");
+            return new Response(Status.STATUS_NOT_LOGGED_IN, errors);
+        }
+        Client client = userService.getClient(username);
 
         if (client == null) {
             errors.add("Clientul nu exista!");
-            return new Response(Status.STATUS_FAILED,errors);
+            return new Response(Status.STATUS_FAILED, errors);
         } else {
-
             try {
                 courseService.attendUserToCourse(id, client);
-                return new Response(Status.STATUS_OK,errors);
+                return new Response(Status.STATUS_OK, errors);
             } catch (RepositoryException e) {
-                errors.add("Nu a putut fi adaugat clientul!");
-                return new Response(Status.STATUS_FAILED,errors);
+                errors.add(e.getMessage());
+                return new Response(Status.STATUS_FAILED, errors);
 
             }
         }
@@ -217,6 +276,37 @@ public class CourseController {
             errors.add("Nu a putut fi sters cursul!");
             return new Response(Status.STATUS_FAILED, errors);
         }
+    }
+
+    @GetMapping(value = "course/program")
+    public Response schedule(@RequestParam String startDate, @RequestParam String endDate) {
+        List<String> errors = new ArrayList<>();
+
+        if (startDate.equals(null) || startDate.isEmpty() || endDate.equals(null) || endDate.isEmpty())
+            errors.add("Datele sunt invalide !");
+
+        if (errors.size() != 0)
+            return new Response(Status.STATUS_FAILED, errors);
+
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date sDate = null, eDate = null;
+        try {
+            sDate = format.parse(startDate);
+            eDate = format.parse(endDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        ScheduleModel scheduleModel = new ScheduleModel(sDate, eDate);
+        List<List<Course>> schedule_courses = courseService.getSchedule(scheduleModel);
+        List<List<CourseModel>> schedule_response = new ArrayList<>();
+        for (int i = 0; i < schedule_courses.size(); i++)
+            schedule_response.add(new ArrayList<>());
+
+        for (int i = 0; i < schedule_courses.size(); i++)
+            for (Course course : schedule_courses.get(i))
+                schedule_response.get(i).add(new CourseModel(course.getId(), course.getDifficultyLevel(), course.getStartHour(), course.getEndHour(), course.getStartDate(), course.getEndDate(), course.getMaxPlaces(), course.getClients().size(), course.getTeacher().getName(), course.getTitle(), course.getDescription()));
+        return new Response(Status.STATUS_OK, new ArrayList<>(), Pair.of("program", schedule_response));
     }
 
 }

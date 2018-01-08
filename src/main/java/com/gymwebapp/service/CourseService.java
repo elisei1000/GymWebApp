@@ -3,6 +3,7 @@ package com.gymwebapp.service;
 import com.gymwebapp.domain.*;
 import com.gymwebapp.model.CourseModel;
 import com.gymwebapp.model.FeedbackModel;
+import com.gymwebapp.model.ScheduleModel;
 import com.gymwebapp.repository.CourseRepository;
 import com.gymwebapp.repository.FeedBackRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 
 @Service
@@ -22,6 +23,9 @@ public class CourseService {
     @Autowired
     private FeedBackRepository feedBackRepository;
 
+    @Autowired
+    private UserService userService;
+
     @Transactional
     public List<CourseModel> getAll() {
         List<CourseModel> courseModelList = new ArrayList<>();
@@ -31,7 +35,17 @@ public class CourseService {
             if (course.getTeacher() != null) {
                 teacher = course.getTeacher().getUsername();
             }
-            courseModelList.add(new CourseModel(course.getId(), course.getDifficultyLevel(), course.getStartHour(), course.getEndHour(), course.getStartDate(), course.getEndDate(), course.getMaxPlaces(), course.getClients().size(), teacher, course.getTitle(), course.getDescription()));
+            courseModelList.add(new CourseModel(course.getId()
+                    , course.getDifficultyLevel()
+                    , course.getStartHour()
+                    , course.getEndHour()
+                    , course.getStartDate()
+                    , course.getEndDate()
+                    , course.getMaxPlaces()
+                    , course.getClients().size()
+                    , teacher
+                    , course.getTitle()
+                    , course.getDescription()));
 
         }
 
@@ -76,12 +90,39 @@ public class CourseService {
     }
 
     @Transactional
+    public boolean checkAttendUserToCourse(Integer id, Client client) throws RepositoryException {
+        Course course = courseRepository.get(id);
+        if (course == null) {
+            throw new RepositoryException("Cursul dat nu exisa!");
+        }
+        List<Client> clients = course.getClients();
+
+        for (Client c:clients) {
+            if (c.getUsername().compareTo(client.getUsername()) == 0) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Transactional
     public void attendUserToCourse(Integer id, Client client) throws RepositoryException {
         Course course = courseRepository.get(id);
         if (course == null) {
-            throw new RepositoryException("");
+            throw new RepositoryException("Cursul dat nu exisa!");
         }
         List<Client> clients = course.getClients();
+
+        if(course.getMaxPlaces()==clients.size()){
+            throw new RepositoryException("Numarul de cursanti este maxim!");
+        }
+
+        for (Client c:clients){
+            if(c.getUsername().compareTo(client.getUsername())==0){
+                throw new RepositoryException("Clientul este deja asignat la curs!");
+            }
+        }
 
         clients.add(client);
 
@@ -90,11 +131,16 @@ public class CourseService {
 
     @Transactional
     public void deleteCourse(Integer id) throws RepositoryException {
-        courseRepository.remove(id);
+        Course course = courseRepository.get(id);
+        if (course == null) {
+            throw new RepositoryException("");
+        } else {
+            courseRepository.remove(id);
+        }
     }
 
     @Transactional
-    public List<String> addFeedback(Integer id,FeedbackModel feedbackModel) {
+    public List<String> addFeedback(Integer id, FeedbackModel feedbackModel) {
         List<String> errors = new ArrayList<>();
 
         Course course = courseRepository.get(id);
@@ -107,17 +153,19 @@ public class CourseService {
         List<CourseFeedback> feedbacks = course.getFeedbacks();
 
         for (CourseFeedback feedback : feedbacks) {
-            String author="";
-            if(feedback.getAuthor()!=null){
-                author=feedback.getAuthor().getUsername();
+            String author = "";
+            if (feedback.getAuthor() != null) {
+                author = feedback.getAuthor().getUsername();
             }
             if (author.compareTo(feedbackModel.getAuthor()) == 0) {
                 errors.add("Utilizatorul a dat deja feedback!");
-                return  errors;
+                return errors;
             }
         }
 
-        Feedback feedback=new CourseFeedback(feedbackModel.getStarsCount(),feedbackModel.getSummary(),feedbackModel.getDetails(),feedbackModel.getDate(),null,course);
+        Client client=userService.getClient(feedbackModel.getAuthor());
+
+        Feedback feedback = new CourseFeedback(feedbackModel.getStarsCount(), feedbackModel.getSummary(), feedbackModel.getDetails(), feedbackModel.getDate(), client, course);
 
         try {
             feedBackRepository.add(feedback);
@@ -128,7 +176,7 @@ public class CourseService {
     }
 
     @Transactional
-    public List<String> modifyFeedback(Integer id,FeedbackModel feedbackModel) {
+    public List<String> modifyFeedback(Integer id, FeedbackModel feedbackModel) {
         List<String> errors = new ArrayList<>();
 
         Course course = courseRepository.get(id);
@@ -140,19 +188,19 @@ public class CourseService {
 
         List<CourseFeedback> feedbacks = course.getFeedbacks();
 
-        Feedback feedbackModified=null;
+        Feedback feedbackModified = null;
 
         for (CourseFeedback feedback : feedbacks) {
-            String author="";
-            if(feedback.getAuthor()!=null){
-                author=feedback.getAuthor().getUsername();
+            String author = "";
+            if (feedback.getAuthor() != null) {
+                author = feedback.getAuthor().getUsername();
             }
             if (author.compareTo(feedbackModel.getAuthor()) == 0) {
-                feedbackModified=feedback;
+                feedbackModified = feedback;
             }
         }
 
-        if(feedbackModified==null) {
+        if (feedbackModified == null) {
             errors.add("Utilizatorul nu a dat feedback!");
             return errors;
         }
@@ -171,7 +219,7 @@ public class CourseService {
     }
 
     @Transactional
-    public List<String> deleteFeedback(Integer id) {
+    public List<String> deleteFeedback(Integer id,String username) {
         List<String> errors = new ArrayList<>();
 
         Course course = courseRepository.get(id);
@@ -183,7 +231,19 @@ public class CourseService {
 
         List<CourseFeedback> feedbacks = course.getFeedbacks();
 
-        Integer idFeedback=null;
+        Integer idFeedback = null;
+
+        for(Feedback feedback:feedbacks){
+            if(feedback.getAuthor().getUsername().compareTo(username)==0) {
+                idFeedback = feedback.getId();
+                break;
+            }
+        }
+
+        if(idFeedback==null){
+            errors.add("Nu exista feedback dat!");
+            return errors;
+        }
 
         try {
             feedBackRepository.remove(idFeedback);
@@ -191,5 +251,42 @@ public class CourseService {
             errors.add("Eroare de sistem!");
         }
         return errors;
+    }
+
+
+    @Transactional
+    public Integer getLastId(){
+        return courseRepository.getLastGeneratedValue();
+    }
+
+    @Transactional
+    public List<Client> getAllClientsForCourse(Integer id){
+        return courseRepository.get(id).getClients();
+    }
+
+    @Transactional
+    public long size(){
+        return courseRepository.size();
+    }
+
+    @Transactional
+    public List<List<Course>> getSchedule(ScheduleModel scheduleModel) {
+        List<Course> courses = courseRepository.getAll();
+        List<List<Course>> schedule_courses = new ArrayList<>();
+        for (int i = 0; i < 7; i++)
+            schedule_courses.add(new ArrayList<>());
+
+        Calendar calendar = Calendar.getInstance();
+        for (Course course : courses) {
+            if (course.getStartDate().compareTo(scheduleModel.getStartDate()) >= 0 && course.getEndDate().compareTo(scheduleModel.getEndDate()) <= 0) {
+                calendar.setTime(course.getStartDate());
+                int day = calendar.get(Calendar.DAY_OF_WEEK);
+                if (day == 1)
+                    schedule_courses.get(6).add(course);
+                else
+                    schedule_courses.get(day - 2).add(course);
+            }
+        }
+        return schedule_courses;
     }
 }

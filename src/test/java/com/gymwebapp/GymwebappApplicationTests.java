@@ -1,4 +1,4 @@
-package com.gymwebapp;//package com.gymwebapp;
+/*package com.gymwebapp;//package com.gymwebapp;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,3 +15,4 @@ public class GymwebappApplicationTests {
 	}
 
 }
+*/

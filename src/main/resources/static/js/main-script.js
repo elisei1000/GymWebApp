@@ -20,11 +20,26 @@ function submitLogin() {
             timeout: 600000,
         success: function (data) {
             var response = jQuery.parseJSON(data);
+            if(response.errors==0){
                 alert("You have logged in successfully!");
-                window.location.href='/main.html';
-        },
-        error: function (data) {
-            alert("Login failure");
+                window.location.href='/main.html';}
+                else
+                {
+                alert("Login failure!");
+                }
+
         }
     });
 }
+$(function() {
+    $('form').each(function() {
+        $(this).find('input').keypress(function(e) {
+            // Enter pressed?
+            if(e.which == 10 || e.which == 13) {
+                submitLogin();
+            }
+        });
+
+        $(this).find('input[type=submit]').hide();
+    });
+});
