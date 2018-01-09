@@ -90,7 +90,7 @@ var APIS = {
     API_COURSE_ATTENDED : "/course/{0}/attended",
     API_COURSE_ATTEND : "/course/{0}/attend",
     API_GET_CURRENT_USER : "/cuser",
-    API_GET_COACHES : "/coaches",
+    API_GET_COACHES : "/coach",
     API_COURSE: "/course/{0}",
     API_COACH_FEEDBACK: "coach/{0}/feedback",
     API_POST_REGISTER : "/user-register",
