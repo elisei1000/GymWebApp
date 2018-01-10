@@ -1,4 +1,4 @@
-ne mai /**
+/**
  * Created by elisei on 24.11.2017.
  */
 var courses = {};
@@ -315,7 +315,7 @@ function initDialog(){
     showLoader = function(){
         courseDialog.loading.show();
     };
-    courseDialog = $("#coursePopup");
+    courseDialog = $("#feedbackDialog");
     courseDialog.click(closeDialog);
     courseDialog.find(".close-button").click(closeDialog);
     courseDialog.real = courseDialog.children(".popup-dialog");
