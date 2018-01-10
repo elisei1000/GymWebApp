@@ -83,20 +83,6 @@ public class UserController {
         pagesCoach.add("FEEDBACKS");
     }
 
-//    @PostMapping(value = "/login")
-//    public Response login(@RequestBody UserModel userModel) {
-//        User user = new User(userModel.getUsername(), userModel.getPassword(),
-//                userModel.getEmail(), userModel.getName(), userModel.getBirthDay());
-//        List<String> errors = userService.checkIfExistUser(user);
-//
-//        if(errors.size()==0){
-//            return new Response(Status.STATUS_OK, errors);
-//        }else{
-//            return new Response(Status.STATUS_FAILED, errors);
-//        }
-//    }
-
-
     @PostMapping(value = "/user-register")
     public Response add(@RequestBody UserModel userModel) {
         Client client = new Client(userModel.getUsername(), userModel.getPassword(), userModel.getEmail(),
