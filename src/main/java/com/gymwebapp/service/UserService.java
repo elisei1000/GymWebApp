@@ -2,7 +2,7 @@ package com.gymwebapp.service;
 
 import com.gymwebapp.domain.*;
 import com.gymwebapp.domain.Validator.UserValidator;
-import com.gymwebapp.repository.SubscriptionRepository;
+import com.gymwebapp.repository.CourseRepository;
 import com.gymwebapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,6 +22,9 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CourseRepository courseRepository;
 
     @Autowired
     private UserValidator userValidator;
@@ -100,6 +103,31 @@ public class UserService {
             if (!user.getUsername().isEmpty()) {
                 try {
                     userRepository.remove(user.getUsername());
+                } catch (RepositoryException e) {
+                    errors.add(e.getMessage());
+                }
+            } else
+                errors.add("Username is empty !");
+        }
+        return errors;
+    }
+
+    @Transactional
+    public List<String> removeCoach(Coach coach) {
+        List<String> errors = new ArrayList<>();
+
+        if (coach.getUsername() == null)
+            errors.add("Username is empty !");
+        else {
+            if (!coach.getUsername().isEmpty()) {
+                try {
+                    userRepository.remove(coach.getUsername());
+                    List<Course> courses = courseRepository.getAll();
+                    for (Course c : courses)
+                        if (c.getTeacher().getUsername().equals(coach.getUsername())) {
+                            c.setTeacher(null);
+                            courseRepository.update(c);
+                        }
                 } catch (RepositoryException e) {
                     errors.add(e.getMessage());
                 }

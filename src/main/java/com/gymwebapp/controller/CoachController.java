@@ -59,7 +59,7 @@ public class CoachController {
     @DeleteMapping(value = "/coach/{username}")
     public Response remove(@PathVariable String username) {
         Coach coach = new Coach(username, null);
-        List<String> errors = userService.removeUser(coach);
+        List<String> errors = userService.removeCoach(coach);
         if (errors.size() == 0) {
             return new Response(Status.STATUS_OK, errors);
         } else {
