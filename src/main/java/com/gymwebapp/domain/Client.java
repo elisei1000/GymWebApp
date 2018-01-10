@@ -11,7 +11,7 @@ import java.util.List;
 @Table(name="Client", uniqueConstraints = @UniqueConstraint(columnNames = {"username"}))
 public class Client extends User {
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(orphanRemoval = true)
     private Subscription subscription;
 
 

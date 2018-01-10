@@ -1,7 +1,6 @@
 package com.gymwebapp.domain;
 
 import javax.persistence.*;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -67,7 +66,7 @@ public class Course implements HasId<Integer>{
     private List<Client> clients;
 
 
-    @OneToMany(mappedBy = "course", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "course", orphanRemoval = true)
     private List<CourseFeedback> feedbacks;
     public Course(){
 
