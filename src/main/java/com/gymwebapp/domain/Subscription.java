@@ -63,5 +63,9 @@ public class Subscription implements HasId<Integer>{
         this.endDate = endDate;
     }
 
+    public Client getClient() { return client; }
+
+    public void setClient(Client client) { this.client = client; }
+
 
 }
