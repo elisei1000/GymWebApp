@@ -12,6 +12,7 @@ import com.gymwebapp.util.Response;
 import com.gymwebapp.util.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -47,7 +48,8 @@ public class CoachController {
 
     @PutMapping(value = "/coach/{username}")
     public Response update(@PathVariable String username, @RequestBody UserModel userModel) {
-        Coach coach = new Coach(username, userModel.getPassword(), userModel.getEmail(), userModel.getName(), userModel.getBirthDay());
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        Coach coach = new Coach(username, passwordEncoder.encode(userModel.getPassword()), userModel.getEmail(), userModel.getName(), userModel.getBirthDay());
         List<String> errors = userService.updateUser(coach);
         if (errors.size() == 0) {
             return new Response(Status.STATUS_OK, errors);

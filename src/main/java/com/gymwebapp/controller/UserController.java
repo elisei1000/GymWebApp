@@ -83,20 +83,6 @@ public class UserController {
         pagesCoach.add("FEEDBACKS");
     }
 
-//    @PostMapping(value = "/login")
-//    public Response login(@RequestBody UserModel userModel) {
-//        User user = new User(userModel.getUsername(), userModel.getPassword(),
-//                userModel.getEmail(), userModel.getName(), userModel.getBirthDay());
-//        List<String> errors = userService.checkIfExistUser(user);
-//
-//        if(errors.size()==0){
-//            return new Response(Status.STATUS_OK, errors);
-//        }else{
-//            return new Response(Status.STATUS_FAILED, errors);
-//        }
-//    }
-
-
     @PostMapping(value = "/user-register")
     public Response add(@RequestBody UserModel userModel) {
         Client client = new Client(userModel.getUsername(), userModel.getPassword(), userModel.getEmail(),
@@ -193,6 +179,10 @@ public class UserController {
         if (principal == null) {
             return new Response(Status.STATUS_NOT_LOGGED_IN, errors);
         }
+        if (subscriptionModel.getEndDate() == null){
+            errors.add("End date vid!");
+            return new Response(Status.STATUS_FAILED, errors);
+        }
         if (subscriptionModel.getEndDate().getTime() <= currentDate.getTime()) {
             errors.add("End date trebuie sa fie ulterioara datei currente!");
             return new Response(Status.STATUS_FAILED, errors);
@@ -212,8 +202,10 @@ public class UserController {
             errors.add("Aveti deja abonament!");
             return new Response(Status.STATUS_FAILED, errors);
         }
-        subscriptionService.addSubscription(subscription);
         client.setSubscription(subscription);
+        subscription.setClient(client);
+        subscriptionService.addSubscription(subscription);
+
         return new Response(Status.STATUS_OK, errors);
     }
 

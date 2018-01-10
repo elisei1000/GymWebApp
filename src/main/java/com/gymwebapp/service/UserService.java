@@ -51,27 +51,6 @@ public class UserService {
     }
 
     @Transactional
-    public List<String> checkIfExistUser(User user) {
-        List<String> errors = new ArrayList<>();
-        if (user.getUsername() == null || user.getUsername().isEmpty()) {
-            errors.add("Username is empty!");
-        }
-
-        if (user.getPassword() == null || user.getPassword().isEmpty()) {
-            errors.add("Password is empty!");
-        }
-
-        if (errors.size() != 0) {
-            return errors;
-        }
-
-        if (!userRepository.checkUserPassword(user)) {
-            errors.add("Username or password is incorrect!");
-        }
-        return errors;
-    }
-
-    @Transactional
     public <T extends User> List<String> updateUser(T user) {
         List<String> errors = userValidator.validate(user);
         if (errors.size() != 0) {
