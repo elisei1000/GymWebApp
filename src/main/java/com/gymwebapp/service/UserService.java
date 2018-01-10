@@ -121,13 +121,13 @@ public class UserService {
         else {
             if (!coach.getUsername().isEmpty()) {
                 try {
-                    userRepository.remove(coach.getUsername());
                     List<Course> courses = courseRepository.getAll();
                     for (Course c : courses)
-                        if (c.getTeacher().getUsername().equals(coach.getUsername())) {
+                        if (c.getTeacher() != null && c.getTeacher().getUsername().equals(coach.getUsername())) {
                             c.setTeacher(null);
                             courseRepository.update(c);
                         }
+                    userRepository.remove(coach.getUsername());
                 } catch (RepositoryException e) {
                     errors.add(e.getMessage());
                 }
