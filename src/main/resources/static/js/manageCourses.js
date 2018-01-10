@@ -4,7 +4,7 @@
 var courses = {};
 
 var coursesDiv;
-var courseDialog, courseAddDialog;
+var courseDialog;
 var showDialog, showLoader, closeLoader;
 var user;
 
@@ -101,7 +101,7 @@ function showCoursePopup(course){
     courseDialog.content.difficulty.select.val(course.difficultyLevel);
     var url = $(this).parent().parent().children('.courseImage').css('background-image');
     courseDialog.content.image.css('backgroundImage', url);
-    if(popupState == POPUP_STATE.ADD){
+    if(popupState === POPUP_STATE.ADD){
         courseDialog.content.addButton.show();
         courseDialog.content.updateButton.hide();
         courseDialog.content.deleteButton.hide();

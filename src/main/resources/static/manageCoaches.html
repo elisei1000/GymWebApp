@@ -19,104 +19,42 @@
     <link type="text/css" href="css/media.css?v=1.0" rel="stylesheet" />
     <link rel="stylesheet" href="css/switcher.css" type="text/css" />
     <link rel="stylesheet" href="css/switcher/style1.css" id="colors">
+    <link rel="stylesheet" href="css/feedbackDialog.css"/>
 
     <style>
-        .coach_thumbnail >.content{
-            padding: 10px 0px;
-        }
-
-        .button {
-            text-align: center;
-            background-color: #dd8733;
-            font-family: 'Raleway', sans-serif;
-        }
-        div >#btn-add {
-            height: 80px;
-            border-radius: 3px;
-            margin: 25px 0 25px 0;
-        }
-
-        .option{
-            margin: 25px;
-        }
-
-        .coach_thumbnail >.content >.image{
+        .coach_thumbnail .content .info .edit-button{
+            position: absolute;
             width: 100%;
-            padding: 40%;
-            background-position: center;
-            background-size: auto 100%;
-            background-repeat: no-repeat;
-            background-color: white;
+            bottom: 0;
+            background: rgba(255, 140, 00, 2.8);
         }
 
-        .coach_thumbnail >.content >.info {
-            height: 60px;
-            text-align: center;
-        }
-        .coach_thumbnail >.content >.info > .btn-update{
-            width: 80%;
-            height: 100%;
-            float: left;
+        .popup-content> .username,
+        .popup-content > .email,
+        .popup-content > .birthday,
+        .popup-content > .password{
+            clear: both;
+            margin: 15px;
         }
 
-        .coach_thumbnail >.content >.info > .btn-update >.nume{
-            /*position: absolute;*/
-            /*bottom:5px;*/
-            /*left:15px;*/
-            font-size: 20px;
+        input.title{
+            outline: none;
+            border:0;
         }
 
-        .coach_thumbnail >.content >.info > .btn-update >.email {
-            font-size: 13px;
-            /*position: absolute;*/
-            /*bottom:5px;*/
-            /*right:15px;*/
-        }
-        .coach_thumbnail >.content > .info > .btn-delete {
-            width: 20%;
-            height: 100%;
+
+        #feedbackDialog .button.update,
+        #feedbackDialog .button.delete,
+        #feedbackDialog .button.add{
             float: right;
-            background: url(images/rubbish.png) no-repeat center;
+            margin-left: 15px;
+            padding: 5px;
         }
 
-        .coach_thumbnail >.content >.btn-delete > img{
-            max-width: 60%;
-            max-height: 60%;
+        #feedbackDialog .control{
+            padding-right: 15px;
         }
 
-        form {
-            width: 100%;
-            height:100%;
-            max-width:300px;
-            min-width:250px;
-            padding:10px 50px;
-            border:2px solid gray;
-            border-radius:10px;
-            font-family:raleway;
-            background-color: whitesmoke;
-        }
-        p {
-            margin-top:30px
-        }
-        input[type=text] {
-            width:82%;
-            padding:10px;
-            margin-bottom:30px;
-            border:1px solid #ccc;
-            padding-left:40px;
-            font-size:16px;
-            font-family:raleway
-        }
-
-        button, .info{
-            text-align: center;
-            background-color:#dd8733;
-            font-family: 'Raleway',sans-serif;
-        }
-
-        button.ui-dialog-titlebar-close {
-            display: none;
-        }
 
     </style>
 </head>
@@ -169,12 +107,7 @@
                                     <!-- Collect the nav links, forms, and other content for toggling -->
                                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                         <ul class="nav navbar-nav navbar-right">
-                                            <li><a href="about.html">About</a></li>
-                                            <li><a href="courses.html">Courses </a></li>
-                                            <li><a href="coaches.html">Coaches</a></li>
-                                            <li><a href="schedule.html">Schedule</a></li>
-                                            <li><a href="subscribtion.html">Subscription </a></li>
-                                            <li><a href="contact">Contact us</a></li>
+
                                         </ul>
                                     </div>
                                 </div>
@@ -190,49 +123,69 @@
 </div>
 <!-- Coaches Section Begins -->
 <section id="coaches" class="courses pad-top-210">
-    <div id="main-page" class="container-fluid">
-
-        <div id="dialog-form">
-            <p class="validateTips">All form fields are required!</p>
-
-            <form>
-                <fieldset>
-                    <label for="username">Username</label>
-                    <input type="text" name="username" id="username" placeholder="sebinsteanu" class="text ui-widget-content ui-corner-all">
-                    <label for="username">Password</label>
-                    <input type="password" name="password" id="password" placeholder="******" class="text ui-widget-content ui-corner-all">
-                    <label for="name">Name</label>
-                    <input type="text" name="name" id="name" placeholder="Jane Smith" class="text ui-widget-content ui-corner-all">
-                    <label for="email">Email</label>
-                    <input type="text" name="email" id="email" placeholder="jane@smith.com" class="text ui-widget-content ui-corner-all">
-                    <label for="birthDay">Birthday</label>
-                    <input type="text" name="birthDay" id="birthDay" placeholder="yyyy-mm-dd" class="text ui-widget-content ui-corner-all">
-
-                    <!-- Allow form submission with keyboard without duplicating the dialog button -->
-                    <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
-                </fieldset>
-            </form>
-            <button id="btn-save" class=" button option col-xs-2 col-sm-2 col-md-2">Save</button>
-            <button id="btn-update" class=" button option col-xs-2 col-sm-2 col-md-2">Update</button>
-            <button id="btn-cancel" class="button option col-xs-2 col-sm-2 col-md-2">Cancel</button>
-        </div>
-
-        <div id="full-page" class="row no-margin">
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <button id="btn-add" class=" button col-xs-3 col-sm-3 col-md-3">Add new coach</button>
+    <div class="container-fluid">
+        <div class="row no-margin">
+            <div id="coachesGrid">
             </div>
-            <div id="coachesGrid"/>
 
         </div>
     </div>
 
 </section>
 
+
+<div id="feedbackDialog" class="popup" role="dialog">
+    <div class="popup-dialog">
+        <div class="loading">
+            <div class="loader"></div>
+        </div>
+        <!-- Modal content-->
+        <div class="popup-content">
+            <div class="close-button">&times;</div>
+            <div class="bannerImage"> </div>
+            <div>
+                <input type="text" class="title" placeholder="Coach name" required/>
+                <div class="hidden coachId"></div>
+            </div>
+
+            <div class="username">
+                <i class="glyphicon glyphicon-user" aria-hidden="true"></i>
+                <input type="text" placeholder="Coach's username" required/>
+            </div>
+
+
+            <div class="password">
+                <i class="glyphicon glyphicon-eye-close" aria-hidden="true"></i>
+                <input type="password" placeholder="Coach's password" required/>
+            </div>
+
+            <div class="email">
+                <i class="glyphicon glyphicon-envelope" aria-hidden="true"></i>
+                <input type="text" placeholder="Coach's email" required/>
+            </div>
+
+            <div class="birthday">
+                <i class="glyphicon glyphicon-calendar" aria-hidden="true"></i>
+                <input type="date" name="birthDay"placeholder="Coach's birthday (yyyy-mm-dd)">
+            </div>
+
+
+            <div class="control">
+                <div class="button add">Add</div>
+                <div class="button update">Update</div>
+                <div class="button delete">Delete</div>
+            </div>
+
+
+            <div class="feedbacks">
+                <hr class="titled" title="Feedbacks">
+            </div>
+
+
+        </div>
+
+    </div>
 </div>
-
-
-</div>
-
 <!-- Jquery Js -->
 <script type="text/javascript" src="js/libs/jquery.min.js"></script>
 <script type="text/javascript" src="js/libs/bootstrap.min.js"></script>
@@ -248,8 +201,6 @@
 <script type="text/javascript" src="js/const.js"></script>
 <script type="text/javascript" src="js/core/core.js"></script>
 <script type="text/javascript" src="js/manageCoaches.js"></script>
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 </body>
 
