@@ -393,8 +393,10 @@ function showCoaches(){
             )
             .append(
                 $("<div>Edit coach</div>").addClass("title edit-button").click(function(){
-                    popupState = POPUP_STATE.ADD;
-                    showCoachPopup();
+                    var coachDiv = $(this).parent().parent().parent();
+                    var coachId = coachDiv.data("coachId");
+                    popupState = POPUP_STATE.EDIT;
+                    showCoachPopup(coaches[coachId]);
                 })
             );
         content.append(divInfo);
