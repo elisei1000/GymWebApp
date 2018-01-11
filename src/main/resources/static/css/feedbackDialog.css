@@ -1,13 +1,17 @@
-
+.coach_thumbnail,
 .course_thumbnail{
     margin-top: 40px;
 
 }
+
+.coach_thumbnail >.content,
 .course_thumbnail >.content{
     position: relative;
     overflow: hidden;
 }
 
+
+.coach_thumbnail   >.content >.coachImage,
 .course_thumbnail >.content >.courseImage{
     background-image: url("../images/box-2.jpg");
     background-repeat: no-repeat;
@@ -20,6 +24,8 @@
     overflow: hidden;
 }
 
+
+.coach_thumbnail >.content >.info,
 .course_thumbnail >.content >.info{
     position: absolute;
     background-color: rgba(255, 140, 00, 0.8);
@@ -30,6 +36,8 @@
 
 }
 
+
+.coach_thumbnail  >.content >.info:hover,
 .course_thumbnail >.content >.info:hover{
     background-color: rgba(255, 140, 00, 1);
     position: absolute;
@@ -37,6 +45,7 @@
     bottom:0;
 }
 
+.coach_thumbnail > .content >.info >.title,
 .course_thumbnail > .content >.info >.title{
     font-size:1.5em;
     line-height: 30px;
@@ -61,6 +70,7 @@
     font-weight: bold;
 }
 
+.coach_thumbnail .content .info .description,
 .course_thumbnail .content .info .description{
     position: absolute;
     width: 100%;
@@ -69,6 +79,7 @@
     height: calc(100% - 40px);
 }
 
+.coach_thumbnail .content .info .description p,
 .course_thumbnail .content .info .description p{
     max-height:100%;
     text-align: justify;
@@ -202,7 +213,11 @@
 #feedbackDialog .date .glyphicon,
 #feedbackDialog .teacher .glyphicon,
 #feedbackDialog .participants .glyphicon,
-#feedbackDialog .description .glyphicon{
+#feedbackDialog .description .glyphicon,
+#feedbackDialog .username .glyphicon ,
+#feedbackDialog .birthday .glyphicon,
+#feedbackDialog .email .glyphicon,
+#feedbackDialog .password .glyphicon{
     margin-right:5px;
 }
 
