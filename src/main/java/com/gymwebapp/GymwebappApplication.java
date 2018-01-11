@@ -41,7 +41,7 @@ public class GymwebappApplication {
 
 			List<CourseModel> courseList=courseService.getAll();
 			int i=courseList.size() - 1;
-
+			if(i < 0) i = 0;
 			for(;i <10; i++){
 				CourseModel course = new CourseModel();
 				course.setTitle(String.format("Course #%d", i+1));
