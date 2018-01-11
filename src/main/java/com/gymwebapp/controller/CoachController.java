@@ -12,9 +12,18 @@ import com.gymwebapp.util.Response;
 import com.gymwebapp.util.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
+import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -161,5 +170,63 @@ public class CoachController {
         } else {
             return new Response(Status.STATUS_OK, errors);
         }
+    }
+
+    @PostMapping(value = "/coach/{id}/image")
+    public Response addImage(@PathVariable Integer id, @RequestParam("file") MultipartFile file) {
+
+        List<String> errors = new ArrayList<>();
+
+        String pathName =
+                String.format("./src/main/resources/static/uploaded/coach%s.jpg", id);
+        try {
+            try {
+                BufferedImage image = ImageIO.read(file.getInputStream());
+            } catch (Exception e) {
+                System.out.println("It's not an image!");
+            }
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get(pathName);
+            File localFile = path.toFile();
+            localFile.getParentFile().mkdirs();
+            Files.write(path, bytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return new Response(Status.STATUS_OK, errors);
+    }
+
+    private void deleteImage(Integer id) {
+        String pathName =
+                String.format("./src/main/resources/static/uploaded/coach%s.jpg", id);
+        File file = new File(pathName);
+        file.delete();
+    }
+
+    @RequestMapping(value = "/coach/{id}/image", method = RequestMethod.GET,
+            produces = MediaType.IMAGE_JPEG_VALUE)
+    public @ResponseBody
+    byte[] getImage(@PathVariable Integer id) {
+        String defaultPath = "./src/main/resources/static/uploaded/coachDefault.jpg";
+        String pathName =
+                String.format("./src/main/resources/static/uploaded/coach%d.jpg", id);
+        File imgFile = new File(pathName);
+
+        if (imgFile.exists()) {
+            try {
+                return Files.readAllBytes(Paths.get(pathName));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        try {
+            return Files.readAllBytes(Paths.get(defaultPath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }
