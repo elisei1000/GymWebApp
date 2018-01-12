@@ -69,7 +69,7 @@ public class CourseController {
         if (courseModel.getId() != null) {
             return new Response(Status.STATUS_OK, errors, Pair.of("course", courseModel));
         } else {
-            errors.add("Cursul dat nu exista!");
+            errors.add("Given course doesn't exists!");
             return new Response(Status.STATUS_FAILED, errors);
         }
     }
@@ -81,7 +81,7 @@ public class CourseController {
         List<String> errors = new ArrayList<>();
 
         if (courseModel.getId() == null) {
-            errors.add("Cursul dat nu exista!");
+            errors.add("Given course doesn't exists!");
             return new Response(Status.STATUS_FAILED, errors);
         } else {
             List<CourseFeedback> feedbacks = feedBackService.getAllCourseFeedBacks(id);
@@ -142,7 +142,7 @@ public class CourseController {
             feedbackModel.setAuthor(principal.getName());
         } else {
             List<String> e = new ArrayList<>();
-            e.add("Nu sunteti logat!");
+            e.add("You're not logged!");
             return new Response(Status.STATUS_NOT_LOGGED_IN, e);
         }
 
@@ -164,7 +164,7 @@ public class CourseController {
         if (principal != null) {
             username = principal.getName();
         } else {
-            errors.add("Nu sunteti logat!");
+            errors.add("You're not logged!");
             return new Response(Status.STATUS_NOT_LOGGED_IN, errors);
         }
 
@@ -184,7 +184,7 @@ public class CourseController {
 
         Coach coach = userService.getCoach(courseModel.getTeacher());
         if (coach == null) {
-            errors.add("Antrenorul nu exista!");
+            errors.add("Coach doesn't exists!");
         }
 
         if (errors.size() != 0) {
@@ -194,7 +194,7 @@ public class CourseController {
                 courseService.addCourse(courseModel, coach);
                 return new Response(Status.STATUS_OK, errors, Pair.of("course", courseModel));
             } catch (RepositoryException e) {
-                errors.add("Cursul nu a putut fi adaugat!");
+                errors.add("Given course can't be add!");
                 return new Response(Status.STATUS_FAILED, errors);
             }
         }
@@ -206,7 +206,7 @@ public class CourseController {
         List<String> errors = validator.validate(courseModel);
         Coach coach = userService.getCoach(courseModel.getTeacher());
         if (coach == null) {
-            errors.add("Antrenorul nu exista!");
+            errors.add("Coach doesn't exists!");
         }
 
 
@@ -218,7 +218,7 @@ public class CourseController {
                 courseService.modifyCourse(courseModel, coach);
                 return new Response(Status.STATUS_OK, errors);
             } catch (RepositoryException e) {
-                errors.add("Cursul dat nu exista!");
+                errors.add("Given course doesn't exists!");
                 return new Response(Status.STATUS_FAILED, errors);
             }
         }
@@ -233,13 +233,13 @@ public class CourseController {
         if (principal != null) {
             username = principal.getName();
         } else {
-            errors.add("Nu sunteti logat!");
+            errors.add("You're not logged!");
             return new Response(Status.STATUS_NOT_LOGGED_IN, errors);
         }
         Client client = userService.getClient(username);
 
         if (client == null) {
-            errors.add("Clientul nu exista!");
+            errors.add("Client doesn't exist!");
             return new Response(Status.STATUS_FAILED, errors);
         } else {
             try {
@@ -261,13 +261,13 @@ public class CourseController {
         if (principal != null) {
             username = principal.getName();
         } else {
-            errors.add("Nu sunteti logat!");
+            errors.add("You're not logged!");
             return new Response(Status.STATUS_NOT_LOGGED_IN, errors);
         }
         Client client = userService.getClient(username);
 
         if (client == null) {
-            errors.add("Clientul nu exista!");
+            errors.add("Client doesn't exist!");
             return new Response(Status.STATUS_FAILED, errors);
         } else {
             try {
@@ -289,7 +289,7 @@ public class CourseController {
             deleteImage(id);
             return new Response(Status.STATUS_OK, errors);
         } catch (RepositoryException e) {
-            errors.add("Nu a putut fi sters cursul!");
+            errors.add("The course can't be deleted!");
             return new Response(Status.STATUS_FAILED, errors);
         }
     }
@@ -299,7 +299,7 @@ public class CourseController {
         List<String> errors = new ArrayList<>();
 
         if (startDate.equals(null) || startDate.isEmpty() || endDate.equals(null) || endDate.isEmpty())
-            errors.add("Datele sunt invalide !");
+            errors.add("Invalid data!");
 
         if (errors.size() != 0)
             return new Response(Status.STATUS_FAILED, errors);
@@ -332,7 +332,7 @@ public class CourseController {
         List<String> errors = new ArrayList<>();
 
         if (courseModel.getId() == null) {
-            errors.add("Cursul dat nu exista!");
+            errors.add("Given course doesn't exist!");
             return new Response(Status.STATUS_FAILED, errors);
         }
 

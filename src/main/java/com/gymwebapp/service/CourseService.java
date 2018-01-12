@@ -97,7 +97,7 @@ public class CourseService {
     public boolean checkAttendUserToCourse(Integer id, Client client) throws RepositoryException {
         Course course = courseRepository.get(id);
         if (course == null) {
-            throw new RepositoryException("Cursul dat nu exisa!");
+            throw new RepositoryException("Given course doesn't exist!");
         }
         List<Client> clients = course.getClients();
 
@@ -114,17 +114,17 @@ public class CourseService {
     public void attendUserToCourse(Integer id, Client client) throws RepositoryException {
         Course course = courseRepository.get(id);
         if (course == null) {
-            throw new RepositoryException("Cursul dat nu exisa!");
+            throw new RepositoryException("Given course doesn't exist!");
         }
         List<Client> clients = course.getClients();
 
         if(course.getMaxPlaces()==clients.size()){
-            throw new RepositoryException("Numarul de cursanti este maxim!");
+            throw new RepositoryException("Number of participants is maximum!");
         }
 
         for (Client c:clients){
             if(c.getUsername().compareTo(client.getUsername())==0){
-                throw new RepositoryException("Clientul este deja asignat la curs!");
+                throw new RepositoryException("The client is already attended to the course!");
             }
         }
 
@@ -150,7 +150,7 @@ public class CourseService {
         Course course = courseRepository.get(id);
 
         if (course == null) {
-            errors.add("Cursul dat nu exista!");
+            errors.add("Given course doesn't exist!");
             return errors;
         }
 
@@ -162,7 +162,7 @@ public class CourseService {
                 author = feedback.getAuthor().getUsername();
             }
             if (author.compareTo(feedbackModel.getAuthor()) == 0) {
-                errors.add("Utilizatorul a dat deja feedback!");
+                errors.add("The user already has given feedback!");
                 return errors;
             }
         }
@@ -174,7 +174,7 @@ public class CourseService {
         try {
             feedBackRepository.add(feedback);
         } catch (RepositoryException e) {
-            errors.add("Eroare de sistem!");
+            errors.add("System error!");
         }
         return errors;
     }
@@ -186,7 +186,7 @@ public class CourseService {
         Course course = courseRepository.get(id);
 
         if (course == null) {
-            errors.add("Cursul dat nu exista!");
+            errors.add("Given course doesn't exist!");
             return errors;
         }
 
@@ -205,7 +205,7 @@ public class CourseService {
         }
 
         if (feedbackModified == null) {
-            errors.add("Utilizatorul nu a dat feedback!");
+            errors.add("The user don't give a feedback!");
             return errors;
         }
 
@@ -217,7 +217,7 @@ public class CourseService {
         try {
             feedBackRepository.update(feedbackModified);
         } catch (RepositoryException e) {
-            errors.add("Eroare de sistem!");
+            errors.add("System error!");
         }
         return errors;
     }
@@ -229,7 +229,7 @@ public class CourseService {
         Course course = courseRepository.get(id);
 
         if (course == null) {
-            errors.add("Cursul dat nu exista!");
+            errors.add("Given course doesn't exist");
             return errors;
         }
 
@@ -245,14 +245,14 @@ public class CourseService {
         }
 
         if(idFeedback==null){
-            errors.add("Nu exista feedback dat!");
+            errors.add("Feedback doesn't exist!");
             return errors;
         }
 
         try {
             feedBackRepository.remove(idFeedback);
         } catch (RepositoryException e) {
-            errors.add("Eroare de sistem!");
+            errors.add("Sustem error!");
         }
         return errors;
     }

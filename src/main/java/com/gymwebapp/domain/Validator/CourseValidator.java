@@ -14,28 +14,28 @@ public class CourseValidator implements Validator<CourseModel>{
         List<String> errors = new ArrayList<>();
 
         if(courseModel.getDifficultyLevel()<0){
-            errors.add("Nivelul de dificultate este un numar pozitiv!");
+            errors.add("Difficulty level shoud be a positive number!");
         }
         if(courseModel.getNumberOfParticipants()!=null){
-            errors.add("Numarul de participanti nu trebuie dat!");
+            errors.add("You shouldn't give number of participants!");
         }
         if(courseModel.getStartHour()<8 && courseModel.getStartHour()>22){
-            errors.add("Ora de inceput trebuie sa fie intre 8-22!");
+            errors.add("Start hour should be between 8 and 22!");
         }
         if(courseModel.getEndHour()<8 && courseModel.getEndHour()>22){
-            errors.add("Ora de final trebuie sa fie intre 8-22!");
+            errors.add("End hour should be between 8 and 22!");
         }
         if(courseModel.getEndHour().compareTo(courseModel.getStartHour())<0){
-            errors.add("Ora de final este mai mica ca ora de inceput!");
+            errors.add("Start hour is greater than end hour!");
         }
         if(courseModel.getEndDate().compareTo(courseModel.getStartDate())<0){
-            errors.add("Data de final este mai mica ca data de inceput!");
+            errors.add("Start date is grater than end date!");
         }
         if(courseModel.getTitle()==null || courseModel.getTitle().isEmpty() || courseModel.getTitle()==""){
-            errors.add("Titlul nu poate fi gol!");
+            errors.add("Title can't be empty!");
         }
         if(courseModel.getTeacher()==null || courseModel.getTeacher().isEmpty() || courseModel.getTeacher()==""){
-            errors.add("Numele antrenorului nu poate fi gol nu poate fi gol!");
+            errors.add("Coach can't be epty!");
         }
         return errors;
     }
