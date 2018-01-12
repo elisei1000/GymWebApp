@@ -192,7 +192,7 @@ public class CourseController {
         } else {
             try {
                 courseService.addCourse(courseModel, coach);
-                return new Response(Status.STATUS_OK, errors);
+                return new Response(Status.STATUS_OK, errors, Pair.of("course", courseModel));
             } catch (RepositoryException e) {
                 errors.add("Cursul nu a putut fi adaugat!");
                 return new Response(Status.STATUS_FAILED, errors);

@@ -67,10 +67,14 @@ public class CourseService {
     }
 
     @Transactional
-    public void addCourse(CourseModel courseModel, Coach teacher) throws RepositoryException {
+    public CourseModel addCourse(CourseModel courseModel, Coach teacher) throws RepositoryException {
         Course course = new Course(courseModel.getTitle(), courseModel.getDescription(), courseModel.getDifficultyLevel(), courseModel.getStartHour(), courseModel.getEndHour(), courseModel.getStartDate(), courseModel.getEndDate(), courseModel.getMaxPlaces(), teacher);
 
         courseRepository.add(course);
+
+        courseModel.setId(course.getId());
+
+        return courseModel;
     }
 
     @Transactional
