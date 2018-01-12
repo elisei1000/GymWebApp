@@ -4,7 +4,7 @@
 var courses = {};
 
 var coursesDiv;
-var courseDialog, courseAddDialog;
+var courseDialog;
 var showDialog, showLoader, closeLoader;
 var user;
 
@@ -72,6 +72,39 @@ function formatDate(date) {
     return [year, month, day].join('-');
 }
 
+
+function fillCoaches(course, onSuccess){
+    callServer(APIS.API_GET_COACHES, HTTP_METHODS.GET, {}, function (data) {
+        if (!("coaches" in data)) {
+            showError("Invalid response from server!",
+                "Coaches not in response! {0}".format(JSON.stringify(data)));
+            return;
+        }
+
+        var users = {};
+        for (var index in data.coaches) {
+            var coach = data.coaches[index];
+            if (!(validateObject(coach, OBJECT_KEYS.COACH))) {
+                showError("Invalid response from server!",
+                    "Invalid User received from server {0}".format(JSON.stringify(coach)));
+                return;
+            }
+            users[coach.username] = coach.name;
+        }
+        courseDialog.content.teacher.username.empty();
+        for (var username in users) {
+            courseDialog.content.teacher.username.append(
+                $("<option value='{0}'>{1}</option>".format(username, users[username]))
+            )
+        }
+        if(course)
+            courseDialog.content.teacher.username.val(course.teacher);
+        if(onSuccess)
+            onSuccess()
+    });
+
+}
+
 function showCoursePopup(course){
     if(popupState == POPUP_STATE.ADD){
         course = new Object();
@@ -101,28 +134,32 @@ function showCoursePopup(course){
     courseDialog.content.difficulty.select.val(course.difficultyLevel);
     var url = $(this).parent().parent().children('.courseImage').css('background-image');
     courseDialog.content.image.css('backgroundImage', url);
-    if(popupState == POPUP_STATE.ADD){
+    if(popupState === POPUP_STATE.ADD){
         courseDialog.content.addButton.show();
         courseDialog.content.updateButton.hide();
         courseDialog.content.deleteButton.hide();
         courseDialog.content.feedbacks.hide();
-        closeLoader();
-        showDialog();
+        fillCoaches({}, function(){
+            closeLoader();
+            showDialog();
+        })
     }
     else{
         courseDialog.content.addButton.hide();
         courseDialog.content.updateButton.show();
         courseDialog.content.deleteButton.show();
         showLoader();
-        $(function(){
-            callServer(APIS.API_COURSE_FEEDBACK.format(courseId), HTTP_METHODS.GET, {},
-                //onsuccess
-                function(data){
-                    if(!loadFeedbacks(data)) return;
-                    showDialog();
-                    closeLoader();
-                });
-        })
+        $(function() {
+            fillCoaches(course, function(){
+                callServer(APIS.API_COURSE_FEEDBACK.format(courseId), HTTP_METHODS.GET, {},
+                    //onsuccess
+                    function (data) {
+                        if (!loadFeedbacks(data)) return;
+                        showDialog();
+                        closeLoader();
+                    });
+            })
+        });
     }
 
 }

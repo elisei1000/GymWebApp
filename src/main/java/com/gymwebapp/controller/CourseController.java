@@ -12,10 +12,25 @@ import com.gymwebapp.service.FeedBackService;
 import com.gymwebapp.service.UserService;
 import com.gymwebapp.util.Response;
 import com.gymwebapp.util.Status;
+import com.sun.prism.Image;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.eclipse.jetty.util.MultiPartInputStreamParser;
+import org.hibernate.engine.jdbc.StreamUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.util.Pair;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.activation.MimetypesFileTypeMap;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Principal;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -97,8 +112,8 @@ public class CourseController {
         feedbackModel.setDate(new Date());
         if (principal != null) {
             feedbackModel.setAuthor(principal.getName());
-        }else{
-            List<String> e=new ArrayList<>();
+        } else {
+            List<String> e = new ArrayList<>();
             e.add("Nu sunteti logat!");
             return new Response(Status.STATUS_NOT_LOGGED_IN, e);
         }
@@ -125,8 +140,8 @@ public class CourseController {
         feedbackModel.setDate(new Date());
         if (principal != null) {
             feedbackModel.setAuthor(principal.getName());
-        }else{
-            List<String> e=new ArrayList<>();
+        } else {
+            List<String> e = new ArrayList<>();
             e.add("Nu sunteti logat!");
             return new Response(Status.STATUS_NOT_LOGGED_IN, e);
         }
@@ -148,7 +163,7 @@ public class CourseController {
         String username = null;
         if (principal != null) {
             username = principal.getName();
-        }else{
+        } else {
             errors.add("Nu sunteti logat!");
             return new Response(Status.STATUS_NOT_LOGGED_IN, errors);
         }
@@ -217,7 +232,7 @@ public class CourseController {
         String username = null;
         if (principal != null) {
             username = principal.getName();
-        }else{
+        } else {
             errors.add("Nu sunteti logat!");
             return new Response(Status.STATUS_NOT_LOGGED_IN, errors);
         }
@@ -228,8 +243,8 @@ public class CourseController {
             return new Response(Status.STATUS_FAILED, errors);
         } else {
             try {
-                boolean check=courseService.checkAttendUserToCourse(id, client);
-                return new Response(Status.STATUS_OK, new ArrayList<String>(), Pair.of("attended",check));
+                boolean check = courseService.checkAttendUserToCourse(id, client);
+                return new Response(Status.STATUS_OK, new ArrayList<String>(), Pair.of("attended", check));
             } catch (RepositoryException e) {
                 errors.add(e.getMessage());
                 return new Response(Status.STATUS_FAILED, errors);
@@ -245,7 +260,7 @@ public class CourseController {
         String username = null;
         if (principal != null) {
             username = principal.getName();
-        }else{
+        } else {
             errors.add("Nu sunteti logat!");
             return new Response(Status.STATUS_NOT_LOGGED_IN, errors);
         }
@@ -271,6 +286,7 @@ public class CourseController {
         List<String> errors = new ArrayList<>();
         try {
             courseService.deleteCourse(id);
+            deleteImage(id);
             return new Response(Status.STATUS_OK, errors);
         } catch (RepositoryException e) {
             errors.add("Nu a putut fi sters cursul!");
@@ -307,6 +323,76 @@ public class CourseController {
             for (Course course : schedule_courses.get(i))
                 schedule_response.get(i).add(new CourseModel(course.getId(), course.getDifficultyLevel(), course.getStartHour(), course.getEndHour(), course.getStartDate(), course.getEndDate(), course.getMaxPlaces(), course.getClients().size(), course.getTeacher().getName(), course.getTitle(), course.getDescription()));
         return new Response(Status.STATUS_OK, new ArrayList<>(), Pair.of("program", schedule_response));
+    }
+
+    @PostMapping(value = "/course/{id}/image")
+    public Response addImage(@PathVariable Integer id, @RequestParam("file") MultipartFile file) {
+        CourseModel courseModel = courseService.getCourse(id);
+
+        List<String> errors = new ArrayList<>();
+
+        if (courseModel.getId() == null) {
+            errors.add("Cursul dat nu exista!");
+            return new Response(Status.STATUS_FAILED, errors);
+        }
+
+        String pathName =
+                String.format("./src/main/resources/static/uploaded/course%s.jpg", id);
+        try {
+            try {
+                BufferedImage image = ImageIO.read(file.getInputStream());
+            } catch (Exception e) {
+                System.out.println("It's not an image!");
+            }
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get(pathName);
+            File localFile = path.toFile();
+            localFile.getParentFile().mkdirs();
+            Files.write(path, bytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return new Response(Status.STATUS_OK, errors);
+    }
+
+    private void deleteImage(Integer id) {
+        String pathName =
+                String.format("./src/main/resources/static/uploaded/course%s.jpg", id);
+        File file = new File(pathName);
+        file.delete();
+    }
+
+    @RequestMapping(value = "/course/{id}/image", method = RequestMethod.GET,
+            produces = MediaType.IMAGE_JPEG_VALUE)
+    public @ResponseBody
+    byte[] getImage(@PathVariable Integer id) {
+        String defaultPath = "./src/main/resources/static/uploaded/courseDefault.jpg";
+        String pathName =
+                String.format("./src/main/resources/static/uploaded/course%d.jpg", id);
+        File imgFile = new File(pathName);
+
+        CourseModel courseModel = courseService.getCourse(id);
+
+        if (courseModel.getId() == null) {
+            return null;
+        }
+
+        if (imgFile.exists()) {
+            try {
+                return Files.readAllBytes(Paths.get(pathName));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        try {
+            return Files.readAllBytes(Paths.get(defaultPath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
 }
