@@ -12,14 +12,14 @@ public class FeedbackValidator implements Validator<FeedbackModel> {
         List<String> errors = new ArrayList<>();
 
         if (feedbackModel.getAuthor() != null) {
-            errors.add("Autorul nu trebuie dat!");
+            errors.add("Author must be empty!");
         }
         if (feedbackModel.getDate() != null) {
-            errors.add("Data nu trebuie data!");
+            errors.add("Data must be empty!");
         }
 
         if (feedbackModel.getStarsCount() < 0 && feedbackModel.getStarsCount() > 5) {
-            errors.add("Numarul de stele este intre 0 si 5");
+            errors.add("Number o starts should be between 0 and 5");
         }
 
         return errors;

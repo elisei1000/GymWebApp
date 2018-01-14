@@ -52,7 +52,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                    .antMatchers("/api/**").hasAnyRole("USER")
+                    .antMatchers("/about.html").permitAll()
+                    .antMatchers("/loginPage.html").permitAll()
+                    .antMatchers("/about.html").permitAll()
+                    .antMatchers("/main.html").permitAll()
+                    .antMatchers("/contact.html").permitAll()
+                    .antMatchers("/coaches.html").not().hasAnyRole("ADMIN")
+                    .antMatchers("/courses.html").not().hasAnyRole("ADMIN")
+                    .antMatchers("/index.html").permitAll()
+                    .antMatchers("/manageCoaches.html").hasAnyRole("ADMIN")
+                    .antMatchers("/manageCourses.html").hasAnyRole("ADMIN")
+                    .antMatchers("/personalInfo.html").hasAnyRole("CLIENT")
+                    .antMatchers("/register.html").not().hasAnyRole("CLIENT", "COACH", "ADMIN")
+                    .antMatchers("/schedule.html").permitAll()
                     .antMatchers("/", "/public/**", "/resources/**", "/resources/static/**")
                     .permitAll()
                     .and()
@@ -67,7 +79,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .logoutUrl("/logout")
                     .logoutSuccessUrl("/main.html")
                     .invalidateHttpSession(true)
-                    ;
+                    .and()
+                    .exceptionHandling().accessDeniedPage("/main.html");
     }
 
 

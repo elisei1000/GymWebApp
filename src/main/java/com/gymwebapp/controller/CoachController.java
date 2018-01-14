@@ -49,7 +49,8 @@ public class CoachController {
         List<String> errors = userService.addUser(coach);
 
         if (errors.size() == 0) {
-            return new Response(Status.STATUS_OK, errors);
+            userModel.setPassword(null);
+            return new Response(Status.STATUS_OK, errors,Pair.of("coach",userModel));
         } else {
             return new Response(Status.STATUS_FAILED, errors);
         }
@@ -172,13 +173,13 @@ public class CoachController {
         }
     }
 
-    @PostMapping(value = "/coach/{id}/image")
-    public Response addImage(@PathVariable Integer id, @RequestParam("file") MultipartFile file) {
+    @PostMapping(value = "/coach/{username}/image")
+    public Response addImage(@PathVariable String username, @RequestParam("file") MultipartFile file) {
 
         List<String> errors = new ArrayList<>();
 
         String pathName =
-                String.format("./src/main/resources/static/uploaded/coach%s.jpg", id);
+                String.format("./src/main/resources/static/uploaded/coach%s.jpg", username);
         try {
             try {
                 BufferedImage image = ImageIO.read(file.getInputStream());
@@ -197,20 +198,20 @@ public class CoachController {
         return new Response(Status.STATUS_OK, errors);
     }
 
-    private void deleteImage(Integer id) {
+    private void deleteImage(String username) {
         String pathName =
-                String.format("./src/main/resources/static/uploaded/coach%s.jpg", id);
+                String.format("./src/main/resources/static/uploaded/coach%s.jpg", username);
         File file = new File(pathName);
         file.delete();
     }
 
-    @RequestMapping(value = "/coach/{id}/image", method = RequestMethod.GET,
+    @RequestMapping(value = "/coach/{username}/image", method = RequestMethod.GET,
             produces = MediaType.IMAGE_JPEG_VALUE)
     public @ResponseBody
-    byte[] getImage(@PathVariable Integer id) {
+    byte[] getImage(@PathVariable String username) {
         String defaultPath = "./src/main/resources/static/uploaded/coachDefault.jpg";
         String pathName =
-                String.format("./src/main/resources/static/uploaded/coach%d.jpg", id);
+                String.format("./src/main/resources/static/uploaded/coach%s.jpg", username);
         File imgFile = new File(pathName);
 
         if (imgFile.exists()) {
