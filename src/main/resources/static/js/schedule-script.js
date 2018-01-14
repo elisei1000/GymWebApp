@@ -2,18 +2,28 @@
  * Created by diana on 29.12.2017.
  */
 
-
 DevExpress.viz.currentTheme("generic.light");
 
-$(function(){
+if (!String.prototype.format) {
+    String.prototype.format = function() {
+        var args = arguments;
+        return this.replace(/{(\d+)}/g, function(match, number) {
+            return typeof args[number] !== 'undefined'
+                ? args[number]
+                : match
+                ;
+        });
+    };
+}
 
+function loadSchedule(filteredData){
     $("#scheduler").dxScheduler({
-        dataSource: data,
+        dataSource: filteredData,
         views: ["day","week", "month"],
         currentView: "week",
         currentDate: new Date(),
         startDayHour: 9,
-        height: 600,
+        height: 500,
         onCellClick: function(e) {
             e.cancel = true;
         },
@@ -28,34 +38,116 @@ $(function(){
         }
     }).dxScheduler("instance");
 
-});
+}
 
-/*var data = $.ajax({
+
+function formatDate(date, hours) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+    minutes = "00";
+    seconds = "00";
+    hours = "" + hours;
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    if(hours.length < 2) hours = '0' + hours;
+    if(minutes.length < 2) minutes = '0' + minutes;
+    if(seconds.length < 2) seconds = '0' + seconds;
+
+    return "{0} {1}".format(
+            [year, month, day].join('-'),
+            [hours, minutes, seconds].join(":")
+    )
+}
+
+function loadCourses(data){
+    var courses = data.data.courses;
+
+    data = courses.map(function(course) {
+            return {
+                text: course.title,
+                startDate: formatDate(course.startDate, course.startHour),
+                endDate: formatDate(course.endDate, course.endHour),
+                startHour: course.startHour,
+                endHour:course.endHour,
+                difficultyLevel:course.difficultyLevel
+            }
+        }
+    );
+
+    var toAdd = [];
+    for(var index in data){
+        var course = data[index];
+        if(course.startDate.substring(0, 10) !== course.endDate.substring(0, 10)){
+            var startDate  = course.startDate;
+            var endDate = course.endDate;
+            course.endDate = startDate;
+
+            var s = new Date(startDate);
+            var e = new Date(endDate);
+            var count = (e.getTime() - s.getTime()) / (24 * 3600 * 1000);
+            for(var z=1;z<count;z++){
+                s.setTime(s.getTime() + 24 * 3600 *1000);
+
+                var newCourse = {
+                    text:course.text,
+                    startDate:formatDate(s.getTime(), course.startHour),
+                    endDate:formatDate(s.getTime(), course.endHour),
+                    difficultyLevel:course.difficultyLevel
+                };
+                toAdd.push(newCourse);
+            }
+        }
+    }
+    data = data.concat(toAdd);
+    loadSchedule(data);
+
+    dataAll=data;
+
+    data0 = data.filter(function(course) {
+        return course.difficultyLevel === 0;
+    });
+    data1 = data.filter(function(course) {
+        return course.difficultyLevel === 1;
+    });
+    data2 = data.filter(function(course) {
+        return course.difficultyLevel === 2;
+    });
+    data3 = data.filter(function(course) {
+        return course.difficultyLevel === 3;
+    });
+    data4 = data.filter(function(course) {
+        return course.difficultyLevel === 4;
+    });
+
+    $('#filtersDifficulty input').on('change', function() {
+        if($('input[name=options]:checked', '#filtersDifficulty').val()==="all"){
+            loadSchedule(dataAll);
+        }
+        if($('input[name=options]:checked', '#filtersDifficulty').val()==="easy"){
+            loadSchedule(data0);
+        }
+        if($('input[name=options]:checked', '#filtersDifficulty').val()==="easymedium") {
+            loadSchedule(data1);
+        }
+        if($('input[name=options]:checked', '#filtersDifficulty').val()==="medium"){
+                loadSchedule(data2);
+        }
+        if($('input[name=options]:checked', '#filtersDifficulty').val()==="mediumhard"){
+            loadSchedule(data3);
+        }
+        if($('input[name=options]:checked', '#filtersDifficulty').val()==="hard"){
+            loadSchedule(data4);
+        }
+    });
+
+}
+$.ajax({
     url: "/course",
     async: false,
-    dataType: 'json'
-}).responseJSON;
-console.log(data);
-*/
-var data =[
-    {
-        "id": 1,
-        "difficultyLevel": 0,
-        "startHour": "09:00:00+01:00",
-        "endHour": "10:00:00+01:00",
-        "startDate": "2018-01-04T09:00:00+01:00",
-        "endDate": "2018-01-04T10:00:00+01:00",
-        "maxPlaces": 10,
-        "text": "Curs1"
-    },
-    {
-        "id": 2,
-        "difficultyLevel": 0,
-        "startHour": "09:00:00+01:00",
-        "endHour": "10:00:00+01:00",
-        "startDate": "2018-01-05T09:00:00+01:00",
-        "endDate": "2018-01-05T10:00:00+01:00",
-        "maxPlaces": 10,
-        "text": "Curs2"
-    }
-];
+    dataType: 'json',
+    success: loadCourses
+});
+

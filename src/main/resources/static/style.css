@@ -1389,42 +1389,7 @@ header.fixed .menuBar .navbar-right {
     padding-bottom: 60px;
 }
 
-.button-group {
-    background-color: #ffe402;
-    display: inline-block;
-    position: relative;
-    transform: skew(-29.6deg);
-    -webkit-transform: skew(-29.6deg);
-    -moz-transform: skew(-29.6deg);
-    -o-transform: skew(-29.6deg);
-}
 
-.button-group .button {
-    border: 0;
-    background-color: transparent;
-    font-size: 16px;
-    color: #201f1f;
-    font-weight: 700;
-    font-style: italic;
-    text-transform: uppercase;
-    padding: 0;
-    position: relative;
-}
-
-.button-group .button.is-checked {
-    color: #fff;
-    z-index: 1;
-}
-
-.button-group .button span {
-    display: block;
-    transform: skew(29.6deg);
-    -webkit-transform: skew(29.6deg);
-    -moz-transform: skew(29.6deg);
-    -o-transform: skew(29.6deg);
-    padding: 23px 38px;
-    width: 100%;
-}
 
 .tabs-header {
     position: relative;
@@ -3836,8 +3801,8 @@ blockquote h6 {
      margin-right:50px;
      margin-left:50px;
      position: relative;
-     margin-bottom: 20px;
-     margin-top:50px;
+     margin-bottom: 10px;
+
  }
 
 .register-block {

@@ -3,6 +3,13 @@
 <html lang="en">
 
 <head>
+    <style>
+        #filtersDifficulty{
+            margin-top:30px;
+            margin-left:50px;
+            margin-bottom:5px;
+        }
+    </style>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
@@ -94,6 +101,27 @@
             </div>
         </header>
         <!-- Header Section Ends -->
+
+        <div class="btn-group"  id="filtersDifficulty" data-toggle="buttons">
+            <label class="btn btn-primary active">
+                <input type="radio" class='rg' name="options" id="allFilter" value="all" checked> All
+            </label>
+            <label class="btn btn-primary">
+                <input type="radio" class='rg' name="options" id="easyFilter" value="easy"> Easy
+            </label>
+            <label class="btn btn-primary">
+                <input type="radio" class='rg' name="options" id="easyMediumFilter" value="easymedium"> Easy-Medium
+            </label>
+            <label class="btn btn-primary">
+                <input type="radio" class='rg' name="options" id="mediumFilter" value="medium"> Medium
+            </label>
+            <label class="btn btn-primary">
+                <input type="radio" class='rg' name="options" id="mediumHardFilter" value="mediumhard"> Medium-Hard
+            </label>
+            <label class="btn btn-primary">
+                <input type="radio" class='rg' name="options" id="hardFilter" value="hard"> Hard
+            </label>
+        </div>
             <div id="scheduler"></div>
 
 
