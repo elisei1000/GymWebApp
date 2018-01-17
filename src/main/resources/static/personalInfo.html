@@ -17,10 +17,167 @@
     <link type="text/css" rel="stylesheet" href="css/owl.carousel.min.css?v=1.0">
     <link type="text/css" rel="stylesheet" href="css/jquery.fancybox.css?v=1.0">
     <link type="text/css" rel="stylesheet" href="webkit/webkit.css?v=1.0">
+    <link type="text/css" rel="stylesheet" href="css/font-awesome">
     <link type="text/css" href="style.css?v=1.0" rel="stylesheet" />
     <link type="text/css" href="css/media.css?v=1.0" rel="stylesheet" />
     <link rel="stylesheet" href="css/switcher.css" type="text/css" />
     <link rel="stylesheet" href="css/switcher/style1.css" id="colors">
+    <script src="https://use.fontawesome.com/856461e35a.js"></script>
+    <style type="text/css">
+        @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i|Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&subset=latin-ext');
+        @import url('https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese');
+
+        .d_log_in_block *::-webkit-inner-spin-button,
+
+        .d_log_in_block *::-webkit-calendar-picker-indicator {
+            display: none;
+            -webkit-appearance: none;
+        }
+
+        .header_tot {
+            font-family: 'Oswald', sans-serif;
+            float: left;
+            width: 600px;
+            margin: 170px 0 20px 0;
+            margin-left: calc(50% - 300px);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header_tot h1{
+            font-family: 'Oswald',sans-serif;
+            font-size: 60px;
+
+        }
+
+        .subtitlu a {
+            color: #1c1b1b;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        .d_log_in_block *
+        {
+            box-sizing: border-box !important;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 400;
+            -webkit-tap-highlight-color: rgba(0,0,0,0);
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+            appearance: none !important;
+            margin: 0;
+            padding: 0;
+            border: 0 none;
+            background-color: rgb(0,0,0,0);
+            /* Text is never inflated */
+            text-size-adjust: none;
+            /* Text may be inflated */
+            text-size-adjust: auto;
+            /* Text may be inflated in this exact proportion */
+            text-size-adjust: 80%;
+            /* Global values */
+            text-size-adjust: inherit;
+            text-size-adjust: initial;
+            text-size-adjust: unset;
+        }
+
+        .d_log_in_block
+        {
+            float: left;
+            width: 600px;
+            background-color: #efefef;
+            margin: 0 0 0 0;
+            margin-left: calc(50% - 300px);
+            border-top: 5px solid #FF8C00;
+            border-radius: 5px;
+            padding: 20px;
+        }
+
+        .d_log_in_block legend
+        {
+            float: left;
+            width: 96%;
+            height: auto;
+            font-size: 12px;
+            margin: 10px 2% 2px;
+            color: #FF8C00;
+            text-align: left;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+        }
+
+        .d_log_in_block h1
+        {
+            color: #282828;
+            font-size: 30px;
+            line-height: 1.25;
+            font-weight: 100;
+            margin:20px 0;
+            width: 100%;
+            float:left;
+            font-family: 'Oswald',sans-serif;
+
+        }
+
+        .d_log_in_block p
+        {
+            float: left;
+            width: 98%;
+            height: auto;
+            font-size: 12px;
+            margin: 10px 1% 2px;
+            color: #333;
+            text-align: left;
+            font-weight: 400;
+        }
+
+        .d_log_in_block input,
+        .d_log_in_block select,
+        .d_log_in_block input:hover,
+        .d_log_in_block select:hover,
+        .d_log_in_block input:focus,
+        .d_log_in_block select:focus,
+        .d_log_in_block button
+        {
+            font-size: 14px !important;
+            background-color: #fff;
+            color: #666 !important;
+            border: 1px solid #ebebeb;
+            width: 98%;
+            margin: 0 1%;
+            padding: 10px;
+            border-radius: 4px !important;
+            outline: none !important;
+            outline-style: none;
+            outline-color: currentcolor;
+            outline-color: transparent !important;
+            outline-style: none !important;
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+            -ms-appearance: none !important;
+            -o-appearance: none !important;
+            appearance: none !important;
+            height: 44px;
+        }
+
+        select::-ms-expand {
+            display: none;
+        }
+
+        .d_log_in_block button {
+            margin-top:20px;
+            background-color:red;
+            color:white;
+            border:0;
+        }
+
+        .fa {font-family: FontAwesome !important; }
+
+
+
+    </style>
 
 </head>
 
@@ -91,117 +248,48 @@
     </div>
 
 
-<!--/div><!-- container -->
+    <!--/div><!-- container -->
 
-<div class="principal">
     <div class="header_tot">
-        <div class="header">
-            <h1>Contul meu</h1>
-            <div class="subtitlu">
-                <a href="personalInfo.html" class="activ">Profil</a>  <span class="mx-3">/</span> <a href="personalInfo.html" class="">Abonamente</a> <span class="mx-3">/</span> <a href="personalInfo.html">Logout</a>
-            </div>
+        <h1>Contul meu</h1>
+        <div class="subtitlu">
+            <a href="personalInfo.html" class="activ">Personal info</a>  <span class="mx-3">/</span> <a href="subscription.html" class="">Subscriptions</a>
         </div>
     </div>
+    <div class="d_log_in_block">
+        <h1><i class="fa fa-user" aria-hidden="true"></i>  Personal Info</h1>
 
-    <!--<div class="big_box">-->
-        <div class="rowD" id="profil">
-            <div class="col-sm-3"></div>
-            <div class="col-sm-6">
-                <div class="rowD">
-                    <div class="col-sm-1"></div>
-                    <div class="col-sm-10">
-
-                        <div class="big_box boxMargin">
-                            <h2 class="sinfo"><i class="icon-user"></i> Datele contului</h2>
-
-                            <div class="rowD no-gutters">
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <label for="">Nume si prenume</label>
-                                        <div class="form-inline">
-                                            <input type="text" value="Cristolovean Diana " class="form-control col-sm-9 actnume" data-x="{&quot;v&quot;:&quot;cont\/actnume&quot;}" data-reload="1" placeholder="Nume si prenume">
-                                        </div>
-                                        <div id="xnume"></div>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="rowD">
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <label for="">Username</label>
-                                        <div class="form-inline">
-                                            <input type="text" value="" class="form-control col-sm-9 acttel" data-x="{&quot;v&quot;:&quot;cont\/acttel&quot;}" data-reload="1" placeholder="Username">
-                                        </div>
-                                        <div id="xtel"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="rowD">
-
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <label>Adresa de email</label>
-                                        <div class="form-inline">
-                                            <input type="text" placeholder="Adresa de email" class="form-control col-sm-9 addmail" data-x="{&quot;v&quot;:&quot;cont\/addmail&quot;}">
-                                        </div>
-                                        <div id="xmail"></div>
-                                    </div>
-                                </div>
+        <legend><i class="fa fa-address-card-o" aria-hidden="true"></i> &nbsp; Name</legend>
+        <input type="text" id="name" placeholder="Jhon Doe" disabled="disabled">
+        <legend><i class="fa fa-user-o" aria-hidden="true"></i> &nbsp; User</legend>
+        <input type="text" id="username" placeholder="jhondoe" disabled="disabled">
+        <legend><i class="fa fa-envelope-o" aria-hidden="true"></i> &nbsp; Email</legend>
+        <input type="text" id="email" placeholder="jhondoe@yahoo.com" disabled="disabled">
+        <legend><i class="fa fa-birthday-cake" aria-hidden="true"></i> &nbsp; Birthday</legend>
+        <input type="text" id="birthDay" disabled="disabled" placeholder="Birthday">
 
 
-
-                            </div>
-                            <div class="rowD">
-
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <label>Zi de nastere</label>
-                                        <div class="form-inline">
-                                            <input type="text" placeholder="Zi de nastere" class="form-control col-sm-9 addmail" data-x="{&quot;v&quot;:&quot;cont\/addmail&quot;}">
-                                        </div>
-                                        <div id="birthday"></div>
-                                    </div>
-                                </div>
-
-
-
-                            </div>
-
-                        </div>
-
-
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
-
-       <!--</div>-->
     </div>
-
 </div>
 
+    <!-- Jquery Js -->
+    <script type="text/javascript" src="js/libs/jquery.min.js"></script>
+    <script type="text/javascript" src="js/main-script.js"></script>
+    <script type="text/javascript" src="js/const.js"></script>
+    <script type="text/javascript" src="js/core/core.js"></script>
+    <script type="text/javascript" src="js/libs/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/libs/element.js"></script>
+    <script type="text/javascript" src="js/libs/modernizr.js"></script>
+    <script type="text/javascript" src="js/libs/owl.carousel.js"></script>
+    <script type="text/javascript" src="js/libs/jquery.localscroll-1.2.7-min.js"></script>
+    <script type="text/javascript" src="js/libs/wow.min.js"></script>
+    <script type="text/javascript" src="js/libs/imagesloaded.pkgd.min.js"></script>
+    <script type="text/javascript" src="js/libs/waypoints.min.js"></script>
+    <script type="text/javascript" src="js/libs/jquery.isotope.min.js"></script>
+    <script type="text/javascript" src="js/libs/jquery.fancybox.js"></script>
+    <script type="text/javascript" src="js/libs/switcher.js"></script>
+    <script type="text/javascript" src="js/personalInfo.js"></script>
 
-
-<!-- Jquery Js -->
-<script type="text/javascript" src="js/libs/jquery.min.js"></script>
-<script type="text/javascript" src="js/main-script.js"></script>
-<script type="text/javascript" src="js/const.js"></script>
-<script type="text/javascript" src="js/core/core.js"></script>
-<script type="text/javascript" src="js/libs/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/libs/element.js"></script>
-<script type="text/javascript" src="js/libs/modernizr.js"></script>
-<script type="text/javascript" src="js/libs/owl.carousel.js"></script>
-<script type="text/javascript" src="js/libs/jquery.localscroll-1.2.7-min.js"></script>
-<script type="text/javascript" src="js/libs/wow.min.js"></script>
-<script type="text/javascript" src="js/libs/imagesloaded.pkgd.min.js"></script>
-<script type="text/javascript" src="js/libs/waypoints.min.js"></script>
-<script type="text/javascript" src="js/libs/jquery.isotope.min.js"></script>
-<script type="text/javascript" src="js/libs/jquery.fancybox.js"></script>
-<script type="text/javascript" src="js/libs/switcher.js"></script>
 
 </body>
 

@@ -10,7 +10,7 @@
     <title> Fitness Point </title>
     <!-- CSS -->
     <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" />
-	 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link type="text/css" href="css/animate.css?v=1.0" rel="stylesheet" />
     <link type="text/css" rel="stylesheet" href="css/owl.carousel.min.css?v=1.0">
     <link type="text/css" rel="stylesheet" href="css/jquery.fancybox.css?v=1.0">
@@ -19,11 +19,239 @@
     <link type="text/css" href="css/media.css?v=1.0" rel="stylesheet" />
     <link rel="stylesheet" href="css/switcher.css" type="text/css" />
     <link rel="stylesheet" href="css/switcher/style1.css" id="colors">
+    <script src="https://use.fontawesome.com/856461e35a.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i|Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&subset=latin-ext');
+        @import url('https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese');
+
+        .header_tot {
+            font-family: 'Oswald', sans-serif;
+            float: left;
+            width: 600px;
+            margin: 170px 0 20px 0;
+            margin-left: calc(50% - 300px);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header_tot h1{
+            font-family: 'Oswald',sans-serif;
+            font-size: 60px;
+
+        }
+
+        .subtitlu a {
+            color: #1c1b1b;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+
+        .fa {font-family: FontAwesome !important; }
+        .d_log_in_block *::-webkit-inner-spin-button,
+
+        .d_log_in_block *::-webkit-calendar-picker-indicator {
+            display: none;
+            -webkit-appearance: none;
+        }
+
+        .d_log_in_block *
+        {
+            box-sizing: border-box !important;
+            font-family: font-family: 'Oswald', sans-serif;
+            font-weight: 400;
+            -webkit-tap-highlight-color: rgba(0,0,0,0);
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+            appearance: none !important;
+            margin: 0;
+            padding: 0;
+            border: 0 none;
+            background-color: rgb(0,0,0,0);
+            /* Text is never inflated */
+            text-size-adjust: none;
+            /* Text may be inflated */
+            text-size-adjust: auto;
+            /* Text may be inflated in this exact proportion */
+            text-size-adjust: 80%;
+            /* Global values */
+            text-size-adjust: inherit;
+            text-size-adjust: initial;
+            text-size-adjust: unset;
+        }
+
+        .d_log_in_block
+        {
+            float: left;
+            width: 600px;
+            background-color: #efefef;
+            margin: 10px 0 0 0;
+            margin-left: calc(50% - 300px);
+            border-top: 5px solid #ff8c00;
+            border-radius: 4px 0 0 0;
+            padding: 20px;
+
+        }
+
+        .d_log_in_block legend
+        {
+            float: left;
+            width: 96%;
+            height: auto;
+            font-size: 12px;
+            margin: 10px 2% 2px;
+            color: #ff8c00;
+            text-align: left;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+        }
+
+        .d_dat {
+            float: left;
+            width: 46%;
+            height: auto;
+            font-size: 12px;
+            margin: 10px 2% 2px;
+            background-color: #fff;
+            border-radius:4px;
+            border: 1px solid #eee;
+            padding:4px;
+        }
+
+        .d_log_in_block span
+        {
+            float: left;
+            width: 96%;
+            height: auto;
+            font-size: 14px;
+            margin: 0 2% 0;
+            color: #333;
+            font-weight: 600;
+            padding:0;
+        }
+
+        .d_log_in_block span .fa
+        {
+            font-size: 20px;
+            color: #ff8c00;
+            font-weight: 400;
+        }
+
+        .d_log_in_block h1
+        {
+            color: #282828;
+            font-size: 40px;
+            font-weight: 600;
+            margin:20px 0;
+            width: 100%;
+            float:left;
+        }
+
+        .d_log_in_block p
+        {
+            float: left;
+            width: 98%;
+            height: auto;
+            font-size: 12px;
+            margin: 10px 2% 2px;
+            color: #333;
+            text-align: left;
+            font-weight: 400;
+        }
+
+
+        .inv{
+            display: none;
+        }
+
+
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+
+            margin: 200px 0 0 0;
+        }
+
+        /* Modal Content */
+        .modal-content {
+            position: relative;
+            background-color: white;
+            margin: auto;
+            padding: 0;
+            border: 1px solid #888;
+            width: 40%;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+            -webkit-animation-name: animatetop;
+            -webkit-animation-duration: 0.4s;
+            animation-name: animatetop;
+            animation-duration: 0.4s
+        }
+
+        /* Add Animation */
+        @-webkit-keyframes animatetop {
+            from {top:-300px; opacity:0}
+            to {top:0; opacity:1}
+        }
+
+        @keyframes animatetop {
+            from {top:-300px; opacity:0}
+            to {top:0; opacity:1}
+        }
+
+        /* The Close Button */
+        .close {
+            color: white;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-header {
+            padding: 2px 16px;
+            border-top:5px solid #ff8c00;
+            color: black;
+            text-align: center;
+
+        }
+
+
+        .modal-body {padding: 2px 16px;}
+
+        .modal-body input{
+            width:25%;
+            margin-left:35%;
+            border-bottom: 2px solid #ff8c00;
+        }
+        .modal-body button{
+            width:10%;
+
+        }
+
+
+
+    </style>
 
 </head>
 
 <body id="mainBox" class="creamBg" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" data-offset="150">
-    <div class="main">
+<div class="main">
     <div class="head_wrap">
         <!-- Top Header Section Begins -->
         <div class="top-head">
@@ -88,23 +316,91 @@
         <!-- Header Section Ends -->
     </div>
 
-        
+    <div class="header_tot">
+        <h1>Contul meu</h1>
+        <div class="subtitlu">
+            <a href="personalInfo.html" class="activ">Personal info</a>  <span class="mx-3">/</span> <a href="subscription.html" class="">Subscriptions</a>
+        </div>
+    </div>
+
+    <div class="d_log_in_block">
+        <h1><i class="fa fa-id-card-o" aria-hidden="true"></i> Subscriptions</h1>
+        <p id="idp"></p>
+
+        <div class="d_dat inv" id="myID1" ><span><i  class="fa fa-calendar" aria-hidden="true"></i>&nbsp;</span></div>
+        <div class="d_dat inv" id="myID2" ><span><i  class="fa fa-calendar" aria-hidden="true"></i>&nbsp;</span></div>
+        <!-- Trigger/Open The Modal -->
+        <button class="d_dat inv" id="myBtn" style="width:96%;"><span>
+	<i class="fa fa-plus" aria-hidden="true"></i>&nbsp; Add a subscription</span></button>
+
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+
+            <!-- Modal content -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="close">&times;</span>
+                    <h4>Abonamentul va incepe din data curenta. Introduceti data de sfarsit:</h4>
+                </div>
+                <div class="modal-body">
+                    <input id="endDate" type="date" placeholder="endDate">
+                    <button onclick="addSubscription()">Add</button>
+                </div>
+
+            </div>
+
+        </div>
 
 
     </div>
 
-    <!-- Jquery Js -->
-    <script type="text/javascript" src="js/libs/jquery.min.js"></script>
-    <script type="text/javascript" src="js/libs/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/libs/modernizr.js"></script>
-    <script type="text/javascript" src="js/libs/owl.carousel.js"></script>
-    <script type="text/javascript" src="js/libs/jquery.localscroll-1.2.7-min.js"></script>
-    <script type="text/javascript" src="js/libs/wow.min.js"></script>
-    <script type="text/javascript" src="js/libs/imagesloaded.pkgd.min.js"></script>
-    <script type="text/javascript" src="js/libs/waypoints.min.js"></script>
-    <script type="text/javascript" src="js/libs/jquery.isotope.min.js"></script>
-    <script type="text/javascript" src="js/libs/jquery.fancybox.js"></script>
-    <script type="text/javascript" src="js/libs/switcher.js"></script>
+
+</div>
+
+
+<script>
+    // Get the modal
+    var modal = document.getElementById('myModal');
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+<!-- Jquery Js -->
+<script type="text/javascript" src="js/libs/jquery.min.js"></script>
+<script type="text/javascript" src="js/libs/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/libs/modernizr.js"></script>
+<script type="text/javascript" src="js/owl.carousel.js"></script>
+<script type="text/javascript" src="js/libs/jquery.localscroll-1.2.7-min.js"></script>
+<script type="text/javascript" src="js/wow.min.js"></script>
+<script type="text/javascript" src="js/libs/imagesloaded.pkgd.min.js"></script>
+<script type="text/javascript" src="js/libs/waypoints.min.js"></script>
+<script type="text/javascript" src="js/libs/jquery.isotope.min.js"></script>
+<script type="text/javascript" src="js/jquery.fancybox.js"></script>
+<script type="text/javascript" src="js/libs/switcher.js"></script>
+<script type="text/javascript" src="js/subscription.js"></script>
+<script type="text/javascript" src="js/const.js"></script>
+<script type="text/javascript" src="js/core/core.js"></script>
+
 
 </body>
 
