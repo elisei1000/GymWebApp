@@ -175,8 +175,19 @@ public class CoachController {
 
     @PostMapping(value = "/coach/{username}/image")
     public Response addImage(@PathVariable String username, @RequestParam("file") MultipartFile file) {
+        Coach coach = this.userService.getCoach(username);
 
         List<String> errors = new ArrayList<>();
+
+        if(username.contains("/")){
+            errors.add("Cannot have special characters!");
+            return new Response(Status.STATUS_FAILED, errors);
+        }
+
+        if (coach == null) {
+            errors.add("Given coach doesn't exist!");
+            return new Response(Status.STATUS_FAILED, errors);
+        }
 
         String pathName =
                 String.format("./src/main/resources/static/uploaded/coach%s.jpg", username);
