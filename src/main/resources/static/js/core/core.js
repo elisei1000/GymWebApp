@@ -60,21 +60,21 @@ function verifyRights(data, onsuccess, onnotlogged, onnotpermission){
         onsuccess(data.data);
 }
 
-function callServer(api, method, data, onsuccess, onnotloggedin, onpermissiondenied){
+function callServer(api, method, data, onsuccess, onnotloggedin, onpermissiondenied,
+                    contentType="application/json; charset=utf-8"){
     if(data === undefined) data = {};
     $.ajax({
         url : api,
         method : method,
         data : method.toUpperCase() === HTTP_METHODS.GET?data:JSON.stringify(data),
         dataType: "text",
-        contentType: "application/json; charset=utf-8",
+        contentType: contentType,
         error: function(jqXHR, textStatus, errorThrown) {
             showError("Cannot communicate with server!",  errorThrown)
         },
         success: function(data) { verifyRights(data, onsuccess, onnotloggedin, onpermissiondenied)}
     });
 }
-
 
 function validateObject(object, keys){
     // keys is a string array with the keys of the object which must be in it

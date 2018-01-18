@@ -1,9 +1,11 @@
 var coaches = [];
 
-var coachesDiv;
+var coachesDiv, plusDiv;
 var coachDialog;
-var showDialog, showLoader, closeLoader;
+var showDialog, showLoader, closeLoader, closeDialog;
 var user;
+
+var imageChanged = false;
 
 
 var POPUP_STATE = {
@@ -294,6 +296,11 @@ function loadFeedbacks(data){
     return true;
 }
 
+
+function getImage(id){
+    return 'url(coach/{0}/image?version={1})'.format(id, coaches[id].version);
+}
+
 function showCoachPopup(coach){
     if(popupState === POPUP_STATE.ADD){
         coach = new Object();
@@ -302,6 +309,8 @@ function showCoachPopup(coach){
         coach.birthDay = new Date();
         coach.name = "";
     }
+
+    imageChanged = false;
     var coachId = coach.username;
     coachDialog.content.coachId.text(coachId);
     coachDialog.content.username.val(coach.username);
@@ -309,9 +318,14 @@ function showCoachPopup(coach){
     coachDialog.content.title.val(coach.name);
     coachDialog.content.password.val(coach.password);
     coachDialog.content.birthday.val(formatDate(coach.birthDay));
-    var url = $(this).parent().parent().children('.coachImage').css('background-image');
-    coachDialog.content.image.css('backgroundImage', url);
 
+    var url;
+    if(popupState === POPUP_STATE.ADD)
+        url = "url({0})".format(URL_IMAGE_COACH_DEFAULT);
+    else
+        url = getImage(coachId);
+    coachDialog.content.image.css('backgroundImage', url);
+    coachDialog.content.image.fileInput.val("");
     if(popupState === POPUP_STATE.ADD){
         coachDialog.content.addButton.show();
         coachDialog.content.updateButton.hide();
@@ -360,54 +374,99 @@ function coachToString(coach){
     return r;
 }
 
-function showCoaches(){
+function updateCoach(username){
     var coachThumb, content, divImage;
-    coachesDiv.empty();
-    for(var username in coaches){
-        var coach = coaches[username];
-
-        coachThumb = $("<div></div>");
-        coachThumb.data("coachId", username);
-        coachThumb.addClass("coach_thumbnail col-xs-12 col-sm-4 col-md-3 col-lg-2 wow animated fadeInUp ");
-
-        content = $("<div></div>");
-        content.addClass("content");
-
-        divImage = $('<div></div>');
-        divImage.addClass('coachImage')
-            .css('background-image', 'url(images/box-{0}.jpg)'.format(Math.floor(Math.random() * 3) + 1));
-        content.append(divImage);
-
-        var divInfo = $("<div> </div>");
-        divInfo.addClass("info")
-            .append(
-                $("<div></div>").addClass("title").html(coach.name).click(function(){
-                    var coachDiv = $(this).parent().parent().parent();
-                    var coachId = coachDiv.data("coachId");
-                    popupState = POPUP_STATE.EDIT;
-                    showCoachPopup(coaches[coachId]);
-                })
-            )
-            .append(
-                $("<div></div>").addClass("description").html("<p>{0}</p>".format(coachToString(coach)))
-            )
-            .append(
-                $("<div>Edit coach</div>").addClass("title edit-button").click(function(){
-                    var coachDiv = $(this).parent().parent().parent();
-                    var coachId = coachDiv.data("coachId");
-                    popupState = POPUP_STATE.EDIT;
-                    showCoachPopup(coaches[coachId]);
-                })
-            );
-        content.append(divInfo);
-
-        coachThumb.append(content);
-        coachesDiv.append(coachThumb);
-    }
-
-    coachThumb = $('<div ></div>');
-    coachThumb.data("coachId", "none");
+    var coach = coaches[username];
+    coachThumb = coach.ui;
+    coachThumb.empty();
+    coachThumb.data("coachId", username);
     coachThumb.addClass("coach_thumbnail col-xs-12 col-sm-4 col-md-3 col-lg-2 wow animated fadeInUp ");
+
+    content = $("<div></div>");
+    content.addClass("content");
+
+    divImage = $('<div></div>');
+    divImage.addClass('coachImage')
+        .css('background-image', getImage(username));
+    content.append(divImage);
+
+    var divInfo = $("<div> </div>");
+    divInfo.addClass("info")
+        .append(
+            $("<div></div>").addClass("title").html(coach.name).click(function(){
+                var coachDiv = $(this).parent().parent().parent();
+                var coachId = coachDiv.data("coachId");
+                popupState = POPUP_STATE.EDIT;
+                showCoachPopup(coaches[coachId]);
+            })
+        )
+        .append(
+            $("<div></div>").addClass("description").html("<p>{0}</p>".format(coachToString(coach)))
+        )
+        .append(
+            $("<div class='floatingButton'><i class='glyphicon glyphicon-edit'></i></div>")
+                .click(function(){
+
+                    var coachDiv = $(this).parent().parent().parent();
+                    var coachId = coachDiv.data("coachId");
+                    popupState = POPUP_STATE.EDIT;
+                    showCoachPopup(coaches[coachId]);
+                })
+        );
+    content.append(divInfo);
+    coachThumb.append(content);
+}
+
+function addCoach(username){
+    var coachThumb, content, divImage;
+    var coach = coaches[username];
+    coachThumb = $("<div></div>");
+    coachThumb.data("coachId", username);
+    coachThumb.addClass("coach_thumbnail col-xs-12 col-sm-4 col-md-3 col-lg-2 wow animated fadeInUp ");
+
+    content = $("<div></div>");
+    content.addClass("content");
+
+    divImage = $('<div></div>');
+    divImage.addClass('coachImage')
+        .css('background-image', getImage(username));
+    content.append(divImage);
+
+    var divInfo = $("<div> </div>");
+    divInfo.addClass("info")
+        .append(
+            $("<div></div>").addClass("title").html(coach.name).click(function(){
+                var coachDiv = $(this).parent().parent().parent();
+                var coachId = coachDiv.data("coachId");
+                popupState = POPUP_STATE.EDIT;
+                showCoachPopup(coaches[coachId]);
+            })
+        )
+        .append(
+            $("<div></div>").addClass("description").html("<p>{0}</p>".format(coachToString(coach)))
+        )
+        .append(
+            $("<div class='floatingButton'><i class='glyphicon glyphicon-edit'></i></div>")
+                .click(function(){
+
+                    var coachDiv = $(this).parent().parent().parent();
+                    var coachId = coachDiv.data("coachId");
+                    popupState = POPUP_STATE.EDIT;
+                    showCoachPopup(coaches[coachId]);
+                })
+        );
+    content.append(divInfo);
+    coachThumb.append(content);
+    coachThumb.insertBefore(plusDiv);
+    coach.ui = coachThumb;
+}
+
+
+function createPlus(){
+    var content, divImage;
+    plusDiv = $('<div ></div>');
+    plusDiv.data("coachId", "none");
+    plusDiv.addClass("coach_thumbnail col-xs-12 col-sm-4 col-md-3 col-lg-2 wow animated fadeInUp ");
     content = $('<div></div>');
     content.addClass("content");
     divImage = $('<button></button>');
@@ -418,8 +477,16 @@ function showCoaches(){
         showCoachPopup();
     });
     content.append(divImage);
-    coachThumb.append(content);
-    coachesDiv.append(coachThumb);
+    plusDiv.append(content);
+    coachesDiv.append(plusDiv);
+}
+
+function showCoaches(){
+    coachesDiv.empty();
+    createPlus();
+    for(var username in coaches){
+        addCoach(username);
+    }
 }
 
 
@@ -441,6 +508,7 @@ function loadCoaches(data) {
     coaches = {};
     for(index in data.coaches){
         coach = data.coaches[index];
+        coach.version = 1;
         coaches[coach.username] = coach;
     }
     showCoaches();
@@ -498,8 +566,31 @@ function getCoach(){
     return coach;
 }
 
+
+function sendImage(username, onsucces){
+    var formData = new FormData();
+    formData.append("file", coachDialog.content.image.fileInput.get(0).files[0]);
+    $.ajax(
+        {
+            url: APIS.API_GET_COACH_IMAGE.format(username),
+            method:HTTP_METHODS.POST,
+            cache:false,
+            contentType:false,
+            processData:false,
+            type:'POST',
+            data:formData,
+            error: function(jqXHR, textStatus, errorThrown) {
+                showError("Cannot communicate with server!",  errorThrown)
+            },
+            success: function(data) {
+                verifyRights(data, onsucces)}
+        }
+    )
+}
+
+
 function initDialog(){
-    var closeDialog = function(){
+    closeDialog = function(){
         coachDialog.real.slideUp("fast");
         coachDialog.fadeOut(function(){
             $(document.body).css('overflow', 'auto');
@@ -524,11 +615,43 @@ function initDialog(){
     coachDialog.click(closeDialog);
     coachDialog.find(".close-button").click(closeDialog);
     coachDialog.real = coachDialog.children(".popup-dialog");
-    coachDialog.real.click(function(){event.preventDefault();return false;})
+    coachDialog.real.click(function(event){event.preventDefault();return false;})
     coachDialog.loading = coachDialog.real.children(".loading");
     coachDialog.content = coachDialog.real.children(".popup-content");
     coachDialog.content.coachId = coachDialog.content.find('.coachId');
     coachDialog.content.image = coachDialog.content.children(".bannerImage");
+    coachDialog.content.image.upload = coachDialog.content.image.children(".upload");
+    coachDialog.content.image.fileInput = $("#uploadInput");
+    coachDialog.content.image.fileInput.on("change", function(){
+       var reader = new FileReader();
+       var file = this.files[0];
+
+       reader.onloadend = function(){
+            coachDialog.content.image.css(
+                "backgroundImage",
+                "url({0})".format(reader.result)
+            );
+            imageChanged = true;
+       };
+
+       reader.onerror = function(error){
+           showError("Encountered an error while trying to load your image!",
+           error);
+       };
+
+
+       if(file){
+           reader.readAsDataURL(file);
+       }
+       else{
+
+       }
+
+    });
+    coachDialog.content.image.upload.click(function(){
+        coachDialog.content.image.fileInput.trigger("click");
+    });
+
     coachDialog.content.closeButton = coachDialog.content.children(".close-button");
     coachDialog.content.title = coachDialog.content.find(".title");
     coachDialog.content.username = coachDialog.content.find(".username input");
@@ -542,10 +665,34 @@ function initDialog(){
         var coach = getCoach();
         if(coach === undefined) return;
         callServer(APIS.API_GET_COACHES, HTTP_METHODS.POST, coach, function(data){
+            if(!("coach" in data)){
+                showError("Invalid response received from server!",
+                "Invalid response received from server\n{0}".format(JSON.stringify(data)));
+                return ;
+            }
 
-            coaches[coach.username] = coach;
-            showCoaches();
-            closeDialog();
+            if(!validateObject(data.coach, OBJECT_KEYS.COACH)){
+                showError("Invalid response received from server!",
+                "Invalid response received from server\n{0}".format(JSON.stringify(data)));
+                return;
+            }
+
+            data.coach.version = 1;
+            coaches[data.coach.username] = coach;
+
+            if(imageChanged){
+                sendImage(data.coach.username,
+                function(){
+                    addCoach(data.coach.username);
+                    closeDialog();
+                    closeLoader();
+                });
+            }
+            else{
+                addCoach(data.coach.username);
+                closeLoader();
+                closeDialog();
+            }
         })
     });
     coachDialog.content.updateButton = coachDialog.content.find(".button.update");
@@ -554,17 +701,33 @@ function initDialog(){
         var coach = getCoach();
         if(coach === undefined) return;
         callServer(APIS.API_COACH.format(coachId), HTTP_METHODS.PUT, coach, function(data){
+            coach.ui = coaches[coachId].ui;
+            coach.version = coaches[coachId].version;
             coaches[coachId] = coach;
-            showCoaches();
-            closeDialog();
+            if(imageChanged){
+                sendImage(coachId, function(){
+                    closeDialog();
+                    closeLoader();
+                    coach.version +=1;
+                    updateCoach(coachId);
+                })
+            }
+            else{
+                closeLoader();
+                closeDialog();
+                updateCoach(coachId);
+            }
+
         });
     });
     coachDialog.content.deleteButton = coachDialog.content.find(".button.delete");
     coachDialog.content.deleteButton.click(function(){
         var coachId = coachDialog.content.coachId.text();
         callServer(APIS.API_COACH.format(coachId), HTTP_METHODS.DELETE, {},  function(data){
-            delete coaches[coachId];
-            showCoaches();
+            coaches[coachId].ui.fadeOut(500, function(){
+                $(this).remove();
+                delete coaches[coachId];
+            });
             closeDialog();
         })
     });

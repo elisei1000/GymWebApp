@@ -95,7 +95,9 @@ var APIS = {
     API_COACH : "/coach/{0}",
     API_COACH_FEEDBACK: "coach/{0}/feedback",
     API_POST_REGISTER : "/user-register",
-    API_GET_USER : '/user/{0}'
+    API_GET_USER : '/user/{0}',
+    API_GET_COURSE_IMAGE: 'course/{0}/image',
+    API_GET_COACH_IMAGE: 'coach/{0}/image',
 };
 
 
@@ -140,3 +142,7 @@ var OBJECT_KEYS = {
         "username", "birthDay", "email", "name", "password"
     ],
 };
+
+var URL_IMAGE_COURSE_DEFAULT = "uploaded/courseDefault.jpg";
+var URL_IMAGE_COACH_DEFAULT = "uploaded/coachDefault.jpg";
+

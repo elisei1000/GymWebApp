@@ -3,10 +3,11 @@
  */
 var courses = {};
 
-var coursesDiv;
+var coursesDiv, plusDiv;
 var courseDialog;
-var showDialog, showLoader, closeLoader;
+var showDialog, showLoader, closeLoader, closeDialog;
 var user;
+var imageChanged = false;
 
 var maxId = 0;
 var POPUP_STATE = {
@@ -98,11 +99,17 @@ function fillCoaches(course, onSuccess){
             )
         }
         if(course)
+        {
             courseDialog.content.teacher.username.val(course.teacher);
+        }
         if(onSuccess)
             onSuccess()
     });
 
+}
+
+function getImage(id){
+    return 'url(course/{0}/image?version={1})'.format(id, courses[id].version);
 }
 
 function showCoursePopup(course){
@@ -120,6 +127,7 @@ function showCoursePopup(course){
         course.maxPlaces = 30;
         course.teacher = null;
     }
+    imageChanged = false;
     var courseId = course.id;
     courseDialog.content.courseId.text(courseId);
     courseDialog.content.title.val(course.title);
@@ -132,8 +140,13 @@ function showCoursePopup(course){
     courseDialog.content.teacher.children(".username").val(course.teacher != null?course.teacher:"");
     courseDialog.content.description.val(course.description);
     courseDialog.content.difficulty.select.val(course.difficultyLevel);
-    var url = $(this).parent().parent().children('.courseImage').css('background-image');
+    var url;
+    if(popupState === POPUP_STATE.ADD)
+        url = "url({0})".format(URL_IMAGE_COURSE_DEFAULT);
+    else
+        url = getImage(courseId);
     courseDialog.content.image.css('backgroundImage', url);
+    courseDialog.content.image.fileInput.val("");
     if(popupState === POPUP_STATE.ADD){
         courseDialog.content.addButton.show();
         courseDialog.content.updateButton.hide();
@@ -164,63 +177,114 @@ function showCoursePopup(course){
 
 }
 
-function showCourses(){
+
+function updateCourse(id){
     var courseThumb, content, divImage;
-    coursesDiv.empty();
-    for(var id in courses){
-        var course = courses[id];
-
-        courseThumb = $('<div ></div>');
-        courseThumb.data("courseId", course.id);
-        courseThumb.addClass("course_thumbnail col-xs-12 col-sm-4 col-md-3 col-lg-2 wow animated fadeInUp ");
-
-        if(course.id > maxId){
-            maxId = course.id
-        }
-
-        content = $('<div></div>');
-        content.addClass("content");
-
-        divImage = $('<div></div>');
-        divImage.addClass('courseImage')
-            .css('background-image', 'url(images/box-{0}.jpg)'.format(Math.floor(Math.random() * 3) + 1));
-        content.append(divImage);
-
-        var divDifficulty = $("<div></div>");
-        divDifficulty.html("Difficulty: <span>{0}</span>".format(DIFFICULTY_LEVEL[course.difficultyLevel]))
-                .addClass("difficulty");
-        content.append(divDifficulty);
-
-        var divInfo = $("<div></div>");
-        divInfo.addClass("info")
-            .append(
-                $("<div></div>").addClass("title").html(course.title).click(function(){
-                        var courseDiv = $(this).parent().parent().parent();
-                        var courseId = courseDiv.data("courseId");
-
-                        callServer(APIS.API_COURSE.format(courseId), HTTP_METHODS.GET,{}, loadCourse);
-                    }
-                )
-            )
-            .append(
-                $("<div></div>").addClass("description").html("<p>{0}</p>".format(course.description))
-            ).append(
-                $("<div>Edit course</div>").addClass("title edit-button").click(function(){
-                          var courseDiv = $(this).parent().parent().parent();
-                          var courseId = courseDiv.data("courseId");
-                          callServer(APIS.API_COURSE.format(courseId), HTTP_METHODS.GET,{}, loadCourse);
-                })
-            );
-        content.append(divInfo);
-
-        courseThumb.append(content);
-        coursesDiv.append(courseThumb);
-    }
-    //empty one for add
-
-    courseThumb = $('<div ></div>');
-    courseThumb.data("courseId", maxId + 1);
+    var course = courses[id];
+    courseThumb = course.ui;
+    courseThumb.empty();
+    courseThumb.data("courseId", course.id);
     courseThumb.addClass("course_thumbnail col-xs-12 col-sm-4 col-md-3 col-lg-2 wow animated fadeInUp ");
+
+    if(course.id > maxId){
+        maxId = course.id
+    }
+
+    content = $('<div></div>');
+    content.addClass("content");
+
+    divImage = $('<div></div>');
+    divImage.addClass('courseImage')
+        .css('background-image', getImage(id));
+    content.append(divImage);
+
+    var divDifficulty = $("<div></div>");
+    divDifficulty.html("Difficulty: <span>{0}</span>".format(DIFFICULTY_LEVEL[course.difficultyLevel]))
+        .addClass("difficulty");
+    content.append(divDifficulty);
+
+    var divInfo = $("<div></div>");
+    divInfo.addClass("info")
+        .append(
+            $("<div></div>").addClass("title").html(course.title).click(function(){
+                    var courseDiv = $(this).parent().parent().parent();
+                    var courseId = courseDiv.data("courseId");
+
+                    callServer(APIS.API_COURSE.format(courseId), HTTP_METHODS.GET,{}, loadCourse);
+                }
+            )
+        )
+        .append(
+            $("<div></div>").addClass("description").html("<p>{0}</p>".format(course.description))
+        ).append(
+        $("<div class='floatingButton'><i class='glyphicon glyphicon-edit'></i></div>")
+            .click(function(){
+                var courseDiv = $(this).parent().parent().parent();
+                var courseId = courseDiv.data("courseId");
+                callServer(APIS.API_COURSE.format(courseId), HTTP_METHODS.GET,{}, loadCourse);
+            })
+    );
+    content.append(divInfo);
+    courseThumb.append(content);
+}
+
+function addCourse(id){
+    var courseThumb, content, divImage;
+    var course = courses[id];
+    courseThumb = $('<div ></div>');
+    courseThumb.data("courseId", course.id);
+    courseThumb.addClass("course_thumbnail col-xs-12 col-sm-4 col-md-3 col-lg-2 wow animated fadeInUp ");
+
+    if(course.id > maxId){
+        maxId = course.id
+    }
+
+    content = $('<div></div>');
+    content.addClass("content");
+
+    divImage = $('<div></div>');
+    divImage.addClass('courseImage')
+        .css('background-image', getImage(id));
+    content.append(divImage);
+
+    var divDifficulty = $("<div></div>");
+    divDifficulty.html("Difficulty: <span>{0}</span>".format(DIFFICULTY_LEVEL[course.difficultyLevel]))
+        .addClass("difficulty");
+    content.append(divDifficulty);
+
+    var divInfo = $("<div></div>");
+    divInfo.addClass("info")
+        .append(
+            $("<div></div>").addClass("title").html(course.title).click(function(){
+                    var courseDiv = $(this).parent().parent().parent();
+                    var courseId = courseDiv.data("courseId");
+
+                    callServer(APIS.API_COURSE.format(courseId), HTTP_METHODS.GET,{}, loadCourse);
+                }
+            )
+        )
+        .append(
+            $("<div></div>").addClass("description").html("<p>{0}</p>".format(course.description))
+        ).append(
+        $("<div class='floatingButton'><i class='glyphicon glyphicon-edit'></i></div>")
+            .click(function(){
+                var courseDiv = $(this).parent().parent().parent();
+                var courseId = courseDiv.data("courseId");
+                callServer(APIS.API_COURSE.format(courseId), HTTP_METHODS.GET,{}, loadCourse);
+            })
+    );
+    content.append(divInfo);
+
+    courseThumb.append(content);
+    courseThumb.insertBefore(plusDiv);
+    course.ui = courseThumb;
+}
+
+function createPlus(){
+    var content, divImage;
+    plusDiv = $('<div ></div>');
+    plusDiv.data("courseId", maxId + 1);
+    plusDiv.addClass("course_thumbnail col-xs-12 col-sm-4 col-md-3 col-lg-2 wow animated fadeInUp ");
     content = $('<div></div>');
     content.addClass("content");
     divImage = $('<button></button>');
@@ -231,8 +295,16 @@ function showCourses(){
         showCoursePopup();
     });
     content.append(divImage);
-    courseThumb.append(content);
-    coursesDiv.append(courseThumb);
+    plusDiv.append(content);
+    coursesDiv.append(plusDiv);
+}
+
+function showCourses(){
+    coursesDiv.empty();
+    createPlus();
+    for(var id in courses){
+        addCourse(id);
+    }
 }
 
 function loadCourse(data){
@@ -314,6 +386,7 @@ function loadCourses(data){
     courses = {};
     for(index in data.courses){
         course = data.courses[index];
+        course.version = 1;
         courses[course.id] = course;
     }
     showCourses();
@@ -387,8 +460,29 @@ function getCourse(){
     return course;
 }
 
+function sendImage(courseId, onsucces){
+    var formData = new FormData();
+    formData.append("file", courseDialog.content.image.fileInput.get(0).files[0]);
+    $.ajax(
+        {
+            url: APIS.API_GET_COURSE_IMAGE.format(courseId),
+            method:HTTP_METHODS.POST,
+            cache:false,
+            contentType:false,
+            processData:false,
+            type:'POST',
+            data:formData,
+            error: function(jqXHR, textStatus, errorThrown) {
+                showError("Cannot communicate with server!",  errorThrown)
+            },
+            success: function(data) {
+                verifyRights(data, onsucces)}
+        }
+    )
+}
+
 function initDialog(){
-    var closeDialog = function(){
+    closeDialog = function(){
         courseDialog.real.slideUp("fast");
         courseDialog.fadeOut(function(){
             $(document.body).css('overflow', 'auto');
@@ -413,11 +507,39 @@ function initDialog(){
     courseDialog.click(closeDialog);
     courseDialog.find(".close-button").click(closeDialog);
     courseDialog.real = courseDialog.children(".popup-dialog");
-    courseDialog.real.click(function(){event.preventDefault();return false;})
+    courseDialog.real.click(function(event){event.preventDefault();return false;})
     courseDialog.loading = courseDialog.real.children(".loading");
     courseDialog.content = courseDialog.real.children(".popup-content");
     courseDialog.content.courseId = courseDialog.content.find('.courseId');
     courseDialog.content.image = courseDialog.content.children(".bannerImage");
+    courseDialog.content.image.upload = courseDialog.content.image.children(".upload");
+    courseDialog.content.image.fileInput = $("#uploadInput");
+    courseDialog.content.image.fileInput.on("change", function(){
+        var reader = new FileReader();
+        var file = this.files[0];
+
+        reader.onloadend = function(){
+            courseDialog.content.image.css("backgroundImage", "url({0})".format(reader.result));
+            imageChanged = true;
+        };
+
+        reader.onerror = function(error){
+            showError("Encountered an error while trying to load your image!", error);
+        };
+
+
+        if(file){
+            reader.readAsDataURL(file);
+        }
+        else{
+
+        }
+
+    });
+    courseDialog.content.image.upload.click(function(){
+        courseDialog.content.image.fileInput.trigger("click");
+    });
+
     courseDialog.content.closeButton = courseDialog.content.children(".close-button");
     courseDialog.content.title = courseDialog.content.find(".title");
     courseDialog.content.children(".description").val(courseDialog.content.children(".description").val());
@@ -447,9 +569,23 @@ function initDialog(){
                 return;
             }
 
+            data.course.version = 1;
             courses[data.course.id] = data.course;
-            showCourses();
-            closeDialog();
+
+            //sending image
+            if(imageChanged) {
+                sendImage(data.course.id,
+                    function () {
+                        addCourse(data.course.id);
+                        closeDialog();
+                        closeLoader();
+                    });
+            }
+            else{
+                addCourse(data.course.id);
+                closeLoader();
+                closeDialog();
+            }
         })
     });
     courseDialog.content.updateButton = courseDialog.content.find(".button.update");
@@ -459,17 +595,32 @@ function initDialog(){
         if(course === undefined) return;
         course.id = courseId;
         callServer(APIS.API_COURSE.format(courseId), HTTP_METHODS.PUT, course, function(data){
+            course.ui = courses[courseId].ui;
+            course.version = courses[courseId].version;
             courses[courseId] = course;
-            showCourses();
-            closeDialog();
+            if(imageChanged) {
+                sendImage(courseId, function(){
+                    closeDialog();
+                    closeLoader();
+                    coach.version += 1;
+                    updateCourse(courseId);
+                });
+            }
+            else{
+                closeLoader();
+                closeDialog();
+                updateCourse(courseId);
+            }
         });
     });
     courseDialog.content.deleteButton = courseDialog.content.find(".button.delete");
     courseDialog.content.deleteButton.click(function(){
         var courseId = courseDialog.content.courseId.text();
         callServer(APIS.API_COURSE.format(courseId), HTTP_METHODS.DELETE, {},  function(data){
-            delete courses[courseId];
-            showCourses();
+            courses[courseId].ui.fadeOut(500, function(){
+                $(this).remove()
+                delete courses[courseId];
+            });
             closeDialog();
         })
     });

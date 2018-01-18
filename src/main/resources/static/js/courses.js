@@ -126,7 +126,7 @@ function showCourseInPopup(course){
         );
     }
 
-    if(course.teacher !== undefined && course.teacher != null)
+    if(course.teacher !== undefined && course.teacher !== null)
     {
         courseDialog.content.teacher.show();
         courseDialog.content.teacher.username.text(course.teacher);
@@ -138,7 +138,7 @@ function showCourseInPopup(course){
     courseDialog.content.difficulty.text(
         "Difficulty: {0}".format(DIFFICULTY_LEVEL[course.difficultyLevel])
     );
-    var url = $(this).parent().parent().children('.courseImage').css('background-image');
+    var url = getImage(courseId);
     courseDialog.content.image.css('backgroundImage', url);
     showLoader();
     $(function(){
@@ -150,6 +150,10 @@ function showCourseInPopup(course){
                 closeLoader();
             });
     })
+}
+
+function getImage(id){
+    return 'url(course/{0}/image)'.format(id);
 }
 
 function showCourses(){
@@ -165,7 +169,7 @@ function showCourses(){
 
         var divImage = $('<div></div>');
         divImage.addClass('courseImage')
-            .css('background-image', 'url(images/box-{0}.jpg)'.format(Math.floor(Math.random() * 3) + 1));
+            .css('background-image', getImage(id));
         content.append(divImage);
 
         var divDifficulty = $("<div></div>");
@@ -186,6 +190,14 @@ function showCourses(){
             )
             .append(
                 $("<div></div>").addClass("description").html("<p>{0}</p>".format(course.description))
+            )
+            .append(
+                $("<div class='floatingButton'><i class='glyphicon glyphicon-option-horizontal'></i></div>")
+                    .click(function(){
+                        var courseDiv = $(this).parent().parent().parent();
+                        var courseId = courseDiv.data("courseId");
+                        callServer(APIS.API_COURSE.format(courseId), HTTP_METHODS.GET,{}, loadCourse);
+                    })
             );
         content.append(divInfo);
 
@@ -231,7 +243,7 @@ function loadFeedbacks(data){
     var feedback, index, feedbackList;
     if(!("feedbacks" in data)){
         showError("Invalid data received from server",
-            "Feedbacks is not in JSON: {0}".format(data))
+            "Feedbacks is not in JSON: {0}".format(data));
         return false;
     }
     feedbackList = [];
@@ -319,7 +331,7 @@ function initDialog(){
     courseDialog.click(closeDialog);
     courseDialog.find(".close-button").click(closeDialog);
     courseDialog.real = courseDialog.children(".popup-dialog");
-    courseDialog.real.click(function(){event.preventDefault();return false;})
+    courseDialog.real.click(function(event){event.preventDefault();return false;})
     courseDialog.loading = courseDialog.real.children(".loading");
     courseDialog.content = courseDialog.real.children(".popup-content");
     courseDialog.content.courseId = courseDialog.content.find('.courseId');

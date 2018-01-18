@@ -1,16 +1,6 @@
-/**
- * Created by Ramo on 24.11.2017.
- */
+var coaches = {};
 
-var coaches=[];
-
-var feedbacks=[];
-
-var my_feedback={};
-
-var user = null;
-
-
+var coachesDiv;
 var coachDialog;
 var showDialog, showLoader, closeLoader;
 var canHaveFeedback = false;
@@ -19,7 +9,8 @@ var user, myFeedback, feedbackState;
 var FEEDBACK_STATE = {
     EDIT:"EDIT",
     DONE:"DONE"
-};
+}
+
 
 
 function showMyFeedback(){
@@ -58,6 +49,7 @@ function showMyFeedback(){
         }
     }
 }
+
 
 function showFeedbacks(feedbacks){
     var feedback;
@@ -103,27 +95,121 @@ function showFeedbacks(feedbacks){
     }
 }
 
-function loadCoach(data){
-    showCoachInPopup(data);
+
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
 }
 
-function showCoachInPopup(coach){
-    var coachId = $(coach).attr('id');
-    coachDialog.content.title.text(coachId);
+function getImage(id){
+    return 'url(coach/{0}/image)'.format(id);
+}
 
 
+function coachToString(coach){
+    var array = ["username", "email", "birthDay"];
+    var r = "";
+    for(var index in array){
+        var key = array[index];
+        r += "<b>{0}</b> : {1}<br>".format(key, key !== 'birthDay' ? coach[key] : formatDate(coach[key]));
+    }
+    return r;
+}
+
+
+
+function showCoachPopup(coach){
+    var coachId = coach.username;
+    coachDialog.content.coachId.text(coachId);
+    coachDialog.content.username.text(coach.username);
+    coachDialog.content.email.text(coach.email);
+    coachDialog.content.title.text(coach.name);
+    coachDialog.content.birthday.text(formatDate(coach.birthDay));
+
+    var url;
+    url = getImage(coachId);
+    coachDialog.content.image.css('backgroundImage', url);
     showLoader();
     $(function(){
         callServer(APIS.API_COACH_FEEDBACK.format(coachId), HTTP_METHODS.GET, {},
             //onsuccess
             function(data){
-            console.log('here');
-            console.log(data);
                 if(!loadFeedbacks(data)) return;
                 showDialog();
                 closeLoader();
             });
     })
+
+
+}
+
+function showCoaches(){
+    for(var username in coaches){
+        var coach = coaches[username];
+
+        var coachThumb ;
+        coachThumb = $("<div></div>");
+        coachThumb.data("coachId", username);
+        coachThumb.addClass("coach_thumbnail col-xs-12 col-sm-4 col-md-3 col-lg-2 wow animated fadeInUp ");
+
+        content = $("<div></div>");
+        content.addClass("content");
+
+        divImage = $('<div></div>');
+        divImage.addClass('coachImage')
+            .css('background-image', getImage(username));
+        content.append(divImage);
+
+        var divInfo = $("<div> </div>");
+        divInfo.addClass("info")
+            .append(
+                $("<div></div>").addClass("title").html(coach.name).click(function(){
+                    var coachDiv = $(this).parent().parent().parent();
+                    var coachId = coachDiv.data("coachId");
+                    showCoachPopup(coaches[coachId]);
+                })
+            )
+            .append(
+                $("<div></div>").addClass("description").html("<p>{0}</p>".format(coachToString(coach)))
+            )
+            .append(
+                $("<div class='floatingButton'><i class='glyphicon glyphicon-option-horizontal'></i></div>")
+                    .click(function(){
+
+                        var coachDiv = $(this).parent().parent().parent();
+                        var coachId = coachDiv.data("coachId");
+                        showCoachPopup(coaches[coachId]);
+                    })
+            );
+        content.append(divInfo);
+        coachThumb.append(content);
+        coachesDiv.append(coachThumb);
+    }
+}
+
+
+function loadUser(data){
+    if(!("user" in data)){
+        showError("Invalid data received from server!",
+            "User not in JSON: {0}".format(JSON.stringify(data)));
+        return false;
+    }
+    if(!validateObject(data.user, OBJECT_KEYS.CUSER)){
+        showError("Invalid data received from server!",
+            "User hasn't all necessary fields! {0}".format(
+                JSON.stringify(data.user)
+            ));
+        return false;
+    }
+    user = data.user;
+    return true;
 }
 
 
@@ -171,157 +257,30 @@ function loadFeedbacks(data){
 }
 
 
-
-
-function call_coaches_list(){
-    $.ajax({
-        type: "GET",
-        url: "/coach",
-        processData: false,
-        contentType: false,
-        cache: false,
-        timeout: 600000,
-        success: function (data) {
-            coaches = data.data['coaches'];
-            console.log(coaches);
-            render_coaches_list();
-            console.log('hei');
-
-
-
-        },
-        error: function (data) {
-            alert("Something went wrong.");
-        }
-    });
-}
-
-function call_feedbacks(el) {
-
-
-    var id = $(el).attr('id');
-
-    $.ajax({
-        type: "GET",
-        url: "/coach/" + id + "/feedback",
-        processData: false,
-        contentType: false,
-        cache: false,
-        timeout: 600000,
-        success: function (data) {
-            console.log(data, "data");
-            feedbacks = data.data['feedbacks'];
-            console.log(feedbacks);
-            render_feedbacks();
-        },
-        error: function (data) {
-            alert("Something went wrong.");
-        }
-    });
-
-}
-
-function add_feedback(){
-
-}
-
-function delete_frrdback(){
-
-}
-
-function update_feedback() {
-
-}
-
-function render_coaches_list() {
-    $("#coaches-list").html("");
-    for(var i=0; i<coaches.length; i++){
-        $("#coaches-list").append("<li >"+
-            "<div" +
-            " style=' border-width: 0.5px;" +
-            " border-bottom: 0.5px #999b9e solid; border-top: 0.5px #999b9e solid'>"
-            + "<div style='color: #FFFFFF; text-align: center; font-size: xx-large; margin-top: 25px'>"
-            +  coaches[i].name +"</div>"
-            + "<div style='color: #FFFFFF; text-align: center; font-size: x-large'>" + "Want an advice? Contact me: "
-            + coaches[i].email +"</div>"
-            + "<div style='color: #FFFFFF; text-align: center; font-size: large; margin-bottom: 25px'>" + "Liked me? Tell everyone "
-            + "<a id='" + coaches[i].username + "' href='#feedback-section' onclick='loadCoach(this)'>here.</a>"
-            + "</div>"
-            +"</div>"
-            +"</li>");
+function loadCoaches(data) {
+    var coach, index;
+    if(!("coaches" in data)){
+        console.log("the coaches field is missing from json");
+        showError("Invalid data received from server!", "Coache field not found in JSON!");
+        return;
     }
-}
 
-
-function render_feedbacks(){
-
-    $("#feedback-section").show();
-    $("#all-feedbacks").html("");
-    for(var i=0; i<feedbacks.length; i++){
-        if(user) {
-            if (feedbacks[i].author !== user.username) {
-                $("#all-feedbacks").append("<div style=' color: #FFFFFF; margin-top: 30px; margin-left: 30px;'>" +
-                    "<div>" + "Author: " + feedbacks[i].author + " Date: " + feedbacks[i].date + "</div>"
-                    + "<div> Summary:" + feedbacks[i].summary + "</div>"
-                    + "<div> Details:" + feedbacks[i].details + "</div>"
-                    + "<div> Stars" + feedbacks[i].starsCount + "</div>"
-                    + "<div>" + feedbacks[i].details + "</div>"
-                    + "</div>")
-            } else {
-                my_feedback = feedbacks[i];
-            }
-        } else {
-            $("#all-feedbacks").append("<div style=' color: #FFFFFF; margin-top: 30px; margin-left: 30px;'>" +
-                "<div>" + "Author: " + feedbacks[i].author + " Date: " + feedbacks[i].date + "</div>"
-                + "<div> Summary:" + feedbacks[i].summary + "</div>"
-                + "<div> Details:" + feedbacks[i].details + "</div>"
-                + "<div> Stars" + feedbacks[i].starsCount + "</div>"
-                + "<div>" + feedbacks[i].details + "</div>"
-                + "</div>")
+    for(var index in data.coaches){
+        coach = data.coaches[index];
+        if(!validateObject(coach, OBJECT_KEYS.COACH)){
+            showError("Invalid coaches received!", "Invalid coach: " + JSON.stringify(coach));
+            return;
         }
     }
-    if( Object.keys(my_feedback).length !== 0){
-        $("#particular-feedback").append("<div style=' color: #FFFFFF; margin-top: 30px; margin-left: 30px;'>" +
-            "<div>Your feedback:</div>"+
-            "<div>" + " Date: " + my_feedback.date + "</div>"
-                + "<div> Summary:"+ my_feedback.summary+"</div>"
-            + "<div> Details:"+ my_feedback.details+"</div>"
-                + "<div> Stars"+ my_feedback.starsCount +"</div>"
-            + "<div >" + my_feedback.details + "<a href='#'> Edit</a>" + "</div>"
-            + "</div>")
+    coaches = {};
+    for(index in data.coaches){
+        coach = data.coaches[index];
+        coach.version = 1;
+        coaches[coach.username] = coach;
     }
-
+    showCoaches();
 }
 
-$('.ratings_stars').hover(
-    // Handles the mouseover
-    function() {
-        $(this).prevAll().andSelf().addClass('ratings_over');
-        $(this).nextAll().removeClass('ratings_vote');
-    },
-    // Handles the mouseout
-    function() {
-        $(this).prevAll().andSelf().removeClass('ratings_over');
-        set_votes($(this).parent());
-    }
-);
-
-function loadUser(data){
-    if(!("user" in data)){
-        showError("Invalid data received from server!",
-            "User not in JSON: {0}".format(JSON.stringify(data)));
-        return false;
-    }
-    if(!validateObject(data.user, OBJECT_KEYS.CUSER)){
-        showError("Invalid data received from server!",
-            "User hasn't all necessary fields! {0}".format(
-                JSON.stringify(data.user)
-            ));
-        return false;
-    }
-    user = data.user;
-    return true;
-}
 
 function initDialog(){
     var closeDialog = function(){
@@ -344,18 +303,21 @@ function initDialog(){
     showLoader = function(){
         coachDialog.loading.show();
     };
-    coachDialog = $("#coachPopup");
+    coachDialog = $("#feedbackDialog");
     coachDialog.click(closeDialog);
     coachDialog.find(".close-button").click(closeDialog);
     coachDialog.real = coachDialog.children(".popup-dialog");
-    coachDialog.real.click(function(){event.preventDefault();return false;})
+    coachDialog.real.click(function(event){event.preventDefault();return false;})
     coachDialog.loading = coachDialog.real.children(".loading");
     coachDialog.content = coachDialog.real.children(".popup-content");
-    coachDialog.content.coachId = coachDialog.content.find('.title');
+    coachDialog.content.coachId = coachDialog.content.find('.coachId');
+    coachDialog.content.image = coachDialog.content.children(".bannerImage");
+    coachDialog.content.closeButton = coachDialog.content.children(".close-button");
     coachDialog.content.title = coachDialog.content.find(".title");
-
+    coachDialog.content.username = coachDialog.content.find(".username .value");
+    coachDialog.content.email = coachDialog.content.find(".email .value");
+    coachDialog.content.birthday = coachDialog.content.find(".birthday .value");
     if(canHaveFeedback){
-
         coachDialog.content.myFeedback = coachDialog.content.children(".myFeedback");
         coachDialog.content.myFeedback.end = coachDialog.content.myFeedback.children(".end");
         coachDialog.content.myFeedback.done = coachDialog.content.myFeedback.children(".done");
@@ -371,7 +333,7 @@ function initDialog(){
         });
         coachDialog.content.myFeedback.done.deleteButton = coachDialog.content.myFeedback.done.find(".button.delete");
         coachDialog.content.myFeedback.done.deleteButton.click(function(){
-            var coachId = coachDialog.content.title.text();
+            var coachId = coachDialog.content.coachId.text();
             callServer(APIS.API_COACH_FEEDBACK.format(coachId), HTTP_METHODS.DELETE, {}, function(){
                 feedbackState = FEEDBACK_STATE.EDIT;
                 coachDialog.content.myFeedback.edit.cancelButton.addClass("hide");
@@ -410,7 +372,7 @@ function initDialog(){
         coachDialog.content.myFeedback.edit.submitButton = coachDialog.content.myFeedback.edit.find(".button.submit");
         coachDialog.content.myFeedback.edit.submitButton.click(function(){
             var feedback = {};
-            var coachId = coachDialog.content.title.text();
+            var coachId = coachDialog.content.coachId.text();
             var date  = new Date().getTime();
             feedback.details = coachDialog.content.myFeedback.edit.details.val();
             feedback.summary = coachDialog.content.myFeedback.edit.summary.val();
@@ -450,7 +412,11 @@ function initDialog(){
 
 
 function init(){
-    call_coaches_list();
+    coachesDiv = $('#coachesGrid');
+    if(coachesDiv.length === 0){
+        showError("Invalid HTML!");
+        return ;
+    }
 
     callServer(APIS.API_HAS_PERMISSION, HTTP_METHODS.GET, {page: PAGE_CLIENT_COACHES},
         function() {
@@ -462,26 +428,25 @@ function init(){
                         return;
 
                     initDialog();
-                    call_coaches_list();
+                    callServer(APIS.API_GET_COACHES, HTTP_METHODS.GET, {}, loadCoaches);
                 })
         },
         function(){
             //onnotloggedin
             canHaveFeedback = false;
             initDialog();
-            call_coaches_list();
+            callServer(APIS.API_GET_COACHES, HTTP_METHODS.GET, {}, loadCoaches)
         },
         function(){
             //permission denied
             callServer(APIS.API_HAS_PERMISSION, HTTP_METHODS.GET, {page:PAGE_COACHES},function(){
                 canHaveFeedback = false;
                 initDialog();
-                call_coaches_list();
+                callServer(APIS.API_GET_COACHES, HTTP_METHODS.GET, {}, loadCoaches);
             })
         }
     );
 }
 
+
 $(init);
-
-

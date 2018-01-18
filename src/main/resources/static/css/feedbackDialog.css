@@ -28,7 +28,6 @@
 .coach_thumbnail >.content >.info,
 .course_thumbnail >.content >.info{
     position: absolute;
-    background-color: rgba(255, 140, 00, 0.8);
     top: calc(100% - (40px));
     width: 100%;
     transition: top 0.2s ease-in-out, background-color 0.2s ease-in-out;
@@ -36,14 +35,31 @@
 
 }
 
-
 .coach_thumbnail  >.content >.info:hover,
 .course_thumbnail >.content >.info:hover{
-    background-color: rgba(255, 140, 00, 1);
     position: absolute;
     top:  0;
     bottom:0;
 }
+
+.course_thumbnail >.content >.info{
+    background-color: rgba(255, 140, 00, 0.8);
+}
+
+.course_thumbnail >.content >.info:hover {
+    background-color: rgba(255, 140, 00, 1);
+}
+
+.coach_thumbnail >.content >.info{
+    background-color: rgba(51, 122, 183, 0.8);
+}
+
+.coach_thumbnail >.content >.info:hover {
+    background-color: rgba(51, 122, 183, 1);
+}
+
+
+
 
 .coach_thumbnail > .content >.info >.title,
 .course_thumbnail > .content >.info >.title{
@@ -55,6 +71,38 @@
     font-style: italic;
     cursor: pointer;
     font-family: 'Passion One', 'Arial', cursive;
+}
+
+.coach_thumbnail > .content >.info >.floatingButton,
+.course_thumbnail > .content >.info >.floatingButton{
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    font-size: 18px;
+    text-align: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    color: white;
+    line-height: 50px;
+    cursor: pointer;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.4);
+}
+
+
+.coach_thumbnail > .content >.info >.floatingButton{
+    background-color: rgb(51, 122, 183);
+}
+
+.course_thumbnail > .content >.info >.floatingButton{
+    background-color: rgb(255, 140, 00);
+}
+
+.coach_thumbnail > .content >.info >.floatingButton:active{
+    background-color: rgb(41, 112, 173);
+}
+.course_thumbnail > .content >.info >.floatingButton:active {
+    background-color: rgb(245, 130, 00);
 }
 
 .course_thumbnail .content .difficulty{
@@ -166,6 +214,29 @@
     overflow: hidden;
 }
 
+.popup-content .bannerImage .upload{
+    position:absolute;
+    bottom: 15px;
+    right: 15px;
+    max-width: 120px;
+    cursor:pointer;
+    text-align: center;
+    color:white;
+
+    background: rgb(150, 150, 150) !important;
+}
+
+.uploadInput{
+    position:absolute;
+    top: -100px;
+    text-align: right;
+    z-index:2;
+    -moz-opacity: 0;
+    filter: alpha(opacity:0);
+    opacity:0;
+}
+
+
 .popup .close-button{
     color: gray;
     font-size: 1.25em;
@@ -188,10 +259,17 @@
     line-height: 40px;
     padding: 5px 10px 5px 15px;
     text-transform: uppercase;
-    color:  rgba(255, 140, 00, 1);;
     font-style: italic;
     font-family: 'Passion One', 'Arial', cursive;
     float:left;
+}
+
+.courseDialog .title{
+    color:  rgba(255, 140, 00, 1);;
+}
+
+.coachDialog .title{
+    color: rgb(51, 122, 183);
 }
 
 #feedbackDialog .difficulty{
@@ -238,10 +316,8 @@
 }
 
 #feedbackDialog .button{
-    background: #FF8C00;
     box-sizing: border-box;
     border-radius: 7px;
-    border: 1px solid #FF8C00;
     color: #fff;
     font-weight: bold;
     text-transform: uppercase;
@@ -252,6 +328,16 @@
     margin-left: 15px;
     padding: 5px;
     display:inline-block;
+}
+
+.courseDialog .button{
+    background: #FF8C00;
+    border: 1px solid #FF8C00;
+}
+
+.coachDialog .button{
+    background: rgb(51, 122, 183);
+    border: 1px solid rgb(51, 122, 183);
 }
 
 #feedbackDialog .button.disabled{
@@ -349,9 +435,18 @@
 #feedbackDialog .stars .star{
     display:inline-block;
     font-size: 1.5em;
-    color:rgba(255, 140, 00, 1);;
     cursor:default;
 }
+
+.courseDialog .stars .star{
+    color:rgba(255, 140, 00, 1);;
+}
+
+.coachDialog .stars .star{
+    color: rgb(51, 122, 183);
+}
+
+
 
 #feedbackDialog .stars .star::after{
     content: "\2606";

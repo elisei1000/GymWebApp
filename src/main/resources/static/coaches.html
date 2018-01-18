@@ -19,320 +19,45 @@
     <link type="text/css" href="css/media.css?v=1.0" rel="stylesheet" />
     <link rel="stylesheet" href="css/switcher.css" type="text/css" />
     <link rel="stylesheet" href="css/switcher/style1.css" id="colors">
+    <link rel="stylesheet" href="css/feedbackDialog.css"/>
     <style>
-        .popup{
-            position: fixed;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            width:100%;
-            height:100%;
-            background-color: rgba(0, 0, 0, 0.4);
-            z-index: 1000000;
-            display: none;
-        }
-        .popup .popup-dialog{
-            position:relative;
-            top:0;
-            bottom:0;
-            left:0;
-            right:0;
-
-            height: 100%;
-            background-color: white;
-            margin: auto;
-            box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.4);
-        }
-
-        @keyframes rotateInfinity {
-            from {transform: rotate(-45deg);}
-            to{transform: rotate(315deg);}
-        }
-
-        .popup .loading{
-            position: absolute;
-            width: 100%;
-            z-index: 10200;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-
-        .popup .loader{
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            width: 50px;
-            height: 50px;
-            margin: auto;
-            border-radius: 25px;
-            border-right: 2px solid;
-            border-top: 2px solid;
-            animation: rotateInfinity 4s;
-            animation-iteration-count: infinite;
-            transform: rotate(-45deg);
+        #coaches{
+            padding-bottom: 30px;
         }
 
 
-        .popup .popup-content{
-            overflow-y: auto;
-            height: 100%;
-            position:relative;
-        }
-
-        .popup-content .bannerImage{
-            background-image: url("images/box-2.jpg");
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: 100%;
-            width: 100%;
-            padding: 20%;
-            box-sizing: border-box;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .popup .close-button{
-            color: gray;
-            font-size: 1.25em;
-            position: absolute;
-            right: 5px;
-            top: 5px;
-            font-family: Arial, "Times New Roman"   ;
-            line-height: 12px;
-            padding: 5px;
-            cursor:pointer;
-            z-index: 10000001;
-        }
-        .popup .close-button:hover{
-            color: rgba(50,50,50, 1);
-            font-weight: bold;
-        }
-
-        #coachPopup .title{
-            font-size:2em;
-            line-height: 40px;
-            padding: 5px 10px 5px 15px;
-            text-transform: uppercase;
-            color:  rgba(255, 140, 00, 1);;
-            font-style: italic;
-            font-family: 'Passion One', 'Arial', cursive;
-            float:left;
-        }
-
-        #coachPopup .difficulty{
-            line-height:40px;
-            float: right;
-            padding: 5px 10px 5px 10px;
-        }
-
-        #coachPopup .time,
-        #coachPopup .date,
-        #coachPopup .teacher,
-        #coachPopup .participants,
-        #coachPopup .description{
+        .popup-content> .username,
+        .popup-content > .email,
+        .popup-content > .birthday,
+        .popup-content > .password{
             clear: both;
             margin: 15px;
         }
 
-        #coachPopup .time .glyphicon,
-        #coachPopup .date .glyphicon,
-        #coachPopup .teacher .glyphicon,
-        #coachPopup .participants .glyphicon,
-        #coachPopup .description .glyphicon{
-            margin-right:5px;
-        }
-
-        #coachPopup .description{
-            text-align: justify;
-        }
-
-        #coachPopup .myFeedback{
-            padding: 5px;
-        }
-
-
-        #coachPopup .myFeedback .control{
-            float:right;
-            position:relative;
-            display:block;
-            /*width: 100%;*/
-        }
-
-        #coachPopup .button{
-            background: #FF8C00;
-            box-sizing: border-box;
-            border-radius: 7px;
-            border: 1px solid #FF8C00;
-            color: #fff;
-            font-weight: bold;
-            text-transform: uppercase;
-            font-size: 1em;
-            font-family: Montserrat;
+        input.title{
             outline: none;
-            cursor: pointer;
+            border:0;
+        }
+
+
+        #feedbackDialog .button.update,
+        #feedbackDialog .button.delete,
+        #feedbackDialog .button.add{
+            float: right;
             margin-left: 15px;
             padding: 5px;
-            display:inline-block;
         }
 
-        #coachPopup .button.disabled{
-            background: rgb(150, 150, 150);
-            cursor: default;
-
-        }
-
-
-        #coachPopup .myFeedback>.done,
-        #coachPopup .myFeedback>.edit{
-            position: relative;
-            padding: 15px;
-        }
-
-        #coachPopup .myFeedback .edit #detailsFeedbackInput,
-        #coachPopup .myFeedback .edit #summaryFeedbackInput{
-            width: 100%;
-            margin-bottom:10px;
-        }
-
-        #coachPopup .button.edit,
-        #coachPopup .button.delete,
-        #coachPopup .button.submit,
-        #coachPopup .button.cancel{
-            float: right;
-        }
-
-        #coachPopup .feedback{
-            padding: 15px;
-        }
-
-        #coachPopup .identity{
-            margin-bottom: 7px;
-        }
-
-        #coachPopup .feedback .image{
-            background-image: url("images/user.png");
-            background-position: center;
-            background-size:100% 100%;
-            width: 24px;
-            height:24px;
-            border-radius: 12px;
-            border: 1px solid gray;
-            padding: 0;
-            float: left;
-            margin-right: 7px;
-        }
-
-        #coachPopup hr{
-            margin: 7px auto;
-            width: 90%;
-
-        }
-
-        #coachPopup .titled{
-            margin: 12px auto;
-            height: 1px;
-            text-align: center;
-            border:0;
-            background-color: #eee;
-        }
-
-        #coachPopup .titled::after{
-            content: attr(title);
-            margin: auto;
-            line-height: 30px;
-            top: -15px;
-            position: relative;
-            font-size: 0.9em;
-            color: #989898;
-            text-shadow: 2px 2px 5px white;
-            background-color:white;
-            padding: 0 10px;
-        }
-
-        #coachPopup .feedback .username{
-            line-height: 24px;
-            font-size: 1.3em;
-        }
-
-        #coachPopup .content{
-            /*margin-left: 15px;*/
-        }
-
-        #coachPopup .stars{
-            user-select: none;
-            -ms-user-select: none;
-            -webkit-user-select: none;
-            -o-user-select:none;
-            -moz-user-select: none;
-            letter-spacing: -3px;
-        }
-
-        #coachPopup .stars .star{
-            display:inline-block;
-            font-size: 1.5em;
-            color:rgba(255, 140, 00, 1);;
-            cursor:default;
-        }
-
-        #coachPopup .stars .star::after{
-            content: "\2606";
-        }
-
-        #coachPopup .stars .star.filled::after{
-            content: "\2605";
-        }
-
-        #coachPopup .stars .star.changeable{
-            cursor:pointer;
-        }
-
-        #coachPopup .stars .star.temporaryUnFilled::after{
-            content: "\2606";
-        }
-
-        #coachPopup .stars .star.temporaryFilled::after{
-            content: "\2605";
-        }
-
-
-        #coachPopup .summary{
-            font-weight: bold;
-            font-size: 1.0em;
-            margin-bottom: 5px;
-            clear:both;
-        }
-
-        #coachPopup .details{
-            font-size: 0.8em;
-        }
-
-        @media only screen and (max-width: 480px){
-            #coachPopup .myFeedback .control{
-                width: 100%;
-            }
-        }
-
-        @media only screen and (min-width: 768px) {
-            /* tablets and desktop */
-            .popup .popup-dialog{
-                width: 70%;
-            }
-        }
-
-        @media only screen and (max-width: 767px) {
-            /* phones */
-            .popup .popup-dialog{
-                width: 100%;
-            }
+        #feedbackDialog .control{
+            padding-right: 15px;
+            padding-bottom: 15px;
+            min-height: 50px;
         }
 
     </style>
 
 </head>
-
-<body id="mainBox"  >
+<body id="mainBox" class="creamBg" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" data-offset="150">
     <div class="main">
     <div class="head_wrap">
         <!-- Top Header Section Begins -->
@@ -399,98 +124,103 @@
 
 
 
-        <div style="position: static">
-            <div class="wow animated fadeInLeft" data-wow-delay="0.5s">
-                <h3 style="color: #FFFFFF; margin-top: 200px; margin-left: 100px"> Our Professional Coaches </h3>
-            </div>
 
-            <div>
-                <ul id="coaches-list" class="list-without-bullets" style="margin-top: 100px; width: 100%">
-
-                </ul>
-            </div>
-
-            <div id="feedback-section">
-                <div id="coachPopup" class="popup" role="dialog">
-                    <div class="popup-dialog">
-                        <div class="loading">
-                            <div class="loader"></div>
-                        </div>
-                        <!-- Modal content-->
-                        <div class="popup-content">
-                            <div class="close-button">&times;</div>
-                            <div class="bannerImage"> </div>
-                            <div >
-                                <div class="title"></div>
-                                <div class="hidden coachId"></div>
-                            </div>
-
-
-                            <div class="description"></div>
-
-
-                            <div class="myFeedback">
-                                <hr class="titled" title="MyFeedback">
-                                <div class="done feedback">
-                                    <div class="control">
-                                        <div class="button delete">Delete</div>
-                                        <div class="button edit">Edit</div>
-                                    </div>
-                                    <div class="identity">
-                                        <div class="image"></div>
-                                        <div class="username"></div>
-                                    </div>
-                                    <div class="content">
-                                        <div class="stars">
-                                            <div class="star"></div>
-                                            <div class="star"></div>
-                                            <div class="star"></div>
-                                            <div class="star"></div>
-                                            <div class="star"></div>
-                                        </div>
-                                        <div class="summary"></div>
-                                        <div class="details"></div>
-                                    </div>
-                                </div>
-                                <div class="edit">
-                                    <div class="control">
-                                        <div class="button submit">Submit</div>
-                                        <div class="button cancel hide">Cancel edit</div>
-                                    </div>
-                                    <form>
-                                        <label >Rating: </label><br>
-                                        <div class="stars changeable">
-                                            <div class="star changeable"></div>
-                                            <div class="star changeable"></div>
-                                            <div class="star changeable"></div>
-                                            <div class="star changeable"></div>
-                                            <div class="star changeable"></div>
-                                        </div>
-                                        <label for="summaryFeedbackInput">Summary: </label>
-                                        <br>
-                                        <input id="summaryFeedbackInput"  type="text" name="summary" placeholder="Summary">
-                                        <br>
-                                        <label for="detailsFeedbackInput">Details: </label><br>
-                                        <textarea id="detailsFeedbackInput"  name="details" placeholder="Details">
-                            </textarea>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="feedbacks">
-                                <hr class="titled" title="Feedbacks">
-                            </div>
-                        </div>
-
-                    </div>
-
-
-
-
-    </div>
     </div><!-- container -->
+    <section id="coaches" class="coaches pad-top-210">
+        <div class="container-fluid">
+            <div class="row no-margin">
+                <div id="coachesGrid"></div>
+            </div>
+        </div>
+    </section>
+</div>
+
+    <div id="feedbackDialog" class="popup coachDialog" role="dialog">
+        <div class="popup-dialog">
+            <div class="loading">
+                <div class="loader"></div>
+            </div>
+            <!-- Modal content-->
+            <div class="popup-content">
+                <div class="close-button">&times;</div>
+                <div class="bannerImage"></div>
+                <div>
+                    <div class="title"></div>
+                    <div class="hidden coachId"></div>
+                </div>
+
+                <div class="username">
+                    <i class="glyphicon glyphicon-user" aria-hidden="true"></i>
+                    <span class="value"></span>
+                </div>
+
+                <div class="email">
+                    <i class="glyphicon glyphicon-envelope" aria-hidden="true"></i>
+                    <span class="value"></span>
+                </div>
+
+                <div class="birthday">
+                    <i class="glyphicon glyphicon-calendar" aria-hidden="true"></i>
+                    <span class="value"></span>
+                </div>
 
 
+                <div class="myFeedback">
+                    <hr class="titled" title="MyFeedback">
+                    <div class="done feedback">
+                        <div class="control">
+                            <div class="button delete">Delete</div>
+                            <div class="button edit">Edit</div>
+                        </div>
+                        <div class="identity">
+                            <div class="image"></div>
+                            <div class="username"></div>
+                        </div>
+                        <div class="content">
+                            <div class="stars">
+                                <div class="star"></div>
+                                <div class="star"></div>
+                                <div class="star"></div>
+                                <div class="star"></div>
+                                <div class="star"></div>
+                            </div>
+                            <div class="summary"></div>
+                            <div class="details"></div>
+                        </div>
+                    </div>
+                    <div class="edit">
+                        <div class="control">
+                            <div class="button submit">Submit</div>
+                            <div class="button cancel hide">Cancel edit</div>
+                        </div>
+                        <form>
+                            <label >Rating: </label><br>
+                            <div class="stars changeable">
+                                <div class="star changeable"></div>
+                                <div class="star changeable"></div>
+                                <div class="star changeable"></div>
+                                <div class="star changeable"></div>
+                                <div class="star changeable"></div>
+                            </div>
+                            <label for="summaryFeedbackInput">Summary: </label>
+                            <br>
+                            <input id="summaryFeedbackInput"  type="text" name="summary" placeholder="Summary">
+                            <br>
+                            <label for="detailsFeedbackInput">Details: </label><br>
+                            <textarea id="detailsFeedbackInput"  name="details" placeholder="Details">
+                            </textarea>
+                        </form>
+                    </div>
+                </div>
+                <div class="feedbacks">
+                    <hr class="titled" title="Feedbacks">
+                </div>
 
+
+            </div>
+
+        </div>
+    </div>
 
     <!-- Jquery Js -->
     <script type="text/javascript" src="js/libs/jquery.min.js"></script>
@@ -504,10 +234,9 @@
     <script type="text/javascript" src="js/libs/jquery.isotope.min.js"></script>
     <script type="text/javascript" src="js/libs/jquery.fancybox.js"></script>
     <script type="text/javascript" src="js/libs/switcher.js"></script>
-    <script type="text/javascript" src="js/coaches.js"></script>
     <script type="text/javascript" src="js/const.js"></script>
     <script type="text/javascript" src="js/core/core.js"></script>
-
+    <script type="text/javascript" src="js/coaches.js"></script>
 
 </body>
 
