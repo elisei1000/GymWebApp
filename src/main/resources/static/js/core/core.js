@@ -2,6 +2,10 @@
  * Created by elisei on 24.11.2017.
  */
 
+function showMessage(message){
+    alert(message);
+}
+
 function showError(message, errorThrown){
     alert(message);
     console.log(errorThrown !== undefined ? errorThrown:message);
