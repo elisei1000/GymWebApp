@@ -63,7 +63,7 @@ public class UserService {
                 errors.add(e.getMessage());
             }
         } else
-            errors.add("Username is empty !");
+            errors.add("Username is empty!");
         return errors;
     }
 
@@ -77,7 +77,7 @@ public class UserService {
         List<String> errors = new ArrayList<>();
 
         if( user.getUsername()==null)
-            errors.add("Username is empty !");
+            errors.add("Username is empty!");
         else {
             if (!user.getUsername().isEmpty()) {
                 try {
@@ -86,7 +86,7 @@ public class UserService {
                     errors.add(e.getMessage());
                 }
             } else
-                errors.add("Username is empty !");
+                errors.add("Username is empty!");
         }
         return errors;
     }
@@ -96,7 +96,7 @@ public class UserService {
         List<String> errors = new ArrayList<>();
 
         if (coach.getUsername() == null)
-            errors.add("Username is empty !");
+            errors.add("Username is empty!");
         else {
             if (!coach.getUsername().isEmpty()) {
                 try {
@@ -111,7 +111,7 @@ public class UserService {
                     errors.add(e.getMessage());
                 }
             } else
-                errors.add("Username is empty !");
+                errors.add("Username is empty!");
         }
         return errors;
     }
@@ -123,9 +123,7 @@ public class UserService {
 
     @Transactional
     public Coach getCoach(String username) {
-
         List<Coach> coaches=userRepository.getAllCoaches();
-
         if(coaches==null){
             return null;
         }
@@ -135,15 +133,12 @@ public class UserService {
                 return coach;
             }
         }
-
         return null;
     }
 
     @Transactional
     public Client getClient(String username) {
-
         List<Client> clients=userRepository.getAllClients();
-
         if(clients==null){
             return null;
         }
@@ -153,7 +148,6 @@ public class UserService {
                 return client;
             }
         }
-
         return null;
     }
 

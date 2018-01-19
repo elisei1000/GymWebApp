@@ -39,7 +39,7 @@ public class FeedBackRepository implements CrudRepository<Feedback, Integer> {
     @Override
     public void update(Feedback entity) throws RepositoryException {
         if(!checkIfFeedBackExists(entity)){
-            throw new RepositoryException("Feedback doesn't exist");
+            throw new RepositoryException("Feedback doesn't exists!");
         }
         entityManager.merge(entity);
     }
@@ -47,7 +47,7 @@ public class FeedBackRepository implements CrudRepository<Feedback, Integer> {
     @Override
     public void remove(Integer integer) throws RepositoryException {
         if(!checkIfIdExists(integer)){
-            throw new RepositoryException("Feedback doesn't exist");
+            throw new RepositoryException("Feedback doesn't exists!");
         }
         entityManager.remove(entityManager.find(Feedback.class, integer));
     }

@@ -68,7 +68,7 @@ public class FeedBackService {
         Coach coach = (Coach) userRepository.get(username);
 
         if (coach == null) {
-            errors.add("Antrenorul dat nu exista!");
+            errors.add("Given coach doesn't exists!");
             return errors;
         }
 
@@ -80,7 +80,7 @@ public class FeedBackService {
                 author = feedback.getAuthor().getUsername();
             }
             if (author.compareTo(feedbackModel.getAuthor()) == 0) {
-                errors.add("Utilizatorul a dat deja feedback!");
+                errors.add("The user already has given feedback!");
                 return errors;
             }
         }
@@ -91,7 +91,7 @@ public class FeedBackService {
         try {
             feedBackRepository.add(feedback);
         } catch (RepositoryException e) {
-            errors.add("Eroare de sistem!");
+            errors.add("System error!");
         }
         return errors;
     }
@@ -102,7 +102,7 @@ public class FeedBackService {
         Coach coach = (Coach) userRepository.get(username);
 
         if (coach == null) {
-            errors.add("Antrenorul dat nu exista!");
+            errors.add("Given coach doesn't exists!");
             return errors;
         }
 
@@ -120,7 +120,7 @@ public class FeedBackService {
         }
 
         if (feedbackModified == null) {
-            errors.add("Utilizatorul nu a dat feedback!");
+            errors.add("User didn't give feedback!");
             return errors;
         }
 
@@ -132,7 +132,7 @@ public class FeedBackService {
         try {
             feedBackRepository.update(feedbackModified);
         } catch (RepositoryException e) {
-            errors.add("Eroare de sistem!");
+            errors.add("System error!");
         }
         return errors;
     }
@@ -143,7 +143,7 @@ public class FeedBackService {
         Coach coach = (Coach) userRepository.get(username);
 
         if (coach == null) {
-            errors.add("Antrenorul dat nu exista!");
+            errors.add("Given coach doesn't exists!");
             return errors;
         }
 
@@ -158,14 +158,14 @@ public class FeedBackService {
         }
 
         if (idFeedback == null) {
-            errors.add("Nu exista feedback dat!");
+            errors.add("Feedback doesn't exists!");
             return errors;
         }
 
         try {
             feedBackRepository.remove(idFeedback);
         } catch (RepositoryException e) {
-            errors.add("Eroare de sistem!");
+            errors.add("System error!");
         }
         return errors;
     }

@@ -16,7 +16,7 @@ public class SubscriptionValidator implements Validator<Subscription> {
         }
 
         if(subscription.getEndDate().getTime()>=new Date().getTime()){
-            errors.add("End date must after current date!");
+            errors.add("End date must be after current date!");
         }
         return errors;
     }

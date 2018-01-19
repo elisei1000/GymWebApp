@@ -12,18 +12,12 @@ import com.gymwebapp.service.FeedBackService;
 import com.gymwebapp.service.UserService;
 import com.gymwebapp.util.Response;
 import com.gymwebapp.util.Status;
-import com.sun.prism.Image;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
-import org.eclipse.jetty.util.MultiPartInputStreamParser;
-import org.hibernate.engine.jdbc.StreamUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.util.Pair;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.activation.MimetypesFileTypeMap;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -114,7 +108,7 @@ public class CourseController {
             feedbackModel.setAuthor(principal.getName());
         } else {
             List<String> e = new ArrayList<>();
-            e.add("Nu sunteti logat!");
+            e.add("You're not logged!");
             return new Response(Status.STATUS_NOT_LOGGED_IN, e);
         }
 

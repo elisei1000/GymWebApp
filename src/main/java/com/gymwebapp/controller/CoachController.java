@@ -112,12 +112,11 @@ public class CoachController {
             feedbackModel.setAuthor(principal.getName());
         } else {
             List<String> e = new ArrayList<>();
-            e.add("Nu sunteti logat!");
+            e.add("You're not logged!");
             return new Response(Status.STATUS_NOT_LOGGED_IN, e);
         }
 
         List<String> errors = feedBackService.addCoachFeedback(username, feedbackModel);
-
         if (errors.size() != 0) {
             return new Response(Status.STATUS_FAILED, errors);
         } else {
@@ -139,7 +138,7 @@ public class CoachController {
             feedbackModel.setAuthor(principal.getName());
         } else {
             List<String> e = new ArrayList<>();
-            e.add("Nu sunteti logat!");
+            e.add("You're not logged!");
             return new Response(Status.STATUS_NOT_LOGGED_IN, e);
         }
 
@@ -160,7 +159,7 @@ public class CoachController {
         if (principal != null) {
             client = principal.getName();
         } else {
-            errors.add("Nu sunteti logat!");
+            errors.add("You're not logged!");
             return new Response(Status.STATUS_NOT_LOGGED_IN, errors);
         }
 
@@ -185,7 +184,7 @@ public class CoachController {
         }
 
         if (coach == null) {
-            errors.add("Given coach doesn't exist!");
+            errors.add("Given coach doesn't exists!");
             return new Response(Status.STATUS_FAILED, errors);
         }
 

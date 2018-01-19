@@ -17,7 +17,7 @@ public class SubscriptionRepository implements CrudRepository<Subscription, Inte
     @Override
     public void add(Subscription entity) throws RepositoryException {
         if(checkIfSubscriptionExists(entity.getId()))
-            throw new RepositoryException("Subscription already exists");
+            throw new RepositoryException("Subscription already exists!");
         entityManager.persist(entity);
     }
 
@@ -25,14 +25,14 @@ public class SubscriptionRepository implements CrudRepository<Subscription, Inte
     public void update(Subscription entity) throws RepositoryException {
         Subscription resultFind = entityManager.find(Subscription.class, entity.getId());
         if(resultFind==null)
-            throw new RepositoryException("Subscription doesn't exists");
+            throw new RepositoryException("Subscription doesn't exists!");
         resultFind.setEndDate(entity.getEndDate());
     }
 
     @Override
     public void remove(Integer integer) throws RepositoryException {
         if(!checkIfSubscriptionExists(integer))
-            throw new RepositoryException("Subscription doesn't exists");
+            throw new RepositoryException("Subscription doesn't exists!");
         entityManager.remove(entityManager.find(Subscription.class, integer));
     }
 

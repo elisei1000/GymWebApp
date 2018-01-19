@@ -8,8 +8,8 @@ import com.gymwebapp.service.UserService;
 import com.gymwebapp.util.Response;
 import com.gymwebapp.util.Status;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.data.util.Pair;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -98,7 +98,7 @@ public class UserController {
 
         List<String> error = new ArrayList<>();
         if (principal == null) {
-            error.add("Nu sunteti logat!");
+            error.add("You're not logged!");
             return new Response(Status.STATUS_NOT_LOGGED_IN, error);
         }
         String username = principal.getName();
@@ -125,7 +125,7 @@ public class UserController {
         List<String> error = new ArrayList<>();
 
         if (!pages.contains(page)) {
-            error.add("Ati accesat o pagina inexistenta!");
+            error.add("Page not found!");
             return new Response(Status.STATUS_FAILED, error);
         }
 
@@ -158,13 +158,13 @@ public class UserController {
         String username = principal.getName();
         User cuser = userService.findUser(username);
         if (cuser.getClass() != Client.class) {
-            error.add("Nu sunteti client!");
+            error.add("You're not a client!");
             return new Response(Status.STATUS_FAILED, error);
         }
         Client client = (Client) userService.findUser(username);
         Subscription sendSubscription = new Subscription();
         if (client.getSubscription() == null) {
-            error.add("Nu aveti abonament inregistrat!");
+            error.add("You don't have a registered subscription!");
             return new Response(Status.STATUS_FAILED, error);
         }
         sendSubscription.setStartDate(client.getSubscription().getStartDate());
@@ -180,11 +180,11 @@ public class UserController {
             return new Response(Status.STATUS_NOT_LOGGED_IN, errors);
         }
         if (subscriptionModel.getEndDate() == null){
-            errors.add("End date vid!");
+            errors.add("Invalid end date!");
             return new Response(Status.STATUS_FAILED, errors);
         }
         if (subscriptionModel.getEndDate().getTime() <= currentDate.getTime()) {
-            errors.add("End date trebuie sa fie ulterioara datei currente!");
+            errors.add("Invalid end date!");
             return new Response(Status.STATUS_FAILED, errors);
         }
         Subscription subscription = new Subscription();
@@ -193,13 +193,13 @@ public class UserController {
         String username = principal.getName();
         User cuser = userService.findUser(username);
         if (cuser.getClass() != Client.class) {
-            errors.add("Nu sunteti client!");
+            errors.add("You're not client!");
             return new Response(Status.STATUS_FAILED, errors);
         }
         Client client = (Client) userService.findUser(username);
         Subscription currenUserSubscription = client.getSubscription();
         if (currenUserSubscription != null) {
-            errors.add("Aveti deja abonament!");
+            errors.add("You already have a subscription!");
             return new Response(Status.STATUS_FAILED, errors);
         }
         client.setSubscription(subscription);
@@ -217,20 +217,20 @@ public class UserController {
             return new Response(Status.STATUS_NOT_LOGGED_IN, errors);
         }
         if (subscriptionModel.getEndDate().getTime() <= currentDate.getTime()) {
-            errors.add("End date trebuie sa fie ulterioara datei currente!");
+            errors.add("Invalid end date!");
             return new Response(Status.STATUS_FAILED, errors);
         }
 
         String username = principal.getName();
         User cuser = userService.findUser(username);
         if (cuser.getClass() != Client.class) {
-            errors.add("Nu sunteti client!");
+            errors.add("You're not a client!");
             return new Response(Status.STATUS_FAILED, errors);
         }
         Client client = (Client) userService.findUser(username);
         Subscription currenUserSubscription = client.getSubscription();
         if (currenUserSubscription == null) {
-            errors.add("Nu aveti abonament!");
+            errors.add("You don't have a subscription!");
             return new Response(Status.STATUS_FAILED, errors);
         }
         currenUserSubscription.setEndDate(subscriptionModel.getEndDate());
@@ -268,7 +268,7 @@ public class UserController {
         List<String> error = new ArrayList<>();
         User user = userService.findUser(username);
         if (user == null) {
-            error.add("Nu exista user cu acest username!");
+            error.add("Given user doesn't exists!");
             return new Response(Status.STATUS_FAILED, error);
         }
         User sendUser = new User();

@@ -7,7 +7,6 @@ import com.gymwebapp.domain.RepositoryException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import java.lang.reflect.Type;
 import java.util.List;
 
 @org.springframework.stereotype.Repository
@@ -27,7 +26,7 @@ public class CourseRepository implements CrudRepository<Course, Integer>{
     public void update(Course entity) throws RepositoryException {
         Course course = get(entity.getId());
         if(course == null)
-            throw new RepositoryException("Course doesn't exist");
+            throw new RepositoryException("Course doesn't exists!");
         entityManager.merge(entity);
     }
 
@@ -35,7 +34,7 @@ public class CourseRepository implements CrudRepository<Course, Integer>{
     public void remove(Integer integer) throws RepositoryException {
         Course course = get(integer);
         if(course == null)
-            throw new RepositoryException("Course doesn't exist");
+            throw new RepositoryException("Course doesn't exists!");
         entityManager.remove(course);
     }
 

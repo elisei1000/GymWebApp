@@ -30,7 +30,7 @@ public class UserRepository implements CrudRepository<User, String> {
     public void update(User entity) throws RepositoryException {
         User user = get(entity.getUsername());
         if(user == null)
-            throw new RepositoryException("User doesn't exist");
+            throw new RepositoryException("User doesn't exists!");
         user.setPassword(entity.getPassword());
         user.setEmail(entity.getEmail());
         user.setName(entity.getName());
@@ -41,7 +41,7 @@ public class UserRepository implements CrudRepository<User, String> {
     public void remove(String s) throws RepositoryException {
         User user = get(s);
         if(user == null)
-            throw new RepositoryException("User doesn't exist in db");
+            throw new RepositoryException("User doesn't exists!");
         entityManager.remove(user);
     }
 

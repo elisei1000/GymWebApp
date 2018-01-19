@@ -35,7 +35,7 @@ public class CourseValidator implements Validator<CourseModel>{
             errors.add("Title can't be empty!");
         }
         if(courseModel.getTeacher()==null || courseModel.getTeacher().isEmpty() || courseModel.getTeacher()==""){
-            errors.add("Coach can't be epty!");
+            errors.add("Coach can't be empty!");
         }
         return errors;
     }

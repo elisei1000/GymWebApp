@@ -42,7 +42,7 @@ public class UserValidator implements Validator<User> {
             Pattern pattern = Pattern.compile(regex);
             Matcher matcher = pattern.matcher(user.getEmail());
             if (!matcher.matches()) {
-                errors.add("Email is not valid!");
+                errors.add("Email is invalid!");
             }
         }
 

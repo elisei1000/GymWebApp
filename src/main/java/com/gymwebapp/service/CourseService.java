@@ -114,7 +114,7 @@ public class CourseService {
     public void attendUserToCourse(Integer id, Client client) throws RepositoryException {
         Course course = courseRepository.get(id);
         if (course == null) {
-            throw new RepositoryException("Given course doesn't exist!");
+            throw new RepositoryException("Given course doesn't exists!");
         }
         List<Client> clients = course.getClients();
 
@@ -150,7 +150,7 @@ public class CourseService {
         Course course = courseRepository.get(id);
 
         if (course == null) {
-            errors.add("Given course doesn't exist!");
+            errors.add("Given course doesn't exists!");
             return errors;
         }
 
@@ -186,7 +186,7 @@ public class CourseService {
         Course course = courseRepository.get(id);
 
         if (course == null) {
-            errors.add("Given course doesn't exist!");
+            errors.add("Given course doesn't exists!");
             return errors;
         }
 
@@ -205,7 +205,7 @@ public class CourseService {
         }
 
         if (feedbackModified == null) {
-            errors.add("The user don't give a feedback!");
+            errors.add("User didn't give feedback!");
             return errors;
         }
 
@@ -229,7 +229,7 @@ public class CourseService {
         Course course = courseRepository.get(id);
 
         if (course == null) {
-            errors.add("Given course doesn't exist");
+            errors.add("Given course doesn't exists");
             return errors;
         }
 
@@ -245,14 +245,14 @@ public class CourseService {
         }
 
         if(idFeedback==null){
-            errors.add("Feedback doesn't exist!");
+            errors.add("Feedback doesn't exists!");
             return errors;
         }
 
         try {
             feedBackRepository.remove(idFeedback);
         } catch (RepositoryException e) {
-            errors.add("Sustem error!");
+            errors.add("System error!");
         }
         return errors;
     }
