@@ -13,8 +13,8 @@ public class CourseValidator implements Validator<CourseModel>{
     public List<String> validate(CourseModel courseModel) {
         List<String> errors = new ArrayList<>();
 
-        if(courseModel.getDifficultyLevel()<0){
-            errors.add("Difficulty level shoud be a positive number!");
+        if (courseModel.getDifficultyLevel() < 1 || courseModel.getDifficultyLevel() > 5) {
+            errors.add("Difficulty level must be between 1 and 5!");
         }
         if(courseModel.getNumberOfParticipants()!=null){
             errors.add("You shouldn't give number of participants!");
@@ -33,7 +33,11 @@ public class CourseValidator implements Validator<CourseModel>{
         }
         if(courseModel.getTitle()==null || courseModel.getTitle().isEmpty() || courseModel.getTitle()==""){
             errors.add("Title can't be empty!");
+        } else {
+            if (courseModel.getTitle().length() < 5 || courseModel.getTitle().length() > 30)
+                errors.add("Title must contain between 5 and 30 characters!");
         }
+
         if(courseModel.getTeacher()==null || courseModel.getTeacher().isEmpty() || courseModel.getTeacher()==""){
             errors.add("Coach can't be empty!");
         }

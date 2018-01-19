@@ -52,7 +52,7 @@ public class CoachService {
     @Transactional
     public List<String> updateCoach(Coach coach) {
         if (coach.getPassword() == null || coach.getPassword().isEmpty())
-            coach.setPassword(this.getCoach(coach.getUsername()).getPassword());
+            coach.setPassword(passwordEncoder.encode(this.getCoach(coach.getUsername()).getPassword()));
         List<String> errors = coachValidator.validate(coach);
         if (errors.size() != 0) {
             return errors;
