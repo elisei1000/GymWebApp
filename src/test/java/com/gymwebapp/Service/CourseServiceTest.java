@@ -3,13 +3,10 @@ package com.gymwebapp.Service;
 import com.gymwebapp.domain.*;
 import com.gymwebapp.model.CourseModel;
 import com.gymwebapp.model.FeedbackModel;
-import com.gymwebapp.repository.CourseRepository;
-import com.gymwebapp.repository.FeedBackRepository;
-import com.gymwebapp.repository.UserRepository;
+import com.gymwebapp.service.CoachService;
 import com.gymwebapp.service.CourseService;
 import com.gymwebapp.service.FeedBackService;
 import com.gymwebapp.service.UserService;
-import com.sun.org.apache.regexp.internal.RE;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Date;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 @RunWith(SpringRunner.class)
@@ -30,6 +27,9 @@ public class CourseServiceTest {
     private UserService userService;
 
     @Autowired
+    private CoachService coachService;
+
+    @Autowired
     private CourseService courseService;
 
     @Autowired
@@ -38,7 +38,7 @@ public class CourseServiceTest {
     @Test
     public void testAddNewCourseShouldAdd(){
 
-        userService.addUser(new Coach("userCtest1", "pass", "coach@yahoo.com", "grigore", new Date()));
+        userService.addUser(new Coach("userCtest1", "pass", "coach@yahoo.com", "grigore", new Date(), ""));
 
         CourseModel courseModel = new CourseModel(0
                 ,2
@@ -55,7 +55,7 @@ public class CourseServiceTest {
         long dim = courseService.size();
 
         try {
-            courseService.addCourse(courseModel, userService.getCoach("userCtest1"));
+            courseService.addCourse(courseModel, coachService.getCoach("userCtest1"));
             assertThat(courseService.size()).isEqualTo(dim+1);
 
             courseService.deleteCourse(courseService.getLastId());
@@ -90,7 +90,7 @@ public class CourseServiceTest {
 
             long dim = courseService.size();
 
-            courseService.addCourse(courseModel, userService.getCoach("userCtest1"));
+            courseService.addCourse(courseModel, coachService.getCoach("userCtest1"));
             assertThat(courseService.size()).isEqualTo(dim+1);
 
             CourseModel courseModel1 = courseService.getCourse(courseService.getLastId());
@@ -125,7 +125,7 @@ public class CourseServiceTest {
 
             long dim = courseService.size();
 
-            courseService.addCourse(courseModel, userService.getCoach("userCtest1"));
+            courseService.addCourse(courseModel, coachService.getCoach("userCtest1"));
             assertThat(courseService.size()).isEqualTo(dim+1);
 
             courseService.deleteCourse(courseService.getLastId());
@@ -170,7 +170,7 @@ public class CourseServiceTest {
                     , "Title1"
                     ,"no desc");
 
-            courseService.addCourse(courseModel, userService.getCoach("userCtest1"));
+            courseService.addCourse(courseModel, coachService.getCoach("userCtest1"));
             courseService.attendUserToCourse(courseService.getLastId(), client);
 
             List<Client> clients = courseService.getAllClientsForCourse(courseService.getLastId());
@@ -204,7 +204,7 @@ public class CourseServiceTest {
                     , "Title1"
                     , "no desc");
 
-            courseService.addCourse(courseModel, userService.getCoach("userCtest1"));
+            courseService.addCourse(courseModel, coachService.getCoach("userCtest1"));
             courseService.attendUserToCourse(courseService.getLastId(), client);
             assertThat(true).isFalse();
         }catch (RepositoryException e){
@@ -232,7 +232,7 @@ public class CourseServiceTest {
                     , "Title1"
                     , "no desc");
 
-            courseService.addCourse(courseModel, userService.getCoach("userCtest1"));
+            courseService.addCourse(courseModel, coachService.getCoach("userCtest1"));
             courseService.attendUserToCourse(courseService.getLastId(), client);
 
             List<Client> clients = courseService.getAllClientsForCourse(courseService.getLastId());
@@ -273,7 +273,7 @@ public class CourseServiceTest {
                     , "Title1"
                     , "no desc");
 
-            courseService.addCourse(courseModel, userService.getCoach("userCtest1"));
+            courseService.addCourse(courseModel, coachService.getCoach("userCtest1"));
             courseService.attendUserToCourse(courseService.getLastId(), client);
 
             List<Client> clients = courseService.getAllClientsForCourse(courseService.getLastId());

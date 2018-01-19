@@ -1,9 +1,10 @@
 package com.gymwebapp;
 
-import com.gymwebapp.domain.*;
+import com.gymwebapp.domain.Administrator;
+import com.gymwebapp.domain.Client;
+import com.gymwebapp.domain.Coach;
 import com.gymwebapp.model.CourseModel;
-import com.gymwebapp.repository.CourseRepository;
-import com.gymwebapp.repository.SubscriptionRepository;
+import com.gymwebapp.service.CoachService;
 import com.gymwebapp.service.CourseService;
 import com.gymwebapp.service.SubscriptionService;
 import com.gymwebapp.service.UserService;
@@ -12,8 +13,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +23,7 @@ public class GymwebappApplication {
 		SpringApplication.run(GymwebappApplication.class, args);
 	}
 	@Bean
-	public CommandLineRunner demo(UserService userService, SubscriptionService subscriptionService, CourseService courseService) {
+	public CommandLineRunner demo(UserService userService, SubscriptionService subscriptionService, CourseService courseService, CoachService coachService) {
 		return (String... args) -> {
 
 			Client client =new  Client();
@@ -36,8 +35,8 @@ public class GymwebappApplication {
 			userService.addUser(client);
 			Administrator admin = new Administrator("admin", "admin", "admin@yahoo.com", "Administrator", new Date(81590522));
 			userService.addUser(admin);
-			Coach coach = new Coach("coach", "coach", "coach@yahoo.com", "Coach", new Date(81590522));
-			System.out.println(userService.addUser(coach));
+			Coach coach = new Coach("coach", "coach", "coach@yahoo.com", "Coach", new Date(81590522), "Pasionat de fotbal.");
+			System.out.println(coachService.addCoach(coach));
 
 			List<CourseModel> courseList=courseService.getAll();
 			int i=courseList.size() - 1;

@@ -3,6 +3,7 @@ package com.gymwebapp.Service;
 import com.gymwebapp.domain.*;
 import com.gymwebapp.model.CourseModel;
 import com.gymwebapp.model.FeedbackModel;
+import com.gymwebapp.service.CoachService;
 import com.gymwebapp.service.CourseService;
 import com.gymwebapp.service.FeedBackService;
 import com.gymwebapp.service.UserService;
@@ -28,6 +29,9 @@ public class FeedbackServiceTest {
     private CourseService courseService;
 
     @Autowired
+    private CoachService coachService;
+
+    @Autowired
     private UserService userService;
 
 
@@ -50,7 +54,7 @@ public class FeedbackServiceTest {
                     , "Title1"
                     , "no desc");
 
-            courseService.addCourse(courseModel, userService.getCoach("userCtest1"));
+            courseService.addCourse(courseModel, coachService.getCoach("userCtest1"));
             courseService.attendUserToCourse(courseService.getLastId(), client);
 
             List<Client> clients = courseService.getAllClientsForCourse(courseService.getLastId());
@@ -76,7 +80,7 @@ public class FeedbackServiceTest {
     public void testGetAllCoachFeedbacks(){
 
         Coach coach = new Coach("testCclient3", "password", "email@yahoo.com", "Elisei",
-                new Date(1000));
+                new Date(1000), "");
         userService.addUser(coach);
         List<CoachFeedback> coachFeedbacks = feedBackService.getAllCoachFeedBacks("testCclient3");
         assertThat(coachFeedbacks.size()).isEqualTo(0);
