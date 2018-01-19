@@ -542,7 +542,6 @@ function initDialog(){
 
     courseDialog.content.closeButton = courseDialog.content.children(".close-button");
     courseDialog.content.title = courseDialog.content.find(".title");
-    courseDialog.content.children(".description").val(courseDialog.content.children(".description").val());
     courseDialog.content.difficulty = courseDialog.content.find(".difficulty");
     courseDialog.content.difficulty.select = courseDialog.content.difficulty.find("select");
     $.each(DIFFICULTY_LEVEL, function(index) {
