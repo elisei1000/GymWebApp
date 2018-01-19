@@ -98,6 +98,7 @@ var APIS = {
     API_GET_USER : '/user/{0}',
     API_GET_COURSE_IMAGE: 'course/{0}/image',
     API_GET_COACH_IMAGE: 'coach/{0}/image',
+    API_GET_SUBSCRIPTION : '/cuser/subscription',
 };
 
 

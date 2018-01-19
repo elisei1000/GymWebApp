@@ -3,8 +3,6 @@
 <html lang="en">
 
 <head>
-    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
-    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
@@ -17,171 +15,94 @@
     <link type="text/css" rel="stylesheet" href="css/owl.carousel.min.css?v=1.0">
     <link type="text/css" rel="stylesheet" href="css/jquery.fancybox.css?v=1.0">
     <link type="text/css" rel="stylesheet" href="webkit/webkit.css?v=1.0">
-    <link type="text/css" rel="stylesheet" href="css/font-awesome">
     <link type="text/css" href="style.css?v=1.0" rel="stylesheet" />
     <link type="text/css" href="css/media.css?v=1.0" rel="stylesheet" />
     <link rel="stylesheet" href="css/switcher.css" type="text/css" />
     <link rel="stylesheet" href="css/switcher/style1.css" id="colors">
-    <script src="https://use.fontawesome.com/856461e35a.js"></script>
     <style type="text/css">
-        @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i|Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&subset=latin-ext');
-        @import url('https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese');
-
-        .d_log_in_block *::-webkit-inner-spin-button,
-
-        .d_log_in_block *::-webkit-calendar-picker-indicator {
-            display: none;
-            -webkit-appearance: none;
+        .personalInfoBlock h1 {
+            text-align: center;
+            color: #000;
+            font-size: 18px;
+            text-transform: uppercase;
+            margin-top: 0;
+            margin-bottom: 20px;
         }
 
-        .header_tot {
-            font-family: 'Oswald', sans-serif;
-            float: left;
-            width: 600px;
-            margin: 170px 0 20px 0;
-            margin-left: calc(50% - 300px);
+        .personalInfoBlock input {
+            width: 100%;
+            height: 42px;
+            box-sizing: border-box;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            font-size: 14px;
+            font-family: Montserrat;
+            padding: 0 20px 0 50px;
+            outline: none;
+        }
+
+        .personalInfoBlock{
+            width: 320px;
             padding: 20px;
+            background: #fff;
+            border-radius: 5px;
+            border-top: 5px solid #FF8C00;
+            margin: 0 auto;
+        }
+
+        #username{
+            background: #fff url(http://i.imgur.com/u0XmBmv.png) 20px top no-repeat;
+            background-size: 16px 80px;
+        }
+
+        #email{
+            background: #fff url(http://i.imgur.com/u0XmBmv.png) 20px top no-repeat;
+            background-size: 16px 80px;
+        }
+
+        #birthDay{
+            background: #fff url(http://i.imgur.com/u0XmBmv.png) 20px top no-repeat;
+            background-size: 16px 80px;
+        }
+
+        #name{
+            background: #fff url(http://i.imgur.com/u0XmBmv.png) 20px top no-repeat;
+            background-size: 16px 80px;
+        }
+
+        #subscription{
+            background: #fff;
+
+        }
+
+        .button{
+            border-radius: 7px;
+            color: #fff;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 1em;
+            font-family: Montserrat;
+            outline: none;
+            cursor: pointer;
+            padding: 5px;
+            background: #FF8C00;
+            border: 1px solid #FF8C00;
+            display: inline-block;
+            width:100px;
+            left: calc(100% - 100px);
+            position: relative;
             text-align: center;
         }
 
-        .header_tot h1{
-            font-family: 'Oswald',sans-serif;
-            font-size: 60px;
-
-        }
-
-        .subtitlu a {
-            color: #1c1b1b;
-            font-weight: bold;
-            text-decoration: none;
-            font-size: 15px;
-        }
-
-        .d_log_in_block *
-        {
-            box-sizing: border-box !important;
-            font-family: 'Roboto', sans-serif;
-            font-weight: 400;
-            -webkit-tap-highlight-color: rgba(0,0,0,0);
-            -webkit-appearance: none !important;
-            -moz-appearance: none !important;
-            appearance: none !important;
-            margin: 0;
-            padding: 0;
-            border: 0 none;
-            background-color: rgb(0,0,0,0);
-            /* Text is never inflated */
-            text-size-adjust: none;
-            /* Text may be inflated */
-            text-size-adjust: auto;
-            /* Text may be inflated in this exact proportion */
-            text-size-adjust: 80%;
-            /* Global values */
-            text-size-adjust: inherit;
-            text-size-adjust: initial;
-            text-size-adjust: unset;
-        }
-
-        .d_log_in_block
-        {
-            float: left;
-            width: 600px;
-            background-color: #efefef;
-            margin: 0 0 0 0;
-            margin-left: calc(50% - 300px);
-            border-top: 5px solid #FF8C00;
-            border-radius: 5px;
-            padding: 20px;
-        }
-
-        .d_log_in_block legend
-        {
-            float: left;
-            width: 96%;
-            height: auto;
-            font-size: 12px;
-            margin: 10px 2% 2px;
-            color: #FF8C00;
-            text-align: left;
-            font-weight: 400;
-            text-transform: uppercase;
-            letter-spacing: -0.5px;
-        }
-
-        .d_log_in_block h1
-        {
-            color: #282828;
-            font-size: 30px;
-            line-height: 1.25;
-            font-weight: 100;
-            margin:20px 0;
-            width: 100%;
-            float:left;
-            font-family: 'Oswald',sans-serif;
-
-        }
-
-        .d_log_in_block p
-        {
-            float: left;
-            width: 98%;
-            height: auto;
-            font-size: 12px;
-            margin: 10px 1% 2px;
-            color: #333;
-            text-align: left;
-            font-weight: 400;
-        }
-
-        .d_log_in_block input,
-        .d_log_in_block select,
-        .d_log_in_block input:hover,
-        .d_log_in_block select:hover,
-        .d_log_in_block input:focus,
-        .d_log_in_block select:focus,
-        .d_log_in_block button
-        {
-            font-size: 14px !important;
-            background-color: #fff;
-            color: #666 !important;
-            border: 1px solid #ebebeb;
-            width: 98%;
-            margin: 0 1%;
-            padding: 10px;
-            border-radius: 4px !important;
-            outline: none !important;
-            outline-style: none;
-            outline-color: currentcolor;
-            outline-color: transparent !important;
-            outline-style: none !important;
-            -webkit-appearance: none !important;
-            -moz-appearance: none !important;
-            -ms-appearance: none !important;
-            -o-appearance: none !important;
-            appearance: none !important;
-            height: 44px;
-        }
-
-        select::-ms-expand {
+        .existingSubscription{
             display: none;
         }
-
-        .d_log_in_block button {
-            margin-top:20px;
-            background-color:red;
-            color:white;
-            border:0;
-        }
-
-        .fa {font-family: FontAwesome !important; }
-
-
-
     </style>
 
 </head>
 
-<body id="mainBox" class="creamBg" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" data-offset="150">
+<body id="mainBoxLogin" class="creamBg" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" data-offset="150">
 <div class="main">
     <div class="head_wrap">
         <!-- Top Header Section Begins -->
@@ -248,37 +169,37 @@
     </div>
 
 
-    <!--/div><!-- container -->
 
-    <div class="header_tot">
-        <h1>Contul meu</h1>
-        <div class="subtitlu">
-            <a href="personalInfo.html" class="activ">Personal info</a>  <span class="mx-3">/</span> <a href="subscription.html" class="">Subscriptions</a>
+    <section class="pad-top-210">
+        <div class="personalInfoBlock">
+            <h1>Personal Info</h1>
+            <input id="name" type="text" placeholder="Name" disabled>
+            <input id="username" type="text" placeholder="Username" disabled>
+            <input id="email" type="text" placeholder="Email" disabled>
+            <input id="birthDay" type="date" placeholder="birtDay" disabled>
+
+            <br>
+            <br>
+            <h1>Subscription</h1>
+            <div class="existingSubscription">
+                <label for="subscription">Active until:</label>
+                <input id="subscription" type="date" disabled>
+                <div class="button update">Extend</div>
+            </div>
+            <div class="nonExistingSubscription">
+                <label>No subscription registered</label>
+                <br>
+                <div class="button add">Add</div>
+            </div>
         </div>
-    </div>
-    <div class="d_log_in_block">
-        <h1><i class="fa fa-user" aria-hidden="true"></i>  Personal Info</h1>
 
-        <legend><i class="fa fa-address-card-o" aria-hidden="true"></i> &nbsp; Name</legend>
-        <input type="text" id="name" placeholder="Jhon Doe" disabled="disabled">
-        <legend><i class="fa fa-user-o" aria-hidden="true"></i> &nbsp; User</legend>
-        <input type="text" id="username" placeholder="jhondoe" disabled="disabled">
-        <legend><i class="fa fa-envelope-o" aria-hidden="true"></i> &nbsp; Email</legend>
-        <input type="text" id="email" placeholder="jhondoe@yahoo.com" disabled="disabled">
-        <legend><i class="fa fa-birthday-cake" aria-hidden="true"></i> &nbsp; Birthday</legend>
-        <input type="text" id="birthDay" disabled="disabled" placeholder="Birthday">
+    </section>
 
-
-    </div>
 </div>
 
     <!-- Jquery Js -->
     <script type="text/javascript" src="js/libs/jquery.min.js"></script>
-    <script type="text/javascript" src="js/main-script.js"></script>
-    <script type="text/javascript" src="js/const.js"></script>
-    <script type="text/javascript" src="js/core/core.js"></script>
     <script type="text/javascript" src="js/libs/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/libs/element.js"></script>
     <script type="text/javascript" src="js/libs/modernizr.js"></script>
     <script type="text/javascript" src="js/libs/owl.carousel.js"></script>
     <script type="text/javascript" src="js/libs/jquery.localscroll-1.2.7-min.js"></script>
@@ -288,7 +209,9 @@
     <script type="text/javascript" src="js/libs/jquery.isotope.min.js"></script>
     <script type="text/javascript" src="js/libs/jquery.fancybox.js"></script>
     <script type="text/javascript" src="js/libs/switcher.js"></script>
-    <script type="text/javascript" src="js/personalInfo.js"></script>
+<script type="text/javascript" src="js/const.js"></script>
+<script type="text/javascript" src="js/core/core.js"></script>
+<script type="text/javascript" src="js/personalInfo.js"></script>
 
 
 </body>
