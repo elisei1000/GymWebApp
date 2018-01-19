@@ -11,6 +11,13 @@
 }
 
 
+.coach_thumbnail >.content{
+    border: 1px solid rgb(41, 112, 173);
+}
+.course_thumbnail >.content{
+    border: 1px solid rgb(245, 130, 00);
+}
+
 .coach_thumbnail   >.content >.coachImage,
 .course_thumbnail >.content >.courseImage{
     background-image: url("../images/box-2.jpg");
