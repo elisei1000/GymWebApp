@@ -3936,3 +3936,16 @@ html, body{
     cursor: pointer;
     transition: 0.3s;
 }
+
+.top-head.black  ul li{
+    color: black;
+}
+
+.top-head.black ul li a{
+    color:black;
+    font-weight: 100;
+}
+
+.top-head.black ul li a:hover{
+    color:#FF8C00;
+}
