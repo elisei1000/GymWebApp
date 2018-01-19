@@ -896,11 +896,6 @@ p {
     background-image: url(images/footerBg.jpg);
 }
 
-#mainBox{
-    display: cover;
-    height: 100vh;
-    background-color: #000;
-}
 
 .top-head ul {
     display: inline-block;
@@ -3814,7 +3809,6 @@ blockquote h6 {
     border-radius: 5px;
     border-top: 5px solid #FF8C00;
     margin: 0 auto;
-    margin-top: 170px;
 }
 
 .register-block h1 {
