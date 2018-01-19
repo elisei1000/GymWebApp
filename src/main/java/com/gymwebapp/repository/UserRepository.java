@@ -31,10 +31,7 @@ public class UserRepository implements CrudRepository<User, String> {
         User user = get(entity.getUsername());
         if(user == null)
             throw new RepositoryException("User doesn't exists!");
-        user.setPassword(entity.getPassword());
-        user.setEmail(entity.getEmail());
-        user.setName(entity.getName());
-        user.setBirthDay(entity.getBirthDay());
+        entityManager.merge(entity);
     }
 
     @Override

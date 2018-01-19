@@ -1,6 +1,8 @@
 package com.gymwebapp.service;
 
-import com.gymwebapp.domain.*;
+import com.gymwebapp.domain.Client;
+import com.gymwebapp.domain.RepositoryException;
+import com.gymwebapp.domain.User;
 import com.gymwebapp.domain.Validator.UserValidator;
 import com.gymwebapp.repository.CourseRepository;
 import com.gymwebapp.repository.UserRepository;
@@ -29,12 +31,12 @@ public class UserService {
     @Autowired
     private UserValidator userValidator;
 
-
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Transactional
     public <T extends User> List<String> addUser(T user) {
-        List<String> errors= userValidator.validate(user);
+        List<String> errors = userValidator.validate(user);
+
         if (errors.size() != 0) {
             return errors;
         }
@@ -89,51 +91,6 @@ public class UserService {
                 errors.add("Username is empty!");
         }
         return errors;
-    }
-
-    @Transactional
-    public List<String> removeCoach(Coach coach) {
-        List<String> errors = new ArrayList<>();
-
-        if (coach.getUsername() == null)
-            errors.add("Username is empty!");
-        else {
-            if (!coach.getUsername().isEmpty()) {
-                try {
-                    List<Course> courses = courseRepository.getAll();
-                    for (Course c : courses)
-                        if (c.getTeacher() != null && c.getTeacher().getUsername().equals(coach.getUsername())) {
-                            c.setTeacher(null);
-                            courseRepository.update(c);
-                        }
-                    userRepository.remove(coach.getUsername());
-                } catch (RepositoryException e) {
-                    errors.add(e.getMessage());
-                }
-            } else
-                errors.add("Username is empty!");
-        }
-        return errors;
-    }
-
-    @Transactional
-    public List<Coach> getAllCoaches() {
-        return userRepository.getAllCoaches();
-    }
-
-    @Transactional
-    public Coach getCoach(String username) {
-        List<Coach> coaches=userRepository.getAllCoaches();
-        if(coaches==null){
-            return null;
-        }
-
-        for(Coach coach:coaches) {
-            if (coach.getUsername().compareTo(username)==0) {
-                return coach;
-            }
-        }
-        return null;
     }
 
     @Transactional

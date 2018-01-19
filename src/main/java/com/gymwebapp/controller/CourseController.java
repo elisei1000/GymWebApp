@@ -7,6 +7,7 @@ import com.gymwebapp.domain.Validator.Validator;
 import com.gymwebapp.model.CourseModel;
 import com.gymwebapp.model.FeedbackModel;
 import com.gymwebapp.model.ScheduleModel;
+import com.gymwebapp.service.CoachService;
 import com.gymwebapp.service.CourseService;
 import com.gymwebapp.service.FeedBackService;
 import com.gymwebapp.service.UserService;
@@ -45,6 +46,9 @@ public class CourseController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CoachService coachService;
 
     @Autowired
     private FeedBackService feedBackService;
@@ -176,7 +180,7 @@ public class CourseController {
         Validator<CourseModel> validator = new CourseValidator();
         List<String> errors = validator.validate(courseModel);
 
-        Coach coach = userService.getCoach(courseModel.getTeacher());
+        Coach coach = coachService.getCoach(courseModel.getTeacher());
         if (coach == null) {
             errors.add("Coach doesn't exists!");
         }
@@ -198,7 +202,7 @@ public class CourseController {
     public Response modifyCourse(@RequestBody CourseModel courseModel, @PathVariable Integer id) {
         Validator<CourseModel> validator = new CourseValidator();
         List<String> errors = validator.validate(courseModel);
-        Coach coach = userService.getCoach(courseModel.getTeacher());
+        Coach coach = coachService.getCoach(courseModel.getTeacher());
         if (coach == null) {
             errors.add("Coach doesn't exists!");
         }
