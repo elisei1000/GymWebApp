@@ -59,7 +59,7 @@ public class CoachController {
     @PutMapping(value = "/coach/{username}")
     public Response update(@PathVariable String username, @RequestBody CoachModel coachModel) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        Coach coach = new Coach(username, passwordEncoder.encode(coachModel.getPassword()), coachModel.getEmail(), coachModel.getName(), coachModel.getBirthDay(), coachModel.getAbout());
+        Coach coach = new Coach(username, coachModel.getPassword(), coachModel.getEmail(), coachModel.getName(), coachModel.getBirthDay(), coachModel.getAbout());
         List<String> errors = coachService.updateCoach(coach);
         if (errors.size() == 0) {
             return new Response(Status.STATUS_OK, errors);
