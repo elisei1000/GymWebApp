@@ -896,11 +896,6 @@ p {
     background-image: url(images/footerBg.jpg);
 }
 
-#mainBox{
-    display: cover;
-    height: 100vh;
-    background-color: #000;
-}
 
 .top-head ul {
     display: inline-block;
