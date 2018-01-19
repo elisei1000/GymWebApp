@@ -3,6 +3,7 @@
 <html lang="en">
 
 <head>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
@@ -19,7 +20,86 @@
     <link type="text/css" href="css/media.css?v=1.0" rel="stylesheet" />
     <link rel="stylesheet" href="css/switcher.css" type="text/css" />
     <link rel="stylesheet" href="css/switcher/style1.css" id="colors">
+    <style>
+        a{
+            color:#ff8c00;
+        }
+        #contact-us {
+            padding: 50px 20px;
+            position: relative;
 
+        }
+        #contact-us .wrap .pannel-left {
+            display: inline-block;
+            padding-right: 10%;
+            vertical-align: top;
+            width: 70%;
+            line-height: 1.5;
+            text-align: left;
+        }
+        #contact-us .wrap .pannel-left h1 {
+            font-size: 35px;
+            margin: 0 0 10px;
+        }
+        h3 {
+            font-size: 20px;
+            line-height: 34px;
+        }
+        input, textarea {
+            font: 13px Lato,sans-serif;
+        }
+        #contact-us .contact-form {
+            margin-top: 30px;
+        }
+        #contact-us .wrap .pannel-right {
+            text-align: left;
+            display: inline-block;
+            width: 25%;
+            line-height: 1.5;
+        }
+        .submit-btn {
+            font-size: 16px;
+            padding: 15px 50px;
+        }
+        .v-pixpa-blue {
+            background: #00c5be;
+            color: #fff;
+        }
+        .margin-t25 {
+            margin-top: 25px;
+        }
+        .button {
+            margin-top:5px;
+            background: #fff;
+            display: inline-block;
+            border-radius: 3px;
+            border: 0;
+            outline: 0;
+            color: #000;
+            font-size: 14px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: background .25s ease-in-out;
+            font-weight: 600;
+            text-transform: uppercase;
+            background-color: #ff8c00 ;
+            color: white;
+        }
+        #contact-us .wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        #contact-us .contact-form .contact-form-field {
+            border: 1px solid #e5e5e5;
+            border-radius: 5px;
+            outline: 0;
+            width: 80%;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+    </style>
 </head>
 
 <body id="mainBox" class="creamBg" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" data-offset="150">
@@ -83,6 +163,47 @@
         <!-- Header Section Ends -->
     </div>
  <!-- Contact Section Begins -->
+        <section id="contact-us" style="padding-top: 220px">
+            <div class="wrap">
+                <!--left pannel start-->
+                <div class="pannel-left" >
+                    <h1>Get in Touch</h1>
+                    <h3>Please fill out the quick form and we will be in touch with lightning speed.</h3>
+                    <div class="contact-form">
+                        <form method="POST"  accept-charset="UTF-8"><input name="_token" type="hidden" value="zZG9Fuwvoawo9gAbSCkMSHGOEaTbRXCZhV4L01ZY">
+                            <input type="hidden" name="_token" value="zZG9Fuwvoawo9gAbSCkMSHGOEaTbRXCZhV4L01ZY">
+                            <input type="text" required="" placeholder="Name" name="name" class="contact-form-field">
+                            <input type="email" required="" placeholder="Your email address" class="contact-form-field" name="email">
+                            <textarea required="" placeholder="Message" id="comments" class="contact-form-field" name="comments"></textarea>
+                            <input name="login" type="submit" value="Submit" class="submit-btn button v-pixpa-blue margin-t25">
+                        </form>
+                    </div>
+                </div>
+                <!--left pannel end-->
+                <!--left pannel start-->
+                <div class="pannel-right">
+                    <h3>Connect with us:</h3>
+                    <p>For support or any questions:
+                        <br>Email us: <a href="mailto:support@starfitness.com" target="_blank">support@starfitness.com</a>
+                    </p>
+                    <p>
+                        <br>
+                        <strong>Star Fitness - Cluj</strong>
+                        <br>Strada Victor Babeș nr. 33,
+                        <br>Cluj-Napoca, 400012
+                        <br>România
+                    </p>
+                    <p>
+                        <br>
+                        <strong>Star Fitness - București</strong>
+                        <br>Bulevardul Ion Mihalache nr. 60
+                        <br>Sector 1,  013038
+                        <br>România
+                    </p>
+                </div>
+                <!--left pannel end-->
+            </div>
+        </section>
  <!-- Contact Section Ends -->
         
 
