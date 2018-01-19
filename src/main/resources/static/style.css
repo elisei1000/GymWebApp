@@ -827,8 +827,10 @@ p {
 }
 
 .creamBg {
-    background-image: url('images/greyBg.png');
-    background-repeat: repeat;
+    background-image: url('images/bg-silver.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .titleTop {
