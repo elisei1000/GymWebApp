@@ -3760,13 +3760,13 @@ blockquote h6 {
 }
 
 .login-block input#username {
-    background: #fff url('http://i.imgur.com/u0XmBmv.png') 20px top no-repeat;
-    background-size: 16px 80px;
+    background: #fff url('images/fauser.png') 20px center no-repeat;
+    background-size: 20px 20px;
 }
 
 .login-block input#password {
-    background: #fff url('http://i.imgur.com/Qf83FTt.png') 20px top no-repeat;
-    background-size: 16px 80px;
+    background: #fff url('images/lock.png') 20px center no-repeat;
+    background-size: 20px 20px;
 }
 
 .login-block input:active, .login-block input:focus {
@@ -3832,9 +3832,26 @@ blockquote h6 {
     padding: 0 20px 0 50px;
     outline: none;
 }
-
-
-
+.register-block input#username {
+    background: #fff url('images/fauser.png') 20px center no-repeat;
+    background-size: 20px 20px;
+}
+.register-block input#password {
+    background: #fff url('images/lock.png') 20px center no-repeat;
+    background-size: 20px 20px;
+}
+.register-block input#birthDay {
+    background: #fff url('images/date.png') 20px center no-repeat;
+    background-size: 20px 20px;
+}
+.register-block input#name {
+    background: #fff url('images/name.png') 20px center no-repeat;
+    background-size: 20px 20px;
+}
+.register-block input#email {
+    background: #fff url('images/email.png') 20px center no-repeat;
+    background-size: 20px 20px;
+}
 .register-block input:active, .register-block input:focus {
     border: 1px solid #FF8C00;
 
