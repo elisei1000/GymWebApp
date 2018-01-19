@@ -132,6 +132,7 @@ function showCoachPopup(coach){
     coachDialog.content.email.text(coach.email);
     coachDialog.content.title.text(coach.name);
     coachDialog.content.birthday.text(formatDate(coach.birthDay));
+    coachDialog.content.description.text(coach.about);
 
     var url;
     url = getImage(coachId);
@@ -317,6 +318,7 @@ function initDialog(){
     coachDialog.content.username = coachDialog.content.find(".username .value");
     coachDialog.content.email = coachDialog.content.find(".email .value");
     coachDialog.content.birthday = coachDialog.content.find(".birthday .value");
+    coachDialog.content.description = coachDialog.content.find(".description");
     if(canHaveFeedback){
         coachDialog.content.myFeedback = coachDialog.content.children(".myFeedback");
         coachDialog.content.myFeedback.end = coachDialog.content.myFeedback.children(".end");

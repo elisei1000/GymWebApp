@@ -164,8 +164,9 @@ public class UserController {
         Client client = (Client) userService.findUser(username);
         Subscription sendSubscription = new Subscription();
         if (client.getSubscription() == null) {
-            error.add("You don't have a registered subscription!");
-            return new Response(Status.STATUS_FAILED, error);
+            sendSubscription.setStartDate(new Date(0));
+            sendSubscription.setEndDate(new Date(0));
+            return new Response(Status.STATUS_OK, error, Pair.of("subscription", sendSubscription));
         }
         sendSubscription.setStartDate(client.getSubscription().getStartDate());
         sendSubscription.setEndDate(client.getSubscription().getEndDate());

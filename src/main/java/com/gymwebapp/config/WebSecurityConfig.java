@@ -64,6 +64,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/manageCourses.html").hasAnyRole("ADMIN")
                     .antMatchers("/personalInfo.html").hasAnyRole("CLIENT")
                     .antMatchers("/register.html").not().hasAnyRole("CLIENT", "COACH", "ADMIN")
+                    .antMatchers("/feedbacks.html").hasAnyRole("COACH")
                     .antMatchers("/schedule.html").permitAll()
                     .antMatchers("/", "/public/**", "/resources/**", "/resources/static/**")
                     .permitAll()

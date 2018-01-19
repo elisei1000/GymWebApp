@@ -19,555 +19,94 @@
     <link type="text/css" href="css/media.css?v=1.0" rel="stylesheet" />
     <link rel="stylesheet" href="css/switcher.css" type="text/css" />
     <link rel="stylesheet" href="css/switcher/style1.css" id="colors">
-    <script src="https://use.fontawesome.com/856461e35a.js"></script>
+    <link rel="stylesheet" href="css/feedbackDialog.css"/>
     <style>
-        @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i|Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&subset=latin-ext');
-        @import url('https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese');
-
-        .d_log_in_block *::-webkit-inner-spin-button,
-
-        .d_log_in_block *::-webkit-calendar-picker-indicator {
-            display: none;
-            -webkit-appearance: none;
-        }
-
-
-
-        .d_log_in_block *
-        {
-            box-sizing: border-box !important;
-            font-family: 'Roboto', sans-serif;
-            font-weight: 400;
-            -webkit-tap-highlight-color: rgba(0,0,0,0);
-            -webkit-appearance: none !important;
-            -moz-appearance: none !important;
-            appearance: none !important;
-            margin: 0;
-            padding: 0;
-            border: 0 none;
-            background-color: rgb(0,0,0,0);
-            /* Text is never inflated */
-            text-size-adjust: none;
-            /* Text may be inflated */
-            text-size-adjust: auto;
-            /* Text may be inflated in this exact proportion */
-            text-size-adjust: 80%;
-            /* Global values */
-            text-size-adjust: inherit;
-            text-size-adjust: initial;
-            text-size-adjust: unset;
-        }
-
-        .d_log_in_block
-        {
-            float: left;
-            width: 600px;
-            background-color: #efefef;
-            margin: 0 0 0 0;
-            margin-left: calc(50% - 300px);
-            border-top: 5px solid #FF8C00;
-            border-radius: 5px;
-            padding: 20px;
-        }
-
-        .d_log_in_block legend
-        {
-            float: left;
-            width: 96%;
-            height: auto;
-            font-size: 12px;
-            margin: 10px 2% 2px;
-            color: #FF8C00;
-            text-align: left;
-            font-weight: 400;
+        .personalInfoBlock h1 {
+            text-align: center;
+            color: #000;
+            font-size: 18px;
             text-transform: uppercase;
-            letter-spacing: -0.5px;
+            margin-top: 0;
+            margin-bottom: 20px;
         }
 
-        .d_log_in_block h1
-        {
-            color: #282828;
-            font-size: 30px;
-            line-height: 1.25;
-            font-weight: 100;
-            margin:20px 0;
+        .personalInfoBlock input {
             width: 100%;
-            float:left;
-            font-family: 'Oswald',sans-serif;
-
+            height: 42px;
+            box-sizing: border-box;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            font-size: 14px;
+            font-family: Montserrat;
+            padding: 0 20px 0 50px;
+            outline: none;
         }
 
-        .d_log_in_block p
-        {
-            float: left;
-            width: 98%;
-            height: auto;
-            font-size: 12px;
-            margin: 10px 1% 2px;
-            color: #333;
-            text-align: left;
-            font-weight: 400;
+        .personalInfoBlock{
+            width: 320px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 5px;
+            border-top: 5px solid #FF8C00;
+            margin: 0 auto;
         }
 
-        .d_log_in_block input,
-        .d_log_in_block select,
-        .d_log_in_block input:hover,
-        .d_log_in_block select:hover,
-        .d_log_in_block input:focus,
-        .d_log_in_block select:focus,
-        .d_log_in_block button
-        {
-            font-size: 14px !important;
-            background-color: #fff;
-            color: #666 !important;
-            border: 1px solid #ebebeb;
-            width: 98%;
-            margin: 0 1%;
-            padding: 10px;
-            border-radius: 4px !important;
-            outline: none !important;
-            outline-style: none;
-            outline-color: currentcolor;
-            outline-color: transparent !important;
-            outline-style: none !important;
-            -webkit-appearance: none !important;
-            -moz-appearance: none !important;
-            -ms-appearance: none !important;
-            -o-appearance: none !important;
-            appearance: none !important;
-            height: 44px;
+        #username{
+            background: #fff url(http://i.imgur.com/u0XmBmv.png) 20px top no-repeat;
+            background-size: 16px 80px;
         }
 
-        select::-ms-expand {
-            display: none;
+        #email{
+            background: #fff url(http://i.imgur.com/u0XmBmv.png) 20px top no-repeat;
+            background-size: 16px 80px;
         }
 
-        .d_log_in_block button {
-            margin-top:20px;
-            background-color:red;
-            color:white;
-            border:0;
+        #birthDay{
+            background: #fff url(http://i.imgur.com/u0XmBmv.png) 20px top no-repeat;
+            background-size: 16px 80px;
         }
 
-        .fa {font-family: FontAwesome !important; }
-
-
-
-
-
-        .header_tot {
-        font-family: 'Oswald', sans-serif;
-        float: left;
-        width: 600px;
-        margin: 170px 0 20px 0;
-        margin-left: calc(50% - 300px);
-        padding: 20px;
-        text-align: center;
-    }
-
-    .header_tot h1{
-        font-family: 'Oswald',sans-serif;
-        font-size: 60px;
-
-    }
-
-    .subtitlu a {
-        color: #1c1b1b;
-        font-weight: bold;
-        text-decoration: none;
-        font-size: 15px;
-    }
-
-
-    .d_review b {
-        font-weight:600 !important;
-    }
-
-    .d_review .fa {
-        width:18px;
-        text-align: center;
-    }
-
-
-    .d_log_in_block
-    {
-        float: left;
-        width: 600px;
-        background-color: #efefef;
-        margin: 10px 0 0 0;
-        margin-left: calc(50% - 300px);
-        border-top: 5px solid #ff8c00;
-        border-radius: 4px 0 0 0;
-        padding: 20px;
-
-    }
-
-    .d_log_in_block legend
-    {
-        float: left;
-        width: 96%;
-        height: auto;
-        font-size: 12px;
-        margin: 10px 2% 2px;
-        color: #ff8c00;
-        text-align: left;
-        font-weight: 400;
-        text-transform: uppercase;
-        letter-spacing: -0.5px;
-    }
-
-
-
-    .d_log_in_block span
-    {
-        float: left;
-        width: 96%;
-        height: auto;
-        font-size: 14px;
-        margin: 0 2% 0;
-        color: #333;
-        font-weight: 600;
-        padding:0;
-    }
-
-    .d_log_in_block span .fa
-    {
-        font-size: 20px;
-        color: #ff8c00;
-        font-weight: 400;
-    }
-
-    .d_log_in_block h1
-    {
-        color: #282828;
-        font-size: 40px;
-        font-weight: 600;
-        margin:20px 0;
-        width: 100%;
-        float:left;
-    }
-
-    .d_log_in_block p
-    {
-        float: left;
-        width: 98%;
-        height: auto;
-        font-size: 12px;
-        margin: 10px 2% 2px;
-        color: #333;
-        text-align: left;
-        font-weight: 400;
-    }
-
-
-        /*popup*/
-    .popup{
-        position: fixed;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        width:100%;
-        height:100%;
-        background-color: rgba(0, 0, 0, 0.4);
-        z-index: 1000000;
-        display: none;
-    }
-    .popup .popup-dialog{
-        position:relative;
-        top:0;
-        bottom:0;
-        left:0;
-        right:0;
-
-        height: 100%;
-        background-color: white;
-        margin: auto;
-        box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.4);
-    }
-
-    @keyframes rotateInfinity {
-        from {transform: rotate(-45deg);}
-        to{transform: rotate(315deg);}
-    }
-
-    .popup .loading{
-        position: absolute;
-        width: 100%;
-        z-index: 10200;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-    }
-
-    .popup .loader{
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        width: 50px;
-        height: 50px;
-        margin: auto;
-        border-radius: 25px;
-        border-right: 2px solid;
-        border-top: 2px solid;
-        animation: rotateInfinity 4s;
-        animation-iteration-count: infinite;
-        transform: rotate(-45deg);
-    }
-
-
-    .popup .popup-content{
-        overflow-y: auto;
-        height: 100%;
-        position:relative;
-    }
-
-    .popup-content .bannerImage{
-        background-image: url("images/box-2.jpg");
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: 100%;
-        width: 100%;
-        padding: 20%;
-        box-sizing: border-box;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .popup .close-button{
-        color: gray;
-        font-size: 1.25em;
-        position: absolute;
-        right: 5px;
-        top: 5px;
-        font-family: Arial, "Times New Roman"   ;
-        line-height: 12px;
-        padding: 5px;
-        cursor:pointer;
-        z-index: 10000001;
-    }
-    .popup .close-button:hover{
-        color: rgba(50,50,50, 1);
-        font-weight: bold;
-    }
-
-    #coachPopup .title{
-        font-size:2em;
-        line-height: 40px;
-        padding: 5px 10px 5px 15px;
-        text-transform: uppercase;
-        color:  rgba(255, 140, 00, 1);;
-        font-style: italic;
-        font-family: 'Passion One', 'Arial', cursive;
-        float:left;
-    }
-
-    #coachPopup .difficulty{
-        line-height:40px;
-        float: right;
-        padding: 5px 10px 5px 10px;
-    }
-
-    #coachPopup .time,
-    #coachPopup .date,
-    #coachPopup .teacher,
-    #coachPopup .participants,
-    #coachPopup .description{
-        clear: both;
-        margin: 15px;
-    }
-
-    #coachPopup .time .glyphicon,
-    #coachPopup .date .glyphicon,
-    #coachPopup .teacher .glyphicon,
-    #coachPopup .participants .glyphicon,
-    #coachPopup .description .glyphicon{
-        margin-right:5px;
-    }
-
-    #coachPopup .description{
-        text-align: justify;
-    }
-
-    #coachPopup .myFeedback{
-        padding: 5px;
-    }
-
-
-    #coachPopup .myFeedback .control{
-        float:right;
-        position:relative;
-        display:block;
-        /*width: 100%;*/
-    }
-
-    #coachPopup .button{
-        background: #FF8C00;
-        box-sizing: border-box;
-        border-radius: 7px;
-        border: 1px solid #FF8C00;
-        color: #fff;
-        font-weight: bold;
-        text-transform: uppercase;
-        font-size: 1em;
-        font-family: Montserrat;
-        outline: none;
-        cursor: pointer;
-        margin-left: 15px;
-        padding: 5px;
-        display:inline-block;
-    }
-
-    #coachPopup .button.disabled{
-        background: rgb(150, 150, 150);
-        cursor: default;
-
-    }
-
-
-    #coachPopup .myFeedback>.done,
-    #coachPopup .myFeedback>.edit{
-        position: relative;
-        padding: 15px;
-    }
-
-    #coachPopup .myFeedback .edit #detailsFeedbackInput,
-    #coachPopup .myFeedback .edit #summaryFeedbackInput{
-        width: 100%;
-        margin-bottom:10px;
-    }
-
-    #coachPopup .button.edit,
-    #coachPopup .button.delete,
-    #coachPopup .button.submit,
-    #coachPopup .button.cancel{
-        float: right;
-    }
-
-    #coachPopup .feedback{
-        padding: 15px;
-    }
-
-    #coachPopup .identity{
-        margin-bottom: 7px;
-    }
-
-    #coachPopup .feedback .image{
-        background-image: url("images/user.png");
-        background-position: center;
-        background-size:100% 100%;
-        width: 24px;
-        height:24px;
-        border-radius: 12px;
-        border: 1px solid gray;
-        padding: 0;
-        float: left;
-        margin-right: 7px;
-    }
-
-    #coachPopup hr{
-        margin: 7px auto;
-        width: 90%;
-
-    }
-
-    #coachPopup .titled{
-        margin: 12px auto;
-        height: 1px;
-        text-align: center;
-        border:0;
-        background-color: #eee;
-    }
-
-    #coachPopup .titled::after{
-        content: attr(title);
-        margin: auto;
-        line-height: 30px;
-        top: -15px;
-        position: relative;
-        font-size: 0.9em;
-        color: #989898;
-        text-shadow: 2px 2px 5px white;
-        background-color:white;
-        padding: 0 10px;
-    }
-
-    #coachPopup .feedback .username{
-        line-height: 24px;
-        font-size: 1.3em;
-    }
-
-    #coachPopup .content{
-        /*margin-left: 15px;*/
-    }
-
-    #coachPopup .stars{
-        user-select: none;
-        -ms-user-select: none;
-        -webkit-user-select: none;
-        -o-user-select:none;
-        -moz-user-select: none;
-        letter-spacing: -3px;
-    }
-
-    #coachPopup .stars .star{
-        display:inline-block;
-        font-size: 1.5em;
-        color:rgba(255, 140, 00, 1);;
-        cursor:default;
-    }
-
-    #coachPopup .stars .star::after{
-        content: "\2606";
-    }
-
-    #coachPopup .stars .star.filled::after{
-        content: "\2605";
-    }
-
-    #coachPopup .stars .star.changeable{
-        cursor:pointer;
-    }
-
-    #coachPopup .stars .star.temporaryUnFilled::after{
-        content: "\2606";
-    }
-
-    #coachPopup .stars .star.temporaryFilled::after{
-        content: "\2605";
-    }
-
-
-    #coachPopup .summary{
-        font-weight: bold;
-        font-size: 1.0em;
-        margin-bottom: 5px;
-        clear:both;
-    }
-
-    #coachPopup .details{
-        font-size: 0.8em;
-    }
-
-    @media only screen and (max-width: 480px){
-        #coachPopup .myFeedback .control{
-            width: 100%;
+        #name{
+            background: #fff url(http://i.imgur.com/u0XmBmv.png) 20px top no-repeat;
+            background-size: 16px 80px;
         }
-    }
 
-    @media only screen and (min-width: 768px) {
-        /* tablets and desktop */
-        .popup .popup-dialog{
-            width: 70%;
+        .blockButton{
+            border-radius: 7px;
+            color: #fff;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 1em;
+            font-family: Montserrat;
+            outline: none;
+            cursor: pointer;
+            padding: 5px;
+            background: #FF8C00;
+            border: 1px solid #FF8C00;
+            display: inline-block;
+            width:100px;
+            left: calc(100% - 100px);
+            position: relative;
+            text-align: center;
         }
-    }
 
-    @media only screen and (max-width: 767px) {
-        /* phones */
-        .popup .popup-dialog{
-            width: 100%;
+        #feedbackDialog textarea.description{
+            width: calc(100% - 30px);
+            height: 150px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
         }
-    }
+
+        .popup-content> .username,
+        .popup-content > .email,
+        .popup-content > .birthday,
+        .popup-content > .password{
+            clear: both;
+            margin: 15px;
+        }
+
     </style>
 
 </head>
@@ -620,12 +159,7 @@
                                     <!-- Collect the nav links, forms, and other content for toggling -->
                                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                         <ul class="nav navbar-nav navbar-right">
-                                            <li><a href="about.html">About</a></li>
-                                            <li><a href="courses.html">Courses </a></li>
-                                            <li><a href="coaches.html">Coaches</a></li>
-                                            <li><a href="schedule.html">Schedule</a></li>
-                                            <li><a href="subscription.html">Subscription </a></li>
-                                            <li><a href="contact.html">Contact us</a></li>
+
                                         </ul>
                                     </div>
                                 </div>
@@ -638,85 +172,61 @@
         <!-- Header Section Ends -->
     </div>
 
-    <div class="header_tot">
-        <h1>Contul meu</h1>
-        <div class="subtitlu">
-            <a id="coach" href="#feedback-section" onclick="loadCoach(this)">My feedbacks</a>
+    <section class="pad-top-210">
+        <div class="personalInfoBlock">
+            <h1>Personal Info</h1>
+            <input id="name" type="text" placeholder="Name" disabled>
+            <input id="username" type="text" placeholder="Username" disabled>
+            <input id="email" type="text" placeholder="Email" disabled>
+            <input id="birthDay" type="date" placeholder="birtDay" disabled>
+
+            <br>
+            <br>
+            If you want to see your feedbacks, press this button...
+            <br><div class="blockButton">Show</div>
         </div>
-    </div>
+    </section>
 
-    <div class="d_log_in_block">
-        <h1><i class="fa fa-user" aria-hidden="true"></i>  Personal Info</h1>
-
-        <legend><i class="fa fa-address-card-o" aria-hidden="true"></i> &nbsp; Name</legend>
-        <input type="text" id="name" placeholder="Jhon Doe" disabled="disabled">
-        <legend><i class="fa fa-user-o" aria-hidden="true"></i> &nbsp; User</legend>
-        <input type="text" id="username" placeholder="jhondoe" disabled="disabled">
-        <legend><i class="fa fa-envelope-o" aria-hidden="true"></i> &nbsp; Email</legend>
-        <input type="text" id="email" placeholder="jhondoe@yahoo.com" disabled="disabled">
-        <legend><i class="fa fa-birthday-cake" aria-hidden="true"></i> &nbsp; Birthday</legend>
-        <input type="text" id="birthDay" placeholder="Birthday" disabled="disabled">
-
-
-    </div>
-
-
-
-        <div id="feedback-section">
-            <div id="coachPopup" class="popup" role="dialog">
-                <div class="popup-dialog">
-                    <div class="loading">
-                        <div class="loader"></div>
-                    </div>
-                    <!-- Modal content-->
-                    <div class="popup-content">
-                        <div class="close-button">&times;</div>
-                        <div class="bannerImage"> </div>
-                        <div >
-                            <div class="title"></div>
-                            <div class="hidden coachId"></div>
-                        </div>
-
-
-                        <div class="description"></div>
-
-
-                        <div class="myFeedback">
-                            <hr class="titled" title="MyFeedback">
-                            <div class="done feedback">
-
-                                <div class="identity">
-                                    <div class="image"></div>
-                                    <div class="username"></div>
-                                </div>
-                                <div class="content">
-                                    <div class="stars">
-                                        <div class="star"></div>
-                                        <div class="star"></div>
-                                        <div class="star"></div>
-                                        <div class="star"></div>
-                                        <div class="star"></div>
-                                    </div>
-                                    <div class="summary"></div>
-                                    <div class="details"></div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="feedbacks">
-                            <hr class="titled" title="Feedbacks">
-                        </div>
-                    </div>
-
-                </div>
-
-
-
-
-            </div>
-        </div>
 </div>
 
+<div id="feedbackDialog" class="popup coachDialog" role="dialog">
+    <div class="popup-dialog">
+        <div class="loading">
+            <div class="loader"></div>
+        </div>
+        <!-- Modal content-->
+        <div class="popup-content">
+            <div class="close-button">&times;</div>
+            <div class="bannerImage"></div>
+            <div>
+                <div class="title"></div>
+                <div class="hidden coachId"></div>
+            </div>
+
+            <div class="username">
+                <i class="glyphicon glyphicon-user" aria-hidden="true"></i>
+                <span class="value"></span>
+            </div>
+
+            <div class="email">
+                <i class="glyphicon glyphicon-envelope" aria-hidden="true"></i>
+                <span class="value"></span>
+            </div>
+
+            <div class="birthday">
+                <i class="glyphicon glyphicon-calendar" aria-hidden="true"></i>
+                <span class="value"></span>
+            </div>
+
+            <div class="description"></div>
+
+            <div class="feedbacks">
+                <hr class="titled" title="Feedbacks">
+
+            </div>
+
+    </div>
+</div>
 
 
 <!-- Jquery Js -->
@@ -724,19 +234,18 @@
 <script type="text/javascript" src="js/libs/jquery.min.js"></script>
 <script type="text/javascript" src="js/libs/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/libs/modernizr.js"></script>
-<script type="text/javascript" src="js/owl.carousel.js"></script>
+<script type="text/javascript" src="js/libs/owl.carousel.js"></script>
 <script type="text/javascript" src="js/libs/jquery.localscroll-1.2.7-min.js"></script>
-<script type="text/javascript" src="js/wow.min.js"></script>
+<script type="text/javascript" src="js/libs/wow.min.js"></script>
 <script type="text/javascript" src="js/libs/imagesloaded.pkgd.min.js"></script>
 <script type="text/javascript" src="js/libs/waypoints.min.js"></script>
 <script type="text/javascript" src="js/libs/jquery.isotope.min.js"></script>
-<script type="text/javascript" src="js/jquery.fancybox.js"></script>
+<script type="text/javascript" src="js/libs/jquery.fancybox.js"></script>
 <script type="text/javascript" src="js/libs/switcher.js"></script>
 
 <script type="text/javascript" src="js/feedbacks.js"></script>
         <script type="text/javascript" src="js/const.js"></script>
         <script type="text/javascript" src="js/core/core.js"></script>
-            <script type="text/javascript" src="js/personalInfo.js"></script>
 
 </body>
 
