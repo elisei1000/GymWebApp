@@ -267,6 +267,10 @@ function showCoachPopup(coach){
     imageChanged = false;
     var coachId = coach.username;
     coachDialog.content.coachId.text(coachId);
+    if(popupState === POPUP_STATE.EDIT)
+        coachDialog.content.username.attr("disabled", "disabled");
+    else
+        coachDialog.content.username.removeAttr("disabled");
     coachDialog.content.username.val(coach.username);
     coachDialog.content.email.val(coach.email);
     coachDialog.content.title.val(coach.name);

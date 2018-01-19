@@ -33,9 +33,9 @@ public class GymwebappApplication {
 			client.setBirthDay(new Date(81590522));
 			client.setName("Test");
 			userService.addUser(client);
-			Administrator admin = new Administrator("admin", "admin", "admin@yahoo.com", "Administrator", new Date(81590522));
+			Administrator admin = new Administrator("admin", "Admin123#", "admin@yahoo.com", "Administrator ", new Date(81590522));
 			userService.addUser(admin);
-			Coach coach = new Coach("coach", "coach", "coach@yahoo.com", "Coach", new Date(81590522), "Pasionat de fotbal.");
+			Coach coach = new Coach("coach", "Coach123#", "coach@yahoo.com", "Coach 1", new Date(81590522), "Pasionat de fotbal.");
 			System.out.println(coachService.addCoach(coach));
 
 			List<CourseModel> courseList=courseService.getAll();
