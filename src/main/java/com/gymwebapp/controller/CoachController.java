@@ -89,6 +89,19 @@ public class CoachController {
         return new Response(Status.STATUS_OK, new ArrayList<>(), Pair.of("coaches", coaches_response));
     }
 
+    @GetMapping(value = "/coach/{username}")
+    public Response getCoach(@PathVariable String username) {
+        Coach coach = coachService.getCoach(username);
+        List<String> errors = new ArrayList<>();
+        if (coach == null) {
+            errors.add("Coach with given username does't exists!");
+            return new Response(Status.STATUS_FAILED, errors);
+        }
+
+        CoachModel coachModel = new CoachModel(coach.getUsername(), "", coach.getEmail(), coach.getName(), coach.getBirthDay(), coach.getAbout());
+        return new Response(Status.STATUS_OK, new ArrayList<>(), Pair.of("coach", coachModel));
+    }
+
     @GetMapping(value = "/coach/{username}/feedback")
     public Response getAllFeedBacks(@PathVariable String username) {
         List<CoachFeedback> feedbacks = feedBackService.getAllCoachFeedBacks(username);
