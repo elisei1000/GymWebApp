@@ -22,7 +22,8 @@ function loadSchedule(filteredData){
         views: ["day","week", "month"],
         currentView: "week",
         currentDate: new Date(),
-        startDayHour: 9,
+        startDayHour: 8,
+        endDayHour: 22,
         height: 500,
         onCellClick: function(e) {
             e.cancel = true;
