@@ -42,6 +42,7 @@ function submitRegister(){
 
     callServer(APIS.API_POST_REGISTER, HTTP_METHODS.POST, user,
         function(){
-            showMessage("Your register request was successfully made!");
+            laterMessage("Your register request was successfully made!");
+            window.location = PAGES_MAPPINGS_URL[PAGES.HOME];
     });
 }

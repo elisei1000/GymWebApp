@@ -2,12 +2,61 @@
  * Created by elisei on 24.11.2017.
  */
 
+var messageBox;
+
+function createNotif(message){
+    var notif = $("<div class='notif'></div>").text(message)
+    notif.append(
+        $("<div></div>").addClass("close").html("&times;").click(function(){
+            if(notif.timeout)
+                clearInterval(notif.timeout)
+            notif.slideUp(function(){
+                notif.remove();
+            })
+        })
+    )
+    return notif;
+}
+
 function showMessage(message){
-    alert(message);
+    var split = message.split("\n");
+    for(var i in split){
+        var text = split[i];
+
+        var notif = createNotif(text);
+        notif.addClass("message");
+        messageBox.append(notif);
+        notif.timeout = getTimeout(notif, 3000);
+    }
+}
+
+function laterMessage(message){
+    if(sessionStorage){
+        sessionStorage.setItem("message", message)
+    }
+    else{
+        showMessage(message);
+    }
+}
+
+function getTimeout(notif, timeout){
+    return setTimeout(function(){
+        notif.slideUp(function(){
+            notif.remove();
+        })
+    }, timeout);
 }
 
 function showError(message, errorThrown){
-    alert(message);
+    var split = message.split("\n");
+    for(var i in split){
+        var text = split[i];
+
+        var notif = createNotif(text);
+        notif.addClass("error");
+        messageBox.append(notif);
+        notif.timeout = getTimeout(notif, 5000);
+    }
     console.log(errorThrown !== undefined ? errorThrown:message);
 }
 
@@ -47,12 +96,18 @@ function verifyRights(data, onsuccess, onnotlogged, onnotpermission){
     var status = data.data.status;
     if(status === STATUSES.STATUS_NOT_LOGGED_IN){
         if(onnotlogged !== undefined) onnotlogged(data.data);
-        else redirectLogin();
+        else{
+            laterMessage("Your session has finished!");
+            redirectLogin();
+        }
         return;
     }
     if(status === STATUSES.STATUS_PERMISSION_DENIED){
         if(onnotpermission !== undefined) onnotpermission(data.data);
-        else redirectHome();
+        else{
+            laterMessage("You have not permissions to access this page!");
+            redirectHome();
+        }
         return;
     }
     if(status === STATUSES.STATUS_FAILED){
@@ -148,6 +203,22 @@ function initMenuAndLinks() {
         });
 
     callServer(APIS.API_PERMISSIONS, HTTP_METHODS.GET, {}, generatePages, generatePages, generatePages)
+
+    if(sessionStorage && sessionStorage.getItem("message")){
+        $(function(){
+            showMessage(sessionStorage.getItem("message"));
+            sessionStorage.removeItem("message");
+        })
+
+    }
+    if(sessionStorage && sessionStorage.getItem("error")){
+        $(function(){
+            showError(sessionStorage.getItem("error"))
+            sessionStorage.removeItem("error");
+        })
+    }
+    messageBox = $("<div id='messageBox'></div>");
+    $(document.body).append(messageBox);
 }
 $(initMenuAndLinks);
 

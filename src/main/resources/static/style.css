@@ -3880,3 +3880,59 @@ blockquote h6 {
 html, body{
     min-height:100%;
 }
+
+
+#messageBox{
+    position:fixed;
+    margin:0;
+    z-index: 200000000;
+    top:0;
+    width: 100%;
+    text-align: center;
+    user-select: none;
+}
+
+.notif{
+    padding: 15px;
+    color:white;
+    width: 70%;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right:auto;
+    margin-top:0;
+    margin-bottom:10px;
+    right:0;
+    left:0;
+    text-align: left;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.4);
+}
+
+.message{
+    background-color: #E5E8ED;
+    color:black;
+}
+
+.message::before{
+    content:"INFO: ";
+    font-weight: bold;
+}
+
+.error {
+    background-color: #f44336;
+}
+
+.error::before{
+    content:"ERROR: ";
+    font-weight: bold;
+}
+
+.notif .close{
+    margin-left:15px;
+    color: black;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
