@@ -144,10 +144,14 @@ function loadCourses(data){
     });
 
 }
-$.ajax({
-    url: "/course",
-    async: false,
-    dataType: 'json',
-    success: loadCourses
-});
+
+$(function(){
+    $.ajax({
+        url: "/course",
+        async: false,
+        dataType: 'json',
+        success: loadCourses
+    });
+})
+
 
