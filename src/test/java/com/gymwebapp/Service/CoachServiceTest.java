@@ -99,5 +99,6 @@ public class CoachServiceTest {
         assertThat(toUpdate.getEmail()).isEqualTo("testCoach2@yahoo.com");
 
         coachService.removeCoach(coach);
+
     }
 }
