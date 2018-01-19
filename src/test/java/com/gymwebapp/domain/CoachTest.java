@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class CoachTest {
     private Coach coach;
@@ -17,7 +17,7 @@ public class CoachTest {
     @Before
     public void setUp() throws Exception {
         date = new Date();
-        coach = new Coach("u1","p1","e1","n1", date);
+        coach = new Coach("u1", "p1", "e1", "n1", date, "");
         author = new Client("u2","p2","e2","n2",date);
         CoachFeedback f1 = new CoachFeedback(1,"s1","d1", date, author, coach);
         coach.getFeedbacks().add(f1);

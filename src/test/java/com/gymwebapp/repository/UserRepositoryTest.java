@@ -1,21 +1,16 @@
 package com.gymwebapp.repository;
 
 import com.gymwebapp.domain.*;
-import junit.framework.TestResult;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
-
 
 import java.util.Date;
-import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Created by elisei on 23.11.2017.
  */
@@ -95,7 +90,7 @@ public class UserRepositoryTest{
         try {
             userRepository.add(client);
 
-            Coach coach = new Coach("username", "pass", "coach@yahoo.com", "grigore", new Date());
+            Coach coach = new Coach("username", "pass", "coach@yahoo.com", "grigore", new Date(), "");
 
             try{
                 userRepository.add(coach);
@@ -113,12 +108,12 @@ public class UserRepositoryTest{
     @Test
     public void testUpdateCoachShouldUpdate(){
 
-        Coach coach = new Coach("username", "password", "email", "name", new Date());
+        Coach coach = new Coach("username", "password", "email", "name", new Date(), "");
 
         try{
 
             userRepository.add(coach);
-            Coach coach1 = new Coach("username", "password1", "email1", "name1", new Date());
+            Coach coach1 = new Coach("username", "password1", "email1", "name1", new Date(), "");
 
             userRepository.update(coach1);
 
@@ -181,10 +176,10 @@ public class UserRepositoryTest{
             userRepository.add(new Client("b", "a", "b", "a", new Date()));
             userRepository.add(new Client("c", "a", "b", "a", new Date()));
 
-            userRepository.add(new Coach("aa", "aa", "aa", "aa",new Date()));
-            userRepository.add(new Coach("ab", "aa", "aa", "aa",new Date()));
-            userRepository.add(new Coach("ac", "aa", "aa", "aa",new Date()));
-            userRepository.add(new Coach("ad", "aa", "aa", "aa",new Date()));
+            userRepository.add(new Coach("aa", "aa", "aa", "aa", new Date(), ""));
+            userRepository.add(new Coach("ab", "aa", "aa", "aa", new Date(), ""));
+            userRepository.add(new Coach("ac", "aa", "aa", "aa", new Date(), ""));
+            userRepository.add(new Coach("ad", "aa", "aa", "aa", new Date(), ""));
 
             userRepository.add(new Administrator("administrator", "password", "email", "name", new Date()));
             userRepository.add(new Administrator("administrator1", "password", "email", "name", new Date()));

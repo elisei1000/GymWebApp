@@ -4,10 +4,10 @@ import com.gymwebapp.domain.Coach;
 import com.gymwebapp.domain.CoachFeedback;
 import com.gymwebapp.domain.Validator.FeedbackValidator;
 import com.gymwebapp.domain.Validator.Validator;
+import com.gymwebapp.model.CoachModel;
 import com.gymwebapp.model.FeedbackModel;
-import com.gymwebapp.model.UserModel;
+import com.gymwebapp.service.CoachService;
 import com.gymwebapp.service.FeedBackService;
-import com.gymwebapp.service.UserService;
 import com.gymwebapp.util.Response;
 import com.gymwebapp.util.Status;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,30 +37,30 @@ import java.util.List;
 public class CoachController {
 
     @Autowired
-    private UserService userService;
+    private CoachService coachService;
 
     @Autowired
     private FeedBackService feedBackService;
 
     @PostMapping(value = "/coach")
-    public Response add(@RequestBody UserModel userModel) {
-        Coach coach = new Coach(userModel.getUsername(), userModel.getPassword(), userModel.getEmail(),
-                userModel.getName(), userModel.getBirthDay());
-        List<String> errors = userService.addUser(coach);
+    public Response add(@RequestBody CoachModel coachModel) {
+        Coach coach = new Coach(coachModel.getUsername(), coachModel.getPassword(), coachModel.getEmail(),
+                coachModel.getName(), coachModel.getBirthDay(), coachModel.getAbout());
+        List<String> errors = coachService.addCoach(coach);
 
         if (errors.size() == 0) {
-            userModel.setPassword(null);
-            return new Response(Status.STATUS_OK, errors,Pair.of("coach",userModel));
+            coachModel.setPassword(null);
+            return new Response(Status.STATUS_OK, errors, Pair.of("coach", coachModel));
         } else {
             return new Response(Status.STATUS_FAILED, errors);
         }
     }
 
     @PutMapping(value = "/coach/{username}")
-    public Response update(@PathVariable String username, @RequestBody UserModel userModel) {
+    public Response update(@PathVariable String username, @RequestBody CoachModel coachModel) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        Coach coach = new Coach(username, passwordEncoder.encode(userModel.getPassword()), userModel.getEmail(), userModel.getName(), userModel.getBirthDay());
-        List<String> errors = userService.updateUser(coach);
+        Coach coach = new Coach(username, passwordEncoder.encode(coachModel.getPassword()), coachModel.getEmail(), coachModel.getName(), coachModel.getBirthDay(), coachModel.getAbout());
+        List<String> errors = coachService.updateCoach(coach);
         if (errors.size() == 0) {
             return new Response(Status.STATUS_OK, errors);
         } else {
@@ -71,7 +71,7 @@ public class CoachController {
     @DeleteMapping(value = "/coach/{username}")
     public Response remove(@PathVariable String username) {
         Coach coach = new Coach(username, null);
-        List<String> errors = userService.removeCoach(coach);
+        List<String> errors = coachService.removeCoach(coach);
         if (errors.size() == 0) {
             return new Response(Status.STATUS_OK, errors);
         } else {
@@ -81,10 +81,10 @@ public class CoachController {
 
     @GetMapping(value = "/coach")
     public Response getAll() {
-        List<Coach> coaches = userService.getAllCoaches();
-        List<UserModel> coaches_response = new ArrayList<>();
+        List<Coach> coaches = coachService.getAllCoaches();
+        List<CoachModel> coaches_response = new ArrayList<>();
         for (Coach c : coaches) {
-            coaches_response.add(new UserModel(c.getUsername(), "", c.getEmail(), c.getName(), c.getBirthDay()));
+            coaches_response.add(new CoachModel(c.getUsername(), "", c.getEmail(), c.getName(), c.getBirthDay(), c.getAbout()));
         }
         return new Response(Status.STATUS_OK, new ArrayList<>(), Pair.of("coaches", coaches_response));
     }
@@ -174,7 +174,7 @@ public class CoachController {
 
     @PostMapping(value = "/coach/{username}/image")
     public Response addImage(@PathVariable String username, @RequestParam("file") MultipartFile file) {
-        Coach coach = this.userService.getCoach(username);
+        Coach coach = this.coachService.getCoach(username);
 
         List<String> errors = new ArrayList<>();
 

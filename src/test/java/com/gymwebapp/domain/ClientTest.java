@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class ClientTest {
     private Client author;
@@ -20,7 +20,7 @@ public class ClientTest {
         testDate = new Date();
         subscription = new Subscription(1,testDate,testDate);
         author = new Client("u1","p1","e1","n1", testDate, subscription);
-        coach = new Coach("u1","p1","e1","n1", testDate);
+        coach = new Coach("u1", "p1", "e1", "n1", testDate, "");
         Course c1 = new Course("t1","d1",1,1,1,testDate,testDate,1, coach);
         author.getCourses().add(c1);
     }
