@@ -176,53 +176,6 @@ function loadDialog() {
     $("#btn-update").click(updateCoach);
 }
 
-function deleteClick(event) {
-    console.log("deleting: ", event);
-
-    var id = event.target.parentElement.id;
-    var coach = document.getElementById('' +id);
-
-    var username = coach.getElementsByClassName("username")[0].innerText;
-    console.log(APIS.API_GET_COACHES + "\/" + username);
-    callServer(APIS.API_GET_COACHES + "\/" + username, HTTP_METHODS.DELETE, removeCoachFromGrid(id));
-
-}
-
-function removeCoachFromGrid(id) {
-    var coach = document.getElementById('' +id);
-    document.getElementById('coachesGrid').removeChild(coach);
-    freeIds.push(id);
-}
-
-function updateClick(coachInfo) {
-    var id = coachInfo.target.parentElement.parentElement.id;
-    var coach = document.getElementById('' +id);
-
-    var username = coach.getElementsByClassName("username")[0].innerText;
-    var name = coach.getElementsByClassName("name")[0].innerText;
-    var password = coach.getElementsByClassName("password")[0].innerText;
-    var email = coach.getElementsByClassName("email")[0].innerText;
-    var birthDay = coach.getElementsByClassName("birthDay")[0].innerText;
-
-    // email = email.replace("email: ","");
-    console.log("updating: " , id, name, email);
-
-    $("#username").val(username);
-    $("#name").val(name);
-    $("#password").val(password);
-    $("#email").val(email);
-    $("#birthDay").val(birthDay);
-
-
-    $('#btn-update').show();
-    $('#btn-update').attr("name", id);
-    $('#coachesGrid').hide();
-    $('#btn-add').hide();
-    $("#btn-save").hide();
-
-    // $('label[for=username], input#username').hide();
-    dialog.dialog("open");
-}
 
 
 
@@ -308,6 +261,7 @@ function showCoachPopup(coach){
         coach.email = "";
         coach.birthDay = new Date();
         coach.name = "";
+        coach.about="";
     }
 
     imageChanged = false;
@@ -318,7 +272,7 @@ function showCoachPopup(coach){
     coachDialog.content.title.val(coach.name);
     coachDialog.content.password.val(coach.password);
     coachDialog.content.birthday.val(formatDate(coach.birthDay));
-
+    coachDialog.content.description.val(coach.about);
     var url;
     if(popupState === POPUP_STATE.ADD)
         url = "url({0})".format(URL_IMAGE_COACH_DEFAULT);
@@ -536,7 +490,8 @@ function getCoach(){
         username    : coachDialog.content.username.val(),
         password    : coachDialog.content.password.val(),
         email       : coachDialog.content.email.val(),
-        birthDay    : coachDialog.content.birthday.val()
+        birthDay    : coachDialog.content.birthday.val(),
+        about       : coachDialog.content.description.val(),
     };
     if(!validateObject(coach, OBJECT_KEYS.COACH)){
         showError("Script error. ", "Not all values in coach");
@@ -549,13 +504,14 @@ function getCoach(){
     if(!coach.username || coach.username === '')
         errors.push("Username must be non-empty!");
 
-
     if(!coach.password || coach.password === '')
-        errors.push("Password must be non-empty!");
-
+        coach.password = null;
 
     if(!coach.email || coach.email === '')
         errors.push("Email must be non-empty!");
+
+    if(!coach.about || coach.about === '')
+        errors.push("About field must be non-empty!");
 
     if(errors.length > 0){
         var error = errors.join("\n");
@@ -658,7 +614,7 @@ function initDialog(){
     coachDialog.content.email = coachDialog.content.find(".email input");
     coachDialog.content.birthday = coachDialog.content.find(".birthday input");
     coachDialog.content.password = coachDialog.content.find(".password input")
-
+    coachDialog.content.description = coachDialog.content.find(".description");
     coachDialog.content.addButton = coachDialog.content.find(".button.add");
     coachDialog.content.addButton.click(function(){
         var coachId = coachDialog.content.coachId.text();
@@ -703,6 +659,7 @@ function initDialog(){
         callServer(APIS.API_COACH.format(coachId), HTTP_METHODS.PUT, coach, function(data){
             coach.ui = coaches[coachId].ui;
             coach.version = coaches[coachId].version;
+            coach.password = null;
             coaches[coachId] = coach;
             if(imageChanged){
                 sendImage(coachId, function(){
