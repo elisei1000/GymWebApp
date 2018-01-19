@@ -63,7 +63,7 @@ function formatDate(date, hours) {
 }
 
 function loadCourses(data){
-    var courses = data.data.courses;
+    var courses = data.courses;
 
     data = courses.map(function(course) {
             return {
@@ -146,12 +146,7 @@ function loadCourses(data){
 }
 
 $(function(){
-    $.ajax({
-        url: "/course",
-        async: false,
-        dataType: 'json',
-        success: loadCourses
-    });
+    callServer(APIS.API_GET_COURSES, HTTP_METHODS.GET, {}, loadCourses);
 })
 
 

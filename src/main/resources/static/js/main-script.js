@@ -20,15 +20,16 @@ function submitLogin() {
             timeout: 600000,
         success: function (data) {
             var response = jQuery.parseJSON(data);
-            if(response.errors==0) {
+            if (response.errors == 0) {
                 laterMessage("You have logged in successfully!");
                 window.location = PAGES_MAPPINGS_URL[PAGES.HOME];
             }
-            else
-            {
-                showMessage("Login failure!");
+            else {
+                showError(response.errors.join("\n"));
             }
-
+        },
+        error: function(){
+                showError("Cannot communicate with the server!")
         }
     });
 }
