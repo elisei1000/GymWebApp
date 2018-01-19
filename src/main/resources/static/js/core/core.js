@@ -6,6 +6,7 @@ var messageBox;
 
 function createNotif(message){
     var notif = $("<div class='notif'></div>").text(message)
+    notif.hide();
     notif.append(
         $("<div></div>").addClass("close").html("&times;").click(function(){
             if(notif.timeout)
@@ -26,6 +27,8 @@ function showMessage(message){
         var notif = createNotif(text);
         notif.addClass("message");
         messageBox.append(notif);
+        notif.fadeIn();
+        notif.slideDown();
         notif.timeout = getTimeout(notif, 3000);
     }
 }
@@ -55,6 +58,8 @@ function showError(message, errorThrown){
         var notif = createNotif(text);
         notif.addClass("error");
         messageBox.append(notif);
+        notif.fadeIn();
+        notif.slideDown();
         notif.timeout = getTimeout(notif, 5000);
     }
     console.log(errorThrown !== undefined ? errorThrown:message);
