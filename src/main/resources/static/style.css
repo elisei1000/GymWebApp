@@ -3860,3 +3860,6 @@ blockquote h6 {
     background: #FF8C00;
 }
 
+html, body{
+    min-height:100%;
+}
